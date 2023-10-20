@@ -1,0 +1,19 @@
+format 224
+
+classcanvas 128008 class_ref 128008 // main
+  classdiagramsettings member_max_width 0 end
+  xyz 337 294 2000
+end
+classcanvas 128136 class_ref 128136 // GUI
+  classdiagramsettings member_max_width 0 end
+  xyz 547 265 2000
+end
+classcanvas 128264 class_ref 128264 // Robot
+  classdiagramsettings member_max_width 0 end
+  xyz 86 195 2000
+end
+classcanvas 128392 class_ref 128392 // DataLog
+  classdiagramsettings member_max_width 0 end
+  xyz 321 438 2000
+end
+end
