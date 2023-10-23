@@ -1,9 +1,9 @@
 #include <iostream>
+#include "CLI.h"
 
 int main(){
 
-    cout << "Hello World!" << endl;
-
+    CLI* cli = new CLI();
 
    return 0;
 
