@@ -8,6 +8,7 @@
 #include <string>
 #include <sstream>
 #include <vector>
+#include "Servidor.h"
 using namespace std;
 
 class CLI {
@@ -15,8 +16,6 @@ class CLI {
 private:
 
     bool isConnected = false;
-    string IP;
-    int PORT;
 
 
 public:

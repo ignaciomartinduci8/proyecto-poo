@@ -18,6 +18,7 @@ void CLI::loop() {
     while(1){
 
         command_segments.clear();
+        Servidor* servidor;
 
         if(!isConnected) {
 
@@ -44,22 +45,28 @@ void CLI::loop() {
                 exit(EXIT_SUCCESS);
 
             }
+
             if (command_segments.at(0) == "/connect") {
 
                 try {
+
                     if (command_segments.size() == 3) {
 
-                        this->IP = command_segments.at(1);
-                        this->PORT = std::stoi(command_segments.at(2));
+                        servidor = new Servidor(command_segments.at(1), stoi(command_segments.at(2)));
+
 
                     } else {
+
                         cout << "--> Error: numero invalido de argumentos." << std::endl;
+
                     }
+
                 } catch (const invalid_argument &e) {
 
                     cout << "--> Error: argumento invalido. " << e.what() << endl;
 
                 } catch (const out_of_range &e) {
+
                     cout << "--> Error: fuera de rango. " << e.what() << endl;
                 }
 
