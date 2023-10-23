@@ -48,17 +48,13 @@ class CLI(Cmd):
 
             print("Error - debe proporcionares un dato tipo entero.")
 
-
-
-
-
-
-
     def do_RPCoff(self, args):
         """
         Descripción: Cierra el servidor RPC
         Sintaxis: RCPoff [mensaje]
         """
+
+        self.servidor1.cerrarServidor()
 
     def default(self, args):
         print("Error, el comando /"+args+" no existe.")

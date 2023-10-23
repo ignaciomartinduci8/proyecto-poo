@@ -1,15 +1,18 @@
 from xmlrpc.server import SimpleXMLRPCServer
 import threading
 import socket
-import errno
+from Controlador import Controlador
 
 class Servidor:
 
     def __init__(self):
 
         self.open = False
+        self.hostname = None
         self.port = None
-
+        self.IP = None
+        self.server_thread = None
+        self.server = None
 
     def prueba(self, a,b):
 
@@ -24,28 +27,39 @@ class Servidor:
 
         try:
 
-            hostname = socket.gethostname()
-            ip_address = socket.gethostbyname(hostname)
+            self.hostname = socket.gethostname()
+            self.IP = socket.gethostbyname(self.hostname)
+            self.port = int(port)
 
-            print(f"Hostname: {hostname} | IP: {ip_address}")
+            self.server = SimpleXMLRPCServer((self.IP, self.port))
 
-            server = SimpleXMLRPCServer((ip_address, port))
             self.open = True
-            self.port = port
 
             print(f"Servidor RPC en el puerto {self.port}...")
 
-            server.register_function(self.prueba, "prueba")
+            self.server.register_function(self.prueba, "prueba")
 
 #           server.serve_forever()
 
-            server_thread = threading.Thread(target=server.serve_forever)
+            self.server_thread = threading.Thread(target=self.server.serve_forever)
 
         except Exception as e:
 
             print(f"Error - {e}")
 
+    def cerrarServidor(self):
 
+        try:
+            self.server.shutdown()
+            self.open = False
+            self.port = None
+            self.IP = None
+            self.hostname = None
+            print("Servidor RPC cerrado.")
+
+        except Exception as e:
+
+            print(f"Error - {e}")
 
 
 
