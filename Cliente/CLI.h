@@ -6,6 +6,7 @@
 #define PROYECTO_CLI_H
 #include <iostream>
 #include <string>
+#include <sstream>
 #include <vector>
 using namespace std;
 

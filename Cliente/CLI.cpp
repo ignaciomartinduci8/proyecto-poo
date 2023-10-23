@@ -35,11 +35,11 @@ void CLI::loop() {
                 if(command_segments.size() == 3){
 
                     this->PORT = stoi(command_segments.at(2));
-                    this->IP = stoi(command_segments.at(1))
+                    this->IP = stoi(command_segments.at(1));
 
                 }else{
 
-                    cout << "Error en la cantidad de argumentos." << endl
+                    cout << "Error en la cantidad de argumentos." << endl;
 
                 }
 
