@@ -1,5 +1,5 @@
 from xmlrpc.server import SimpleXMLRPCServer
-import threading
+from threading import Thread
 import socket
 from Controlador import Controlador
 
@@ -41,7 +41,8 @@ class Servidor:
 
 #           server.serve_forever()
 
-            self.server_thread = threading.Thread(target=self.server.serve_forever)
+            self.server_thread = Thread(target=self.server.serve_forever)
+            self.server_thread.start()
 
         except Exception as e:
 
@@ -51,6 +52,7 @@ class Servidor:
 
         try:
             self.server.shutdown()
+            self.server_thread.join(timeout=2)
             self.open = False
             self.port = None
             self.IP = None
