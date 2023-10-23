@@ -1,5 +1,8 @@
-
+from Controlador import Controlador
+from Servidor import Servidor
 from cmd import Cmd
+
+
 GREEN = "\033[92m"
 RESET = "\033[0m"
 LIGHT_BLUE = "\033[94m"
@@ -16,16 +19,44 @@ class CLI(Cmd):
         self.completekey = 'Tab'
         self.file_name = None
         self.current_object = None
+        self.servidor1 = Servidor()
 
-    def do_RPCon(self, args):
+
+    def do_RPCon(self, puerto):
         """
-        Descripción: Abre el servidor RCP
+        Descripción: Abre el servidor RPC
         Sintaxis: RCPon [puerto]
+
         """
+
+        try:
+
+            puerto = int(puerto)
+
+            # Control de errores de rango de argumentos
+            if puerto < 1024 or puerto > 65535:
+                print("Error en el puerto, debe estar entre 1025 y 65535. Motivos de seguridad y existencia.")
+                return
+
+            self.servidor1.abrirServidor(puerto)
+
+        except ValueError:
+
+            print("Error - debe proporcionares un dato tipo entero.")
+
+        except TypeError:
+
+            print("Error - debe proporcionares un dato tipo entero.")
+
+
+
+
+
+
 
     def do_RPCoff(self, args):
         """
-        Descripción: Cierra el servidor RCP
+        Descripción: Cierra el servidor RPC
         Sintaxis: RCPoff [mensaje]
         """
 
