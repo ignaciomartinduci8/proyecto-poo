@@ -10,59 +10,78 @@ void CLI::loop() {
     vector<string> command_segments;
     string segment;
 
+    cout << endl;
+    cout << "============================================================================" << endl;
+    cout << "Iniciando cliente..."<<endl;
+    cout << "============================================================================" << endl << endl;
+
     while(1){
 
-        if(!isConnected){
+        command_segments.clear();
 
-            cout << "Sistema desconectado, ingrese /connect [IP] [PUERTO] para conectar, o /exit para cerrar el programa" << endl;
-            cin >> command;
+        if(!isConnected) {
+
+            cout
+                    << "--> Sistema desconectado, ingrese /connect [IP] [PUERTO] para conectar, o /exit para cerrar el programa"
+                    << endl;
+            getline(cin, command);
             istringstream stream(command);
 
-            while(getline(stream, segment, ' ')){
+            while (stream >> segment) {
 
                 command_segments.push_back(segment);
 
             }
 
-            if(command_segments.at(0) == "/exit"){
+            if(command_segments.size() == 0){
 
-                cout << "Cerrando programa..." << endl;
+                continue;
+            }
+
+            if (command_segments.at(0) == "/exit") {
+
+                cout << "--> Cerrando programa..." << endl;
                 exit(EXIT_SUCCESS);
 
             }
-            if(command_segments.at(0) == "/connect"){
+            if (command_segments.at(0) == "/connect") {
 
-                if(command_segments.size() == 3){
+                try {
+                    if (command_segments.size() == 3) {
 
-                    this->PORT = stoi(command_segments.at(2));
-                    this->IP = stoi(command_segments.at(1));
+                        this->IP = command_segments.at(1);
+                        this->PORT = std::stoi(command_segments.at(2));
 
-                }else{
+                    } else {
+                        cout << "--> Error: numero invalido de argumentos." << std::endl;
+                    }
+                } catch (const invalid_argument &e) {
 
-                    cout << "Error en la cantidad de argumentos." << endl;
+                    cout << "--> Error: argumento invalido. " << e.what() << endl;
 
+                } catch (const out_of_range &e) {
+                    cout << "--> Error: fuera de rango. " << e.what() << endl;
                 }
 
-            }else{
+            }
+            else{
 
-                cout << "Comando desconocido" << endl;
+                cout << "--> Comando desconocido" << endl;
 
             }
 
-
-
-        }else{
+        //cierre if de chequeo de conexion
+        }
+        else{
 
 
 
         }
 
 
-
+    //cierre de while
     }
-
-
-
+//cierre de método
 }
 
 CLI::CLI(){
