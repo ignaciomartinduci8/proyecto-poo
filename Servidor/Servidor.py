@@ -3,40 +3,36 @@ from threading import Thread
 import socket
 from Controlador import Controlador
 
+
 class Servidor:
 
-    def __init__(self):
+    def __init__(self, port):
 
-        self.open = False
         self.hostname = None
-        self.port = None
+        self.port = port
         self.IP = None
         self.server_thread = None
         self.server = None
+        self.abrirServidor()
 
-    def prueba(self, a,b):
-
+    def prueba(self, a, b):
         return a+b
 
-    def abrirServidor(self, port):
+    def listMethods(self):
 
-        if self.open:
+        return self.server.system_listMethods()
 
-                print(f"Error - el servidor RPC ya está abierto en el puerto {self.port}")
-                return
+    def abrirServidor(self):
 
         try:
 
             self.hostname = socket.gethostname()
             self.IP = socket.gethostbyname(self.hostname)
-            self.port = int(port)
+            self.port = int(self.port)
 
             self.server = SimpleXMLRPCServer((self.IP, self.port))
 
-            self.open = True
-
-            print(f"Servidor RPC en el puerto {self.port}...")
-
+            self.server.register_function(self.listMethods, "listMethods")
             self.server.register_function(self.prueba, "prueba")
 
 #           server.serve_forever()
@@ -46,23 +42,21 @@ class Servidor:
 
         except Exception as e:
 
-            print(f"Error - {e}")
+            raise e
 
     def cerrarServidor(self):
 
         try:
             self.server.shutdown()
             self.server_thread.join(timeout=2)
-            self.open = False
-            self.port = None
-            self.IP = None
-            self.hostname = None
-            print("Servidor RPC cerrado.")
+
 
         except Exception as e:
 
-            print(f"Error - {e}")
+            raise e
 
+    def getServerData(self):
 
+        return [self.hostname, self.IP, self.port]
 
 

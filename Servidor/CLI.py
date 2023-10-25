@@ -5,6 +5,7 @@ from cmd import Cmd
 
 GREEN = "\033[92m"
 RESET = "\033[0m"
+ROJO = "\033[91m"
 LIGHT_BLUE = "\033[94m"
 
 
@@ -17,9 +18,7 @@ class CLI(Cmd):
     def __init__(self):
         super().__init__()
         self.completekey = 'Tab'
-        self.file_name = None
-        self.current_object = None
-        self.servidor1 = Servidor()
+        self.servidor1 = None
 
 
     def do_RPCon(self, puerto):
@@ -35,18 +34,34 @@ class CLI(Cmd):
 
             # Control de errores de rango de argumentos
             if puerto < 1024 or puerto > 65535:
-                print("Error en el puerto, debe estar entre 1025 y 65535. Motivos de seguridad y existencia.")
+                print(f"{ROJO}Error en el puerto, debe estar entre 1025 y 65535. Motivos de seguridad y existencia.{RESET}")
                 return
 
-            self.servidor1.abrirServidor(puerto)
+            if self.servidor1 is None:
+
+                try:
+                    self.servidor1 = Servidor(puerto)
+                    print(f"Servidor RPC abierto en el puerto {puerto}.")
+
+                except Exception as e:
+
+                    if "10013" in str(e):
+
+                        print(f"{ROJO}Error - el puerto {puerto} está en uso.{RESET}")
+
+                    else:
+
+                        print(f"{ROJO}Error - {e}{RESET}")
+
+            else:
+
+                print(f"{ROJO}Error - el servidor ya está abierto. En el puerto {self.servidor1.getServerData()[2]}{RESET}")
 
         except ValueError:
+            print(f"{ROJO}Error - el puerto debe ser un número entero válido.{RESET}")
 
-            print("Error - debe proporcionares un dato tipo entero.")
-
-        except TypeError:
-
-            print("Error - debe proporcionares un dato tipo entero.")
+        except Exception as e:
+            print(f"{ROJO}Error inesperado - {e}{RESET}")
 
     def do_RPCoff(self, args):
         """
@@ -54,10 +69,16 @@ class CLI(Cmd):
         Sintaxis: RCPoff [mensaje]
         """
 
-        self.servidor1.cerrarServidor()
+        try:
+            self.servidor1.cerrarServidor()
+            print(f"Servidor cerrado. Puerto {self.servidor1.getServerData()[2]} liberado.")
+            self.servidor1 = None
+
+        except Exception as e:
+            print(f"{ROJO}Error - {e}{RESET}")
 
     def default(self, args):
-        print("Error, el comando /"+args+" no existe.")
+        print(f"{ROJO}Error, el comando /{args} no existe.{RESET}")
 
     def do_exit(self, args):
         """
@@ -78,7 +99,7 @@ class CLI(Cmd):
             if cmd_func:
                 print(f'\n{GREEN}{args}{RESET}: {cmd_func.__doc__ or "Sin descripción"}')
             else:
-                print(f'\nError: El comando {GREEN}{args}{RESET} no existe.')
+                print(f'{ROJO}\nError: El comando {args} no existe.{RESET}')
         else:
 
             print('\n' + self.doc_header)
