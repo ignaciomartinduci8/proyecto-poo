@@ -19,6 +19,7 @@ class CLI(Cmd):
         super().__init__()
         self.completekey = 'Tab'
         self.servidor1 = None
+        self.controlador = Controlador()
 
 
     def do_RPCon(self, puerto):
@@ -87,6 +88,27 @@ class CLI(Cmd):
         """
         print("Cerrando programa...")
         raise SystemExit
+
+    def do_connectSerial(self, args):
+        """
+        Descripción: Conectar a un Robot en puerto serie
+        Sintaxis: connectSerial [puerto] [baudrate]
+
+        """
+
+        try:
+
+            puerto, baudrate = args.split(" ")
+
+            self.controlador.connect(puerto, baudrate)
+
+        except ValueError:
+
+            print(f"{ROJO}Error - argumentos inválidos.{RESET}")
+
+        except Exception as e:
+
+            print(f"{ROJO}Error - {e}{RESET}")
 
     def do_help(self, args):
         """
