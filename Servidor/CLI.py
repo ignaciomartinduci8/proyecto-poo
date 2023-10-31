@@ -1,5 +1,6 @@
 from Controlador import Controlador
 from Servidor import Servidor
+from DataLog import DataLog
 from cmd import Cmd
 
 
@@ -19,8 +20,8 @@ class CLI(Cmd):
         super().__init__()
         self.completekey = 'Tab'
         self.servidor1 = None
-        self.controlador = Controlador()
-
+        self.dataLog = DataLog()
+        self.controlador = Controlador(self.dataLog)
 
     def do_RPCon(self, puerto):
         """
@@ -101,6 +102,7 @@ class CLI(Cmd):
             puerto, baudrate = args.split(" ")
 
             self.controlador.connect(puerto, baudrate)
+            print(f"Robot conectado en puerto {puerto} a {baudrate} baudios.")
 
         except ValueError:
 
@@ -109,6 +111,49 @@ class CLI(Cmd):
         except Exception as e:
 
             print(f"{ROJO}Error - {e}{RESET}")
+
+    def do_disconnectSerial(self, args):
+        """
+            Descripción: Desconectar a un Robot en puerto serie
+            Sintaxis: disconnectSerial
+
+        """
+
+        if self.controlador.getIsConnected():
+
+            try:
+
+                self.controlador.disconnect()
+                print("Robot desconectado.")
+
+            except Exception as e:
+
+                print(f"{ROJO}Error - {e}{RESET}")
+
+        else:
+
+            print(f"{ROJO}Error - no hay conexión establecida.{RESET}")
+
+    def do_setRobotMode(self, args):
+        """
+            Descripción: Establecer modo de trabajo manual o automático
+            Sintaxis: setRobotMode [M/A]
+
+        """
+        if args == "M" or args == "A":
+
+            try:
+
+                self.controlador.setRobotMode(args)
+
+            except Exception as e:
+
+                print(f"{ROJO}Error - {e}{RESET}")
+
+        else:
+
+            print(f"{ROJO}Error - modo inválido.{RESET}")
+
 
     def do_help(self, args):
         """

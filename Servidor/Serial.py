@@ -19,3 +19,13 @@ class Serial:
 
             raise e
 
+    def cerrarSerial(self):
+
+        try:
+
+            self.ser.close()
+
+        except Exception as e:
+
+            raise e
+

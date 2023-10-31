@@ -2,9 +2,11 @@
 
 class Robot:
 
-    def __init__(self):
+    def __init__(self, name):
 
+        self.name = name
         self.mode = 0 # 0 = manual, 1 = automatico
+
 
     def setMode(self, mode):
 
