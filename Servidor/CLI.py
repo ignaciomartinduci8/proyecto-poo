@@ -8,6 +8,7 @@ GREEN = "\033[92m"
 RESET = "\033[0m"
 ROJO = "\033[91m"
 LIGHT_BLUE = "\033[94m"
+IDENTATION = f"{LIGHT_BLUE}>{RESET}      "
 
 
 class CLI(Cmd):
@@ -101,12 +102,14 @@ class CLI(Cmd):
 
             puerto, baudrate = args.split(" ")
 
-            self.controlador.connect(puerto, baudrate)
-            print(f"Robot conectado en puerto {puerto} a {baudrate} baudios.")
+            response = self.controlador.connect(puerto, baudrate)
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+            print(f"{IDENTATION}{response}")
+            print(f"{IDENTATION}Robot conectado en puerto {puerto} a {baudrate} baudios.")
             posture = self.controlador.getPosture()
-            print("El robot viajó a su posición de inicio.")
-            print(f"Posición actual: [{posture[0]}, {posture[1]}, {posture[2]}]\n"
-                  f"Orientación actual: [{posture[3]}, {posture[4]}, {posture[5]}]")
+            print(f"{IDENTATION}El robot viajó a su posición de inicio.")
+            print(f"{IDENTATION}Posición actual: [{posture[0]}, {posture[1]}, {posture[2]}]\n"
+                  f"{IDENTATION}Orientación actual: [{posture[3]}, {posture[4]}, {posture[5]}]")
 
         except ValueError:
 

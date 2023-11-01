@@ -7,6 +7,7 @@ class Robot:
 
     def __init__(self, name, serial):
 
+        self.serial = serial
         self.name = name
         self.mode = 'M'  # 0 = manual, 1 = automatico
         self.x = None
@@ -18,7 +19,6 @@ class Robot:
         self.goHome()
         self.isEffectorEnabled = False
         self.mappingQuality = 1
-        self.serial = serial
 
     def setMode(self, mode):
 
@@ -44,7 +44,7 @@ class Robot:
             ga = float(ga)
             s_max = float(s_max) if s_max is not None else None
 
-        except  Exception as e:
+        except Exception as e:
 
             raise e
 
@@ -62,7 +62,10 @@ class Robot:
     def goHome(self):
 
         try:
-            self.serial.writeSerial("G28\n")
+            self.serial.writeSerial("G28")
+            print('aa')
+            response = self.serial.readSerial()
+            print(response)
 
         except Exception as e:
             raise e
@@ -70,7 +73,7 @@ class Robot:
     def enableEffector(self):
 
         try:
-            self.serial.writeSerial("M3\n")
+            self.serial.writeSerial("M3")
 
         except Exception as e:
             raise e
@@ -80,7 +83,7 @@ class Robot:
     def disableEffector(self):
 
         try:
-            self.serial.writeSerial("M5\n")
+            self.serial.writeSerial("M5")
 
         except Exception as e:
             raise e

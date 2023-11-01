@@ -2,11 +2,12 @@ import serial
 
 class Serial:
 
-    def __init__(self, puerto, baudrate):
+    def __init__(self, puerto, baudrate, robot):
 
         self.port = puerto
         self.baudrate = baudrate
         self.ser = None
+        self.robot = robot
         self.beginSerial()
 
     def __del__(self):
@@ -35,10 +36,18 @@ class Serial:
 
     def writeSerial(self, mensaje):
 
+        mensaje = mensaje.encode()
+
         try:
 
             self.ser.write(mensaje)
 
+
         except Exception as e:
 
             raise e
+
+    def readSerial(self):
+
+        response = self.ser.readline().decode().strip()
+        return response
