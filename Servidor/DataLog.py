@@ -20,7 +20,7 @@ class DataLog:
 
             with open(f'{self.path}/{file}', 'r') as f:
 
-                id, date = f.readline().split('-')
+                id, date = f.readline().strip().split('-')
 
             if date == f'{self.getDate()}\n':
 

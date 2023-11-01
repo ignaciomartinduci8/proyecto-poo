@@ -50,7 +50,6 @@ class Servidor:
             self.server.shutdown()
             self.server_thread.join(timeout=2)
 
-
         except Exception as e:
 
             raise e

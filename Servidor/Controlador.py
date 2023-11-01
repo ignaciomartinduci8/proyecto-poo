@@ -53,7 +53,6 @@ class Controlador:
 
     def moveEffector(self, x, y, z, al, be, ga, s_max=None):
 
-        print(self.robot.getMode())
         if self.robot.getMode() != 'M':
             raise Exception('Operación no válida, robot en modo automático')
 
