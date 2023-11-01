@@ -53,6 +53,10 @@ class Controlador:
 
     def moveEffector(self, x, y, z, al, be, ga, s_max=None):
 
+        print(self.robot.getMode())
+        if self.robot.getMode() != 'M':
+            raise Exception('Operación no válida, robot en modo automático')
+
         if not self.isConnected:
 
             raise Exception("Error - No se ha conectado un robot.")
@@ -67,6 +71,9 @@ class Controlador:
 
     def enableEffector(self):
 
+        if self.robot.getMode() != 'M':
+            raise Exception('Operación no válida, robot en modo automático.')
+
         if not self.isConnected:
             raise Exception("No se ha conectado un robot.")
 
@@ -80,6 +87,9 @@ class Controlador:
             raise e
 
     def disableEffector(self):
+
+        if self.robot.getMode() != 'M':
+            raise Exception('Operación no válida, robot en modo automático')
 
         if not self.isConnected:
 
@@ -97,6 +107,7 @@ class Controlador:
             raise e
 
     def getEffectorStatus(self):
+
 
         if not self.isConnected:
             raise Exception("No se ha conectado un robot.")

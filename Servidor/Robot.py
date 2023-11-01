@@ -8,7 +8,7 @@ class Robot:
     def __init__(self, name):
 
         self.name = name
-        self.mode = 0  # 0 = manual, 1 = automatico
+        self.mode = 'M'  # 0 = manual, 1 = automatico
         self.x = None
         self.y = None
         self.z = None

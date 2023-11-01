@@ -154,6 +154,11 @@ class CLI(Cmd):
             elif len(args) == 6:
                 self.controlador.moveEffector(args[0], args[1], args[2], args[3], args[4], args[5])
 
+            else:
+                print(f"{ROJO}Error - argumentos inválidos.{RESET}")
+                return
+
+
             print("Movimiento realizado correctamente.")
             posture = self.controlador.getPosture()
             print(f"Posición actual: [{posture[0]}, {posture[1]}, {posture[2]}]\n"
