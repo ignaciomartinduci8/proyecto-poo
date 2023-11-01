@@ -47,6 +47,9 @@ class DataLog:
         with open(f'{self.path}/{file}', 'w') as f:
 
             f.write(f'{id}-{date}\n')
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
 
         return file
 

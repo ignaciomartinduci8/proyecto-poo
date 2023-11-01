@@ -32,8 +32,7 @@ class Servidor:
 
             self.server = SimpleXMLRPCServer((self.IP, self.port))
 
-            self.server.register_function(self.listMethods, "listMethods")
-            self.server.register_function(self.prueba, "prueba")
+            self.serverRegisteringFunctions()
 
 #           server.serve_forever()
 
@@ -58,4 +57,9 @@ class Servidor:
 
         return [self.hostname, self.IP, self.port]
 
+    def serverRegisteringFunctions(self):
 
+        self.server.register_introspection_functions()
+
+        self.server.register_function(self.prueba)
+        self.server.register_function(self.listMethods)

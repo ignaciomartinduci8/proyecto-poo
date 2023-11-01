@@ -14,9 +14,8 @@ class Controlador:
 
         try:
             self.serial = Serial(puerto, baudrate)
-            self.robot = Robot("Robot POO - Grupo Negro")
+            self.robot = Robot("Robot POO - Grupo Negro",self.serial)
             self.isConnected = True
-            self.serial.writeSerial()
 
         except Exception as e:
 

@@ -5,7 +5,7 @@ PI = round(math.pi, 3)
 
 class Robot:
 
-    def __init__(self, name):
+    def __init__(self, name, serial):
 
         self.name = name
         self.mode = 'M'  # 0 = manual, 1 = automatico
@@ -18,6 +18,7 @@ class Robot:
         self.goHome()
         self.isEffectorEnabled = False
         self.mappingQuality = 1
+        self.serial = serial
 
     def setMode(self, mode):
 
@@ -26,6 +27,7 @@ class Robot:
         if self.mode == 'A':
             self.goHome()
             self.mappingQuality = 2
+            self.beginAutomaticMode()
 
     def getMode(self):
 
@@ -46,21 +48,6 @@ class Robot:
 
             raise e
 
-        conditions = [
-
-                x >= 0 and x <= 600,
-                y >= -300 and y <= 300,
-                z >= 0 and z <= 600,
-                al >= 0 and al <= 2*PI,
-                be >= -PI/2 and be <= PI/2,
-                ga >= -PI/2 and ga <= PI/2
-
-        ]
-
-        if not all(conditions):
-
-            raise Exception("Error - argumentos inválidos, verifica valores, espacios de trabajo, y tipos de datos.")
-
         self.x = x
         self.y = y
         self.z = z
@@ -74,19 +61,29 @@ class Robot:
 
     def goHome(self):
 
-        self.x = 300
-        self.y = 0
-        self.z = 250
-        self.al = PI
-        self.be = 0
-        self.ga = 0
+        try:
+            self.serial.writeSerial("G28\n")
 
+        except Exception as e:
+            raise e
 
     def enableEffector(self):
+
+        try:
+            self.serial.writeSerial("M3\n")
+
+        except Exception as e:
+            raise e
 
         self.isEffectorEnabled = True
 
     def disableEffector(self):
+
+        try:
+            self.serial.writeSerial("M5\n")
+
+        except Exception as e:
+            raise e
 
         self.isEffectorEnabled = False
 
@@ -105,3 +102,7 @@ class Robot:
 
         return self.mappingQuality
 
+    def beginAutomaticMode(self):
+
+
+        pass

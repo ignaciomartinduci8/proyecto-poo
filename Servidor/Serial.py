@@ -33,13 +33,12 @@ class Serial:
 
             raise e
 
-    def writeSerial(self):
+    def writeSerial(self, mensaje):
 
-            try:
+        try:
 
-                mensaje = "Hola"
-                self.ser.write(mensaje.encode())
+            self.ser.write(mensaje)
 
-            except Exception as e:
+        except Exception as e:
 
-                raise e
+            raise e
