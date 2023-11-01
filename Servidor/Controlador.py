@@ -1,6 +1,7 @@
 from Serial import Serial
 from Robot import Robot
 
+
 class Controlador:
 
     def __init__(self, dataLog):
@@ -15,6 +16,7 @@ class Controlador:
             self.serial = Serial(puerto, baudrate)
             self.robot = Robot("Robot POO - Grupo Negro")
             self.isConnected = True
+            self.serial.writeSerial()
 
         except Exception as e:
 
@@ -24,7 +26,7 @@ class Controlador:
 
         try:
 
-            self.serial.cerrarSerial()
+            del self.serial
             self.isConnected = False
 
         except Exception as e:
@@ -39,7 +41,7 @@ class Controlador:
 
         if not self.isConnected:
 
-            raise Exception("No hay robot conectado")
+            raise Exception("No se ha conectado un robot.")
 
         try:
 
@@ -49,7 +51,73 @@ class Controlador:
 
             raise e
 
+    def moveEffector(self, x, y, z, al, be, ga, s_max=None):
+
+        if not self.isConnected:
+
+            raise Exception("Error - No se ha conectado un robot.")
+
+        try:
+
+            self.robot.setPosture(x, y, z, al, be, ga, s_max)
+
+        except Exception as e:
+
+            raise e
+
+    def enableEffector(self):
+
+        if not self.isConnected:
+            raise Exception("No se ha conectado un robot.")
+
+        if self.robot.getEffectorStatus():
+            raise Exception('Ya se ha activado el effector.')
+
+        try:
+            self.robot.enableEffector()
+
+        except Exception as e:
+            raise e
+
+    def disableEffector(self):
+
+        if not self.isConnected:
+
+            raise Exception("No se ha conectado un robot.")
+
+        if not self.robot.enableEffector():
+
+            raise Exception('Ya se ha desactivado el effector.')
+
+        try:
+
+            self.robot.disableEffector()
+
+        except Exception as e:
+            raise e
+
+    def getEffectorStatus(self):
+
+        if not self.isConnected:
+            raise Exception("No se ha conectado un robot.")
+
+        self.robot.getEffectorStatus()
+
+    def getPosture(self):
+
+        return self.robot.getPosture()
 
 
+    def setMappingQuality(self, quality):
 
+        if not self.isConnected:
+            raise Exception("No se ha conectado un robot.")
+
+        try:
+
+            self.robot.setMappingQuality(quality)
+
+        except Exception as e:
+
+            raise e
 

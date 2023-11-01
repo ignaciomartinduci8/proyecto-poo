@@ -13,7 +13,7 @@ def main():
         print("Corriendo CLI...")
         cli = CLI()
         cli.prompt = '--> '
-        cli.cmdloop('Iniciando entrada de comandos. Usar help para ver comandos.')
+        cli.cmdloop('Iniciando entrada de comandos. Usar help para ver comandos. \nAlgunos comandos tienen argumentos opcionales, simbolizados con *')
 
     elif UI == "GUI":
 

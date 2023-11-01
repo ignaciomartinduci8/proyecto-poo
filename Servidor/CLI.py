@@ -103,6 +103,10 @@ class CLI(Cmd):
 
             self.controlador.connect(puerto, baudrate)
             print(f"Robot conectado en puerto {puerto} a {baudrate} baudios.")
+            posture = self.controlador.getPosture()
+            print("El robot viajó a su posición de inicio.")
+            print(f"Posición actual: [{posture[0]}, {posture[1]}, {posture[2]}]\n"
+                  f"Orientación actual: [{posture[3]}, {posture[4]}, {posture[5]}]")
 
         except ValueError:
 
@@ -134,6 +138,35 @@ class CLI(Cmd):
 
             print(f"{ROJO}Error - no hay conexión establecida.{RESET}")
 
+    def do_moveEffector(self, args):
+        """
+            Descripción: Mover efector final
+            Sintaxis: moveEffector [x] [y] [z] [al] [be] [ga] [s_max*]
+
+        """
+
+        try:
+
+            args = args.split(" ")
+
+            if len(args) == 7:
+                self.controlador.moveEffector(args[0], args[1], args[2], args[3], args[4], args[5], args[6])
+            elif len(args) == 6:
+                self.controlador.moveEffector(args[0], args[1], args[2], args[3], args[4], args[5])
+
+            print("Movimiento realizado correctamente.")
+            posture = self.controlador.getPosture()
+            print(f"Posición actual: [{posture[0]}, {posture[1]}, {posture[2]}]\n"
+                  f"Orientación actual: [{posture[3]}, {posture[4]}, {posture[5]}]")
+
+        except ValueError:
+
+            print(f"{ROJO}Error - argumentos inválidos.{RESET}")
+
+        except Exception as e:
+
+            print(f"{ROJO}Error - {e}{RESET}")
+
     def do_setRobotMode(self, args):
         """
             Descripción: Establecer modo de trabajo manual o automático
@@ -145,6 +178,7 @@ class CLI(Cmd):
             try:
 
                 self.controlador.setRobotMode(args)
+                print(f'Modo {args} establecido correctamente.')
 
             except Exception as e:
 
@@ -154,6 +188,59 @@ class CLI(Cmd):
 
             print(f"{ROJO}Error - modo inválido.{RESET}")
 
+    def do_enableEffector(self,args):
+        """
+            Descripción: Activar efector final
+            Sintaxis: enableEffector
+
+        """
+
+        try:
+
+            self.controlador.enableEffector()
+            print("Efector activado.")
+
+        except Exception as e:
+
+            print(f"{ROJO}Error - {e}{RESET}")
+
+    def do_disableEffector(self, args):
+        """
+            Descripción: Desactivar efector final
+            Sintaxis: disableEffector
+
+        """
+
+        try:
+
+            self.controlador.disableEffector()
+            print("Efector desactivado.")
+
+        except Exception as e:
+
+            print(f"{ROJO}Error - {e}{RESET}")
+
+    def do_setMappingQuality(self, args):
+
+        """
+            Descripción: Establecer calidad de mapeo
+            Sintaxis: setMappingQuality [calidad]
+
+        """
+
+        if len(args.split(" ")) > 1:
+
+                print(f"{ROJO}Error - argumentos inválidos.{RESET}")
+                return
+
+        try:
+
+            self.controlador.setMappingQuality(args)
+            print(f"Calidad de mapeo establecida en {args}.")
+
+        except Exception as e:
+
+            print(f"{ROJO}Error - {e}{RESET}")
 
     def do_help(self, args):
         """

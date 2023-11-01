@@ -4,22 +4,26 @@ class Serial:
 
     def __init__(self, puerto, baudrate):
 
-        self.puerto = puerto
+        self.port = puerto
         self.baudrate = baudrate
         self.ser = None
-        self.abrirSerial()
+        self.beginSerial()
 
-    def abrirSerial(self):
+    def __del__(self):
+
+        self.stopSerial()
+
+    def beginSerial(self):
 
         try:
 
-            self.ser = serial.Serial(self.puerto, self.baudrate)
+            self.ser = serial.Serial(self.port, self.baudrate)
 
         except Exception as e:
 
             raise e
 
-    def cerrarSerial(self):
+    def stopSerial(self):
 
         try:
 
@@ -29,3 +33,13 @@ class Serial:
 
             raise e
 
+    def writeSerial(self):
+
+            try:
+
+                mensaje = "Hola"
+                self.ser.write(mensaje.encode())
+
+            except Exception as e:
+
+                raise e

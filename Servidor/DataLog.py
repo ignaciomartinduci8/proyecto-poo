@@ -26,7 +26,6 @@ class DataLog:
 
                 return file
 
-
         return self.createFile(int(id)+1)
 
     def getDate(self):
