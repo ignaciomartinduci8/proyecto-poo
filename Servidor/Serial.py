@@ -27,7 +27,8 @@ class Serial:
 
         try:
 
-            self.ser.close()
+            if self.ser != None:
+                self.ser.close()
 
         except Exception as e:
 

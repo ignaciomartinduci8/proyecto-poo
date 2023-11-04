@@ -22,14 +22,17 @@ class Controlador:
 
         except Exception as e:
 
+            self.serial = None
+            self.robot = None
             raise e
 
     def disconnect(self):
 
         try:
 
-            del self.serial
-            self.isConnected = False
+            if self.serial is not None:
+                del self.serial
+                self.isConnected = False
 
         except Exception as e:
 
