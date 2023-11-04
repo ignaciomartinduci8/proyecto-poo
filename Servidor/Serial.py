@@ -16,7 +16,6 @@ class Serial:
     def beginSerial(self):
 
         try:
-
             self.ser = serial.Serial(self.port, self.baudrate)
 
         except Exception as e:
@@ -26,8 +25,7 @@ class Serial:
     def stopSerial(self):
 
         try:
-
-            if self.ser != None:
+            if self.ser is not None:
                 self.ser.close()
 
         except Exception as e:
