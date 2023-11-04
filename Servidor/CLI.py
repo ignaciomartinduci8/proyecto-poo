@@ -1,3 +1,4 @@
+# -*- coding: utf-8 -*-
 from Controlador import Controlador
 from Servidor import Servidor
 from DataLog import DataLog
@@ -6,9 +7,9 @@ from cmd import Cmd
 
 GREEN = "\033[92m"
 RESET = "\033[0m"
-ROJO = "\033[91m"
-LIGHT_BLUE = "\033[94m"
-IDENTATION = f"{LIGHT_BLUE}>{RESET}      "
+ROJO = "\u001b[31m"
+LIGHT_BLUE = "\u001b[0m"
+IDENTATION = f"{LIGHT_BLUE}>{RESET}"
 
 
 class CLI(Cmd):
@@ -249,6 +250,14 @@ class CLI(Cmd):
         except Exception as e:
 
             print(f"{ROJO}Error - {e}{RESET}")
+
+    def do_return(self, args):
+        """
+        Descripción: Volver al menú principal desde la CLI
+        Sintaxis: return
+        """
+        print("Volviendo al menú principal...")
+        return True        
 
     def do_help(self, args):
         """
