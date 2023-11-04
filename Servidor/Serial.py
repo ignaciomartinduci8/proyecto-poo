@@ -2,12 +2,11 @@ import serial
 
 class Serial:
 
-    def __init__(self, puerto, baudrate, robot):
+    def __init__(self, puerto, baudrate):
 
         self.port = puerto
         self.baudrate = baudrate
         self.ser = None
-        self.robot = robot
         self.beginSerial()
 
     def __del__(self):
@@ -41,7 +40,6 @@ class Serial:
         try:
 
             self.ser.write(mensaje)
-
 
         except Exception as e:
 

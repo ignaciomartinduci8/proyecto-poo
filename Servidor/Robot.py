@@ -16,9 +16,10 @@ class Robot:
         self.al = None
         self.be = None
         self.ga = None
-        self.goHome()
         self.isEffectorEnabled = False
         self.mappingQuality = 1
+        self.goHome()
+
 
     def setMode(self, mode):
 
@@ -63,7 +64,6 @@ class Robot:
 
         try:
             self.serial.writeSerial("G28")
-            print('aa')
             response = self.serial.readSerial()
             print(response)
 

@@ -13,8 +13,9 @@ class Controlador:
     def connect(self, puerto, baudrate):
 
         try:
-            self.serial = Serial(puerto, baudrate, self.robot)
+            self.serial = Serial(puerto, baudrate)
             connectMessage = self.serial.readSerial()
+
             self.robot = Robot("Robot POO - Grupo Negro", self.serial)
             self.isConnected = True
             return connectMessage

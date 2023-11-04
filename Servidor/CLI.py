@@ -106,6 +106,7 @@ class CLI(Cmd):
             print(f"{GREEN}Respuesta del proceso:{RESET}")
             print(f"{IDENTATION}{response}")
             print(f"{IDENTATION}Robot conectado en puerto {puerto} a {baudrate} baudios.")
+
             posture = self.controlador.getPosture()
             print(f"{IDENTATION}El robot viajó a su posición de inicio.")
             print(f"{IDENTATION}Posición actual: [{posture[0]}, {posture[1]}, {posture[2]}]\n"
