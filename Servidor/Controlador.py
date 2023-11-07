@@ -150,14 +150,25 @@ class Controlador:
             os.fsync(f.fileno())
             f.close()
 
-    def toggleLearn(self):
-
-        self.isLearning = not self.isLearning
-
-        if self.isLearning:
-            return "Modo aprendizaje activado."
-        else:
-            return "Modo aprendizaje desactivado."
+    def toggleLearn(self,onOff):
+        try:
+            if onOff == 'S' and not self.isLearning:
+                self.isLearning = True
+                return "Modo aprendizaje activado."
+            elif onOff == 'S' and self.isLearning:
+                raise Exception ("Modo aprendizaje ya activado")                
+    
+            if onOff == 'N' and self.isLearning:
+                self.isLearning = False
+                return "Modo aprendizaje desactivado."
+            elif onOff == 'N' and not self.isLearning:
+                raise Exception ("Modo aprendizaje ya desactivado")
+            
+            else:
+                raise Exception("Opción no válida")
+            
+        except Exception as e:
+            raise e
 
     def moveEffector(self, x, y, z, s_max=0):
 
