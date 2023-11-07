@@ -6,7 +6,7 @@ from Controlador import Controlador
 
 class Servidor:
 
-    def __init__(self, port):
+    def __init__(self, port, dataLog):
 
         self.hostname = None
         self.port = port
@@ -15,6 +15,7 @@ class Servidor:
         self.server = None
         self.clientName = None
         self.clientIP = None
+        self.dataLog = dataLog
         self.abrirServidor()
 
     def prueba(self, a, b):
@@ -27,6 +28,7 @@ class Servidor:
     def loopConnection(self):
 
         self.server.serve_forever()
+        self.dataLog.logServerStatus(self.IP, self.port, True)
 
 
     def abrirServidor(self):
@@ -53,6 +55,7 @@ class Servidor:
         try:
             self.server.shutdown()
             self.server_thread.join(timeout=2)
+            self.dataLog.logServerStatus(self.IP, self.port, False)
 
         except Exception as e:
 

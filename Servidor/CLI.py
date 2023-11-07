@@ -17,12 +17,13 @@ class CLI(Cmd):
     undoc_header = "Ayuda de comandos no documentados"
     ruler = "="
 
-    def __init__(self):
+    def __init__(self, user):
         super().__init__()
         self.completekey = 'Tab'
         self.servidor1 = None
-        self.dataLog = DataLog()
+        self.dataLog = DataLog(user)
         self.controlador = Controlador(self.dataLog)
+        self.serverUser = user
 
     def do_RPCon(self, puerto):
         """
@@ -43,8 +44,7 @@ class CLI(Cmd):
             if self.servidor1 is None:
 
                 try:
-                    self.servidor1 = Servidor(puerto)
-                    self.dataLog.logServerStatus(True)
+                    self.servidor1 = Servidor(puerto, self.dataLog)
                     print(f"Servidor RPC abierto en el puerto {puerto}.")
 
                 except Exception as e:

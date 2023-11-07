@@ -7,11 +7,12 @@ import sys
 def main():
 
     UI = str.upper(input("Enter 'CLI' for CLI or 'GUI' for GUI: "))
+    user = input("Enter username: ")
 
     if UI == "CLI":
 
         print("Corriendo CLI...")
-        cli = CLI()
+        cli = CLI(user)
         cli.prompt = '--> '
         cli.cmdloop('Iniciando entrada de comandos. Usar help para ver comandos. \nAlgunos comandos tienen argumentos opcionales, simbolizados con *')
 

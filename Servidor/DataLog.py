@@ -4,7 +4,8 @@ import csv
 
 class DataLog:
 
-    def __init__(self):
+    def __init__(self, user):
+        self.user = user
         self.path = './Logs'
         self.file = self.fileSet()
 
@@ -22,7 +23,7 @@ class DataLog:
 
                 id, date = f.readline().strip().split('-')
 
-            if date == f'{self.getDate()}\n':
+            if date == self.getDate():
 
                 return file
 
@@ -55,13 +56,13 @@ class DataLog:
 
     def getTime(self):
 
-            now = datetime.datetime.now()
+        now = datetime.datetime.now()
 
-            hour = now.hour
-            minute = now.minute
-            second = now.second
+        hour = now.hour
+        minute = now.minute
+        second = now.second
 
-            return f'{hour}:{minute}:{second}'
+        return f'{hour}:{minute}:{second}'
 
     def logClientConnection(self, clientName, ip, port, time, onOff):
 
@@ -80,9 +81,7 @@ class DataLog:
             os.fsync(f.fileno())
             f.close()
 
-
-
-    def logServerStatus(self, onOff):
+    def logServerStatus(self, hostIP, port, onOff):
 
         with open(f'{self.path}/{self.file}', 'a') as f:
 
@@ -94,7 +93,7 @@ class DataLog:
 
                 process = 'SERVER_STOP'
 
-            f.write(f"S | {process} | {self.getTime()}\n")
+            f.write(f"S | {process} | {hostIP} | {port} | {self.getTime()} | {self.user}\n")
             f.flush()
             os.fsync(f.fileno())
             f.close()
