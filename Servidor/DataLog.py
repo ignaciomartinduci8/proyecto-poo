@@ -1,8 +1,6 @@
 import os
 import datetime
 import csv
-if not os.path.exists('./Logs'):
-    os.mkdir('./Logs')
 
 class DataLog:
 
