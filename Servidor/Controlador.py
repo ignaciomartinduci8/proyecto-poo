@@ -1,6 +1,7 @@
 import time
 from threading import Thread
 import os
+import shutil
 
 from Serial import Serial
 from Robot import Robot
@@ -16,6 +17,7 @@ class Controlador:
         self.automatic_file = None
         self.auto_thread = None
         self.isLearning = False
+        self.backupDir = './Backups'
         if not os.path.exists("./Autos"):
             os.makedirs("./Autos")
         
@@ -142,6 +144,9 @@ class Controlador:
 
                     for line in f.readlines():
 
+                        if "GCODE" in line:
+                            continue
+
                         self.serial.writeSerial(line)
                         time.sleep(.3)
 
@@ -160,21 +165,35 @@ class Controlador:
 
     def learnAutomaticFile(self, gcode):
 
-        with open(f"./Autos/{self.automatic_file}", "a") as f:
-            f.write(gcode)
+        with open(f"./Autos/{self.automatic_file}", 'a') as f:
+            f.write(gcode+'\n')
             f.flush()
             os.fsync(f.fileno())
             f.close()
 
-    def toggleLearn(self,onOff):
+    def toggleLearn(self,onOff,filename=None):
+
+        if not self.isConnected:
+            raise Exception("No se ha conectado un robot.")
+
         try:
             if onOff == 'S' and not self.isLearning:
                 self.isLearning = True
+
+                self.automatic_file = filename
+
+                with open(f"./Autos/{self.automatic_file}", "w") as f:
+                    f.write("================== GCODE AUTOMATICO ==================\n")
+                    f.flush()
+                    os.fsync(f.fileno())
+                    f.close()
+
                 return "Modo aprendizaje activado."
+
             elif onOff == 'S' and self.isLearning:
                 raise Exception ("Modo aprendizaje ya activado")                
     
-            if onOff == 'N' and self.isLearning:
+            elif onOff == 'N' and self.isLearning:
                 self.isLearning = False
                 return "Modo aprendizaje desactivado."
             elif onOff == 'N' and not self.isLearning:
@@ -371,3 +390,25 @@ class Controlador:
             res.append("No hay logs de sesión.")
 
         return res
+
+    def backup(self):
+
+        try:
+
+            if not os.path.exists(self.backupDir):
+
+                os.mkdir(self.backupDir)
+
+            backup_name = f"backup_{self.dataLog.getDate()}_at_{self.dataLog.getTime().replace(':','_')}_by_{self.dataLog.getUser()}"
+
+            backup_adress = os.path.join(self.backupDir, backup_name)
+
+            if not os.path.exists('./Logs'):
+                raise Exception("No hay logs para hacer backup.")
+
+            shutil.copytree("./Logs", backup_adress)
+
+        except Exception as e:
+
+            raise e
+

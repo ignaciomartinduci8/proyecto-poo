@@ -281,7 +281,8 @@ class CLI(Cmd):
         try:
 
             self.controlador.disableEffector()
-            print("Efector desactivado.")
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+            print(f"{IDENTATION}Efector desactivado.{RESET}")
 
         except Exception as e:
 
@@ -356,21 +357,32 @@ class CLI(Cmd):
 
         if args == 'S':
             try:
-                res = self.controlador.toggleLearn('S')
+
+                filename = input(f"Ingrese el nombre del archivo a guardar: ")
+
+                res = self.controlador.toggleLearn('S', filename)
                 print(f"{GREEN}Respuesta del proceso:{RESET}")
                 print(f"{IDENTATION}{res}{RESET}")
+
             except Exception as e:
                 print(f"{ROJO}Error - {e}{RESET}")
 
         elif args == 'N':
             try:
                 res = self.controlador.toggleLearn('N')
-                print(f"{ROJO}Respuesta del proceso:{RESET}")
+                print(f"{GREEN}Respuesta del proceso:{RESET}")
                 print(f"{IDENTATION}{res}{RESET}")
             except Exception as e:
                 print(f"{ROJO}Error - {e}{RESET}")
         else:
             print(f"{ROJO}Error - Acción no válida. Use 'S' para activar o 'N' para desactivar el modo aprendizaje.{RESET}")
+
+    def do_backup(self, args):
+
+        print(f"{GREEN}Respuesta del proceso:{RESET}")
+        print(f"{IDENTATION}Realizando backup...{RESET}")
+        self.controlador.backup()
+        print(f"{IDENTATION}Backup realizado.{RESET}")
 
     def do_help(self, args):
         """

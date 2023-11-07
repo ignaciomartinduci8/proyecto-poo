@@ -1,0 +1,49 @@
+0-2023_11_7
+P | PROGRAM_ON | 19:20:28 | Nacho
+R | ROBOT_CONNECT | COM3 | 115200 | 19:20:32 | Nacho
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 19:20:35 | Nacho
+P | PROGRAM_ON | 19:22:57 | Nacho
+R | ROBOT_CONNECT | COM3 | 115200 | 19:23:2 | Nacho
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 19:23:5 | Nacho
+P | PROGRAM_ON | 19:28:27 | Nacho
+R | ROBOT_CONNECT | COM3 | 115200 | 19:28:33 | Nacho
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 19:28:35 | Nacho
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 19:28:38 | Nacho
+R | HOME | 0.0 | 170.0 | 120.0 | 19:29:6 | Nacho
+R | MOVE | 100.0 | 199.0 | 99.0 | 19:29:14 | Nacho
+R | EFFECTOR_ON | 19:29:19 | Nacho
+R | EFFECTOR_OFF | 19:29:24 | Nacho
+P | PROGRAM_ON | 19:29:56 | DSAD
+R | ROBOT_CONNECT | COM3 | 115200 | 19:30:3 | DSAD
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 19:30:5 | DSAD
+R | HOME | 0.0 | 170.0 | 120.0 | 19:30:21 | DSAD
+R | MOVE | 100.0 | 99.0 | 110.0 | 19:30:28 | DSAD
+P | PROGRAM_ON | 19:34:24 | Nacho
+R | ROBOT_CONNECT | COM3 | 115200 | 19:34:30 | Nacho
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 19:34:32 | Nacho
+R | HOME | 0.0 | 170.0 | 120.0 | 19:34:51 | Nacho
+R | EFFECTOR_ON | 19:34:55 | Nacho
+R | EFFECTOR_OFF | 19:34:59 | Nacho
+R | HOME | 0.0 | 170.0 | 120.0 | 19:35:19 | Nacho
+R | HOME | 0.0 | 170.0 | 120.0 | 19:35:22 | Nacho
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 19:35:49 | Nacho
+R | ROBOT_MODE_MANUAL | 19:35:55 | Nacho
+A | G28 | 19:35:57 | Nacho
+A | M3 | 19:35:59 | Nacho
+A | M3 | 19:36:2 | Nacho
+A | M5 | 19:36:4 | Nacho
+A | G28 | 19:36:6 | Nacho
+R | STATUS | A | 0.0 | 170.0 | 120.0 | False | 19:36:8 | Nacho
+A | M3 | 19:36:9 | Nacho
+R | ROBOT_MODE_AUTOMATIC | 19:36:10 | Nacho
+A | M3 | 19:36:11 | Nacho
+R | HOME | 0.0 | 170.0 | 120.0 | 19:36:12 | Nacho
+A | M5 | 19:36:13 | Nacho
+R | HOME | 0.0 | 170.0 | 120.0 | 19:36:15 | Nacho
+P | PROGRAM_ON | 19:46:50 | Nacho
+P | PROGRAM_ON | 19:49:23 | Nacho
+P | PROGRAM_ON | 19:50:49 | Nacho
+P | PROGRAM_OFF | 19:50:58 | Nacho
+P | PROGRAM_ON | 19:52:2 | MartinCazaban
+P | PROGRAM_ON | 19:53:22 | MartinCazaban
+P | PROGRAM_ON | 19:53:40 | IgnacioMartin

@@ -221,13 +221,16 @@ class DataLog:
 
             if onOff:
 
-                process = 'ROBOT_MODE_MANUAL'
+                process = 'ROBOT_MODE_AUTOMATIC'
 
             else:
 
-                process = 'ROBOT_MODE_AUTOMATIC'
+                process = 'ROBOT_MODE_MANUAL'
 
             f.write(f"R | {process} | {self.getTime()} | {self.user}\n")
             f.flush()
             os.fsync(f.fileno())
             f.close()
+
+    def getUser(self):
+        return self.user
