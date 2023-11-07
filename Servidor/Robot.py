@@ -63,7 +63,9 @@ class Robot:
 
         try:
             self.serial.writeSerial("G28")
+            self.serial.writeSerial("M114")
             response = self.serial.readSerial()
+
             print(response)
 
         except Exception as e:
