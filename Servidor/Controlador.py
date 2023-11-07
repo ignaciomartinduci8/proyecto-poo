@@ -1,4 +1,6 @@
 import time
+import threading
+import os
 
 from Serial import Serial
 from Robot import Robot
@@ -11,6 +13,11 @@ class Controlador:
         self.serial = None
         self.robot = None
         self.dataLog = dataLog
+        self.instructions = []
+        self.automatic_file = None
+        self.auto_thread = None
+        if not os.path.exists("./Autos"):
+            os.makedirs("./Autos")
 
 # Métodos de conexión y desconexión
 
@@ -109,40 +116,61 @@ class Controlador:
 
             raise e
 
-    def setRobotMode(self, mode):
-
-        if not self.isConnected:
-
-            raise Exception("No se ha conectado un robot.")
-
+    def manualMode(self):
         try:
-
-            self.robot.setMode(mode)
-
+            if self.auto_thread and self.auto_thread.is_alive():
+                self.auto_thread.join()
+                print("Modo automático detenido. Modo manual activado.")
+            else:
+                print("El modo automático no está en ejecución.")
         except Exception as e:
-
             raise e
-    
-    def learnPath(self, path_filename):
-        with open(path_filename, 'w') as file:
-            for command in self.path:
-                file.write(command + '\n')
 
     def loadAutomaticFile(self):
+        auto_files = [f for f in os.listdir("./Autos") if os.path.isfile(os.path.join("./Autos", f))]
+        if not auto_files:
+            print("No hay archivos de instrucciones. No se puede ejecutar el modo automático.")
+            return
         filename = input("Introduce el nombre del archivo automático: ")
+        file_path = os.path.join("./Autos", filename)
+
+        if not os.path.exists(file_path):
+            print("Archivo no encontrado en el directorio ./Autos.")
+            return
         try:
-            with open(filename, 'r') as file:
+            with open(file_path, 'r') as file:
                 self.automatic_file = file.readlines()
+            print("Archivo cargado exitosamente.")
         except FileNotFoundError:
             print("Archivo no encontrado.")
-            self.mode = 'manual'
 
-    def executeAutomaticMode(self):
-        if self.automatic_file:
-            for line in self.automatic_file:
-                pass
-        else:
-            print("No hay archivo automático cargado.")
+    def automaticMode(self):
+        self.loadAutomaticFile()
+        if self.automatic_file is None:
+            print("No se ha cargado un archivo automático. Debes cargarlo antes de activar el modo automático.")
+            return
+        try:
+            if self.auto_thread and self.auto_thread.is_alive():
+                print("El modo automático ya está en ejecución.")
+                return
+            self.auto_thread = Thread(target=self.runAutomaticFile)
+            self.auto_thread.start()
+        except Exception as e:
+            raise e
+
+    def runAutomaticFile(self):
+        if self.automatic_file is None:
+            print("No se ha cargado un archivo automático.")
+            return
+        try:
+            while True:
+                for line in self.automatic_file:
+                    pass
+                    if not self.auto_thread.is_alive():
+                        print("Modo automático detenido.")
+                        return
+        except Exception as e:
+            raise e
 
     def moveEffector(self, x, y, z, s_max=0):
 
@@ -255,7 +283,7 @@ class Controlador:
 
             res.append(f"La última sesión comenzó a las: {logData[0]}")
             logData.pop(0)
-            res.append("Log de la última sesión:")
+            res.append(f"Log de la última sesión ({len(logData)}):")
 
             for line in logData:
                 res.append(line)

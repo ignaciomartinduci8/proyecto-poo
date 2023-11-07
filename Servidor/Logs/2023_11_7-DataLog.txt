@@ -56,3 +56,11 @@ R | ROBOT_CONNECT | COM3 | 115200 | 14:37:52 | Nacho
 R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 14:37:55 | Nacho
 R | MOVE | 100.0 | 200.0 | 100.0 | 14:38:14 | Nacho
 R | EFFECTOR_ON | 14:38:20 | Nacho
+P | PROGRAM_ON | 15:19:0 | Nacho
+R | ROBOT_CONNECT | COM3 | 115200 | 15:19:4 | Nacho
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 15:19:7 | Nacho
+R | ROBOT:DISCONNECT | COM3 | 115200 | 15:19:11 | Nacho
+P | PROGRAM_ON | 15:20:28 | Nacho
+R | ROBOT_CONNECT | COM3 | 115200 | 15:20:35 | Nacho
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 15:20:37 | Nacho
+R | MOVE | 100.0 | 200.0 | 100.0 | 15:20:41 | Nacho
