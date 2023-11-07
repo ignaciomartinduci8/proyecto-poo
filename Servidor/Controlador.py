@@ -1,5 +1,5 @@
 import time
-import threading
+from threading import Thread
 import os
 
 from Serial import Serial
@@ -16,9 +16,7 @@ class Controlador:
         self.instructions = []
         self.automatic_file = None
         self.auto_thread = None
-        if not os.path.exists("./Autos"):
-            os.makedirs("./Autos")
-
+        
 # Métodos de conexión y desconexión
 
     def connect(self, puerto, baudrate):
@@ -71,47 +69,17 @@ class Controlador:
             raise e
 
 # Métodos de robot
-
-    def goHome(self):
+    def setRobotMode(self, mode):
 
         if not self.isConnected:
-            raise Exception("No hay robot conectado")
 
-        if self.robot.getMode() != 'M':
-            raise Exception("Robot en modo automático")
-
+            raise Exception("No se ha conectado un robot.")
         try:
-            self.serial.writeSerial("G28")
-
-            res = []
-
-            for i in range(2):
-
-                res.append(self.serial.readSerial())
-                time.sleep(.3)
-
-            if "ERROR" not in res:
-
-                self.serial.writeSerial("M114")
-
-                for i in range(2):
-
-                    res.append(self.serial.readSerial())
-                    time.sleep(.3)
-
-                if "ERROR" not in res:
-
-                    self.robot.setPosture(res[3])
-                    self.dataLog.logHome(self.robot.getPosture()[0],self.robot.getPosture()[1],self.robot.getPosture()[2])
-                    return res
-
-                else:
-
-                    raise Exception(res)
-
-            else:
-                raise Exception(res)
-
+            self.robot.setMode(mode)
+            if mode == 'A':
+                self.automaticMode()
+            elif mode == 'M':
+                self.manualMode()
         except Exception as e:
 
             raise e
@@ -127,6 +95,8 @@ class Controlador:
             raise e
 
     def loadAutomaticFile(self):
+        if not os.path.exists("./Autos"):
+            os.makedirs("./Autos")
         auto_files = [f for f in os.listdir("./Autos") if os.path.isfile(os.path.join("./Autos", f))]
         if not auto_files:
             print("No hay archivos de instrucciones. No se puede ejecutar el modo automático.")
@@ -146,9 +116,9 @@ class Controlador:
 
     def automaticMode(self):
         self.loadAutomaticFile()
-        if self.automatic_file is None:
-            print("No se ha cargado un archivo automático. Debes cargarlo antes de activar el modo automático.")
-            return
+        # if self.automatic_file is None:
+        #     print("No se ha cargado un archivo automático. Debes cargarlo antes de activar el modo automático.")
+        #     return
         try:
             if self.auto_thread and self.auto_thread.is_alive():
                 print("El modo automático ya está en ejecución.")
@@ -159,9 +129,9 @@ class Controlador:
             raise e
 
     def runAutomaticFile(self):
-        if self.automatic_file is None:
-            print("No se ha cargado un archivo automático.")
-            return
+        # if self.automatic_file is None:
+        #     print("No se ha cargado un archivo automático.")
+        #     return
         try:
             while True:
                 for line in self.automatic_file:
@@ -171,6 +141,9 @@ class Controlador:
                         return
         except Exception as e:
             raise e
+
+    def learnAutomaticFile(self):
+        
 
     def moveEffector(self, x, y, z, s_max=0):
 
@@ -217,6 +190,7 @@ class Controlador:
             if "INFO" in res:
                 self.robot.setEffectorStatus(True)
                 self.dataLog.logRobotEffector(True)
+                self.learnAutomaticFile("M3\r\n")
                 return res
             else:
                 raise Exception(res)
@@ -252,6 +226,50 @@ class Controlador:
         except Exception as e:
             raise e
 
+    def goHome(self):
+
+        if not self.isConnected:
+            raise Exception("No hay robot conectado")
+
+        if self.robot.getMode() != 'M':
+            raise Exception("Robot en modo automático")
+
+        try:
+            self.serial.writeSerial("G28")
+
+            res = []
+
+            for i in range(2):
+
+                res.append(self.serial.readSerial())
+                time.sleep(.3)
+
+            if "ERROR" not in res:
+
+                self.serial.writeSerial("M114")
+
+                for i in range(2):
+
+                    res.append(self.serial.readSerial())
+                    time.sleep(.3)
+
+                if "ERROR" not in res:
+
+                    self.robot.setPosture(res[3])
+                    self.dataLog.logHome(self.robot.getPosture()[0],self.robot.getPosture()[1],self.robot.getPosture()[2])
+                    return res
+
+                else:
+
+                    raise Exception(res)
+
+            else:
+                raise Exception(res)
+
+        except Exception as e:
+
+            raise e
+
     def getRobotStatus(self):
 
         if not self.isConnected:
@@ -265,6 +283,7 @@ class Controlador:
         return [self.robot.getMode(), self.robot.getPosture(), self.robot.getEffectorStatus()]
 
     def report(self):
+
 
         res = ["Reporte de estado de robot y de logs."]
 
