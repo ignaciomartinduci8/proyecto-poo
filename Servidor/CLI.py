@@ -342,6 +342,22 @@ class CLI(Cmd):
         except Exception as e:
             print(f"{ROJO}Error - {e}{RESET}")
 
+    def do_toggleLearn(self):
+        """
+        Descripción: Activar/desactivar modo aprendizaje
+        Sintaxis: toggleLearn
+        """
+
+        try:
+
+            res = self.controlador.toggleLearn()
+
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+            print(f"{IDENTATION}{res}{RESET}")
+
+        except Exception as e:
+            print(f"{ROJO}Error - {e}{RESET}")
+
     def do_help(self, args):
         """
         Descripción: Obtener ayuda

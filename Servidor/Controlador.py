@@ -13,9 +13,9 @@ class Controlador:
         self.serial = None
         self.robot = None
         self.dataLog = dataLog
-        self.instructions = []
         self.automatic_file = None
         self.auto_thread = None
+        self.isLearning = False
         if not os.path.exists("./Autos"):
             os.makedirs("./Autos")
         
@@ -143,8 +143,21 @@ class Controlador:
             raise e
 
     def learnAutomaticFile(self, gcode):
-        pass
-        
+
+        with open(f"./Autos/{self.automatic_file}", "a") as f:
+            f.write(gcode)
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
+
+    def toggleLearn(self):
+
+        self.isLearning = not self.isLearning
+
+        if self.isLearning:
+            return "Modo aprendizaje activado."
+        else:
+            return "Modo aprendizaje desactivado."
 
     def moveEffector(self, x, y, z, s_max=0):
 
@@ -156,13 +169,19 @@ class Controlador:
 
         try:
 
-            self.serial.writeSerial(f"G0X{x}Y{y}Z{z}F{s_max}")
+            inst = f"G0X{x}Y{y}Z{z}F{s_max}"
+            self.serial.writeSerial(inst)
 
             res = self.serial.readSerial()
 
             if "ERROR" not in res:
                 self.robot.setPosture(res)
                 self.dataLog.logRobotMove(self.robot.getPosture()[0],self.robot.getPosture()[1],self.robot.getPosture()[2])
+
+                if self.isLearning:
+
+                    self.learnAutomaticFile(inst)
+
                 return res
 
             else:
