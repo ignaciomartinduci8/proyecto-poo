@@ -194,20 +194,61 @@ class CLI(Cmd):
             Sintaxis: setRobotMode [M/A]
 
         """
-        if args == "M" or args == "A":
 
-            try:
+        args = args.upper()
 
-                self.controlador.setRobotMode(args)
-                print(f'Modo {args} establecido correctamente.')
+        if len(args) != 1:
+            print(f"{ROJO}Error - argumentos inválidos.{RESET}")
 
-            except Exception as e:
+        try:
 
-                print(f"{ROJO}Error - {e}{RESET}")
+            if args == "M":
 
-        else:
+                if self.controlador.getRobotStatus()[0] == "M":
+                    print(f"{ROJO}Error - El robot ya está en modo manual.{RESET}")
+                    return
 
-            print(f"{ROJO}Error - modo inválido.{RESET}")
+                res = self.controlador.setRobotMode(args)
+                print(f"{GREEN}Respuesta del proceso:{RESET}")
+                print(f"{IDENTATION}{res}")
+
+            elif args == "A":
+
+                if self.controlador.getRobotStatus()[0] == "A":
+                    print(f"{ROJO}Error - El robot ya está en modo automático.{RESET}")
+                    return
+
+                files = self.controlador.listAutomaticFiles()
+
+                if len(files) == 0:
+                    print(f"{ROJO}Error - No hay archivos de modo automático disponibles.{RESET}")
+                    return
+
+                print(f"{GREEN}Archivos disponibles:{RESET}")
+
+                for file in files:
+                    print(f"{IDENTATION}{file}{RESET}")
+
+                file = input(f"Ingrese el nombre del archivo a ejecutar: ")
+
+                self.controlador.setRobotMode('A', file)
+
+            else:
+
+                print(args)
+                print(f"{ROJO}Error - Modo no existente.{RESET}")
+
+        except ValueError:
+
+            print(f"{ROJO}Error - argumentos inválidos.{RESET}")
+
+        except TypeError:
+
+            print(f"{ROJO}Error - argumentos inválidos.{RESET}")
+
+        except Exception as e:
+
+            print(f"{ROJO}Error - {e}{RESET}")
 
     def do_enableEffector(self, args):
         """
@@ -283,14 +324,23 @@ class CLI(Cmd):
         except Exception as e:
             print(f"{ROJO}Error - {e}{RESET}")
 
+    def do_listAutomaticFiles(self, args):
+        """
+        Descripción: Listar archivos de modo automático
+        Sintaxis: listAutomaticFiles
+        """
 
+        try:
 
+            res = self.controlador.listAutomaticFiles()
 
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
 
+            for i in res:
+                print(f"{IDENTATION}{i}{RESET}")
 
-
-
-
+        except Exception as e:
+            print(f"{ROJO}Error - {e}{RESET}")
 
     def do_help(self, args):
         """

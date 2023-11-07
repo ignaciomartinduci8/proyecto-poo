@@ -7,6 +7,7 @@ import sys
 def main():
     while True:
         UI = str.upper(input("Bienvenido. Ingrese 'CLI' para utilizar CLI o 'GUI' para utilizar GUI. Para salir, ingrese 'EXIT': "))
+        user = 'ANONYMOUS'
         user = input("Enter username: ")
 
         if UI == "EXIT":

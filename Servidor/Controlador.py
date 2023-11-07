@@ -16,6 +16,8 @@ class Controlador:
         self.instructions = []
         self.automatic_file = None
         self.auto_thread = None
+        if not os.path.exists("./Autos"):
+            os.makedirs("./Autos")
         
 # Métodos de conexión y desconexión
 
@@ -69,17 +71,28 @@ class Controlador:
             raise e
 
 # Métodos de robot
-    def setRobotMode(self, mode):
+    def setRobotMode(self, mode, args=None):
 
         if not self.isConnected:
 
             raise Exception("No se ha conectado un robot.")
         try:
-            self.robot.setMode(mode)
+
             if mode == 'A':
+
+                if args not in self.listAutomaticFiles():
+                    self.automatic_file = None
+                    raise Exception("Archivo no encontrado.")
+
+                self.robot.setMode('A')
+                self.automatic_file = args
                 self.automaticMode()
+
             elif mode == 'M':
-                self.manualMode()
+
+                self.robot.setMode('M')
+                return self.manualMode()
+
         except Exception as e:
 
             raise e
@@ -87,62 +100,50 @@ class Controlador:
     def manualMode(self):
         try:
             if self.auto_thread and self.auto_thread.is_alive():
-                self.auto_thread.join()
-                print("Modo automático detenido. Modo manual activado.")
-            else:
-                print("El modo automático no está en ejecución.")
+                self.auto_thread.join(timeout=2)
+                self.automatic_file = None
+                self.auto_thread = None
+
+                return "Modo automático detenido."
+
         except Exception as e:
             raise e
 
-    def loadAutomaticFile(self):
-        if not os.path.exists("./Autos"):
-            os.makedirs("./Autos")
-        auto_files = [f for f in os.listdir("./Autos") if os.path.isfile(os.path.join("./Autos", f))]
-        if not auto_files:
-            print("No hay archivos de instrucciones. No se puede ejecutar el modo automático.")
-            return
-        filename = input("Introduce el nombre del archivo automático: ")
-        file_path = os.path.join("./Autos", filename)
+    def listAutomaticFiles(self):
 
-        if not os.path.exists(file_path):
-            print("Archivo no encontrado en el directorio ./Autos.")
-            return
-        try:
-            with open(file_path, 'r') as file:
-                self.automatic_file = file.readlines()
-            print("Archivo cargado exitosamente.")
-        except FileNotFoundError:
-            print("Archivo no encontrado.")
+        return os.listdir("./Autos")
 
     def automaticMode(self):
-        self.loadAutomaticFile()
-        # if self.automatic_file is None:
-        #     print("No se ha cargado un archivo automático. Debes cargarlo antes de activar el modo automático.")
-        #     return
+
         try:
-            if self.auto_thread and self.auto_thread.is_alive():
-                print("El modo automático ya está en ejecución.")
-                return
+
             self.auto_thread = Thread(target=self.runAutomaticFile)
             self.auto_thread.start()
+
         except Exception as e:
             raise e
 
     def runAutomaticFile(self):
-        # if self.automatic_file is None:
-        #     print("No se ha cargado un archivo automático.")
-        #     return
+
         try:
             while True:
-                for line in self.automatic_file:
-                    pass
-                    if not self.auto_thread.is_alive():
-                        print("Modo automático detenido.")
-                        return
+
+                with open(f"./Autos/{self.automatic_file}", "r") as f:
+
+                    for line in f.readlines():
+
+                        self.serial.writeSerial(line)
+                        self.serial.readSerial()
+                        time.sleep(0.5)
+
+                    if self.auto_thread is None:
+                        return "Modo automático detenido."
+
         except Exception as e:
             raise e
 
-    def learnAutomaticFile(self):
+    def learnAutomaticFile(self, gcode):
+        pass
         
 
     def moveEffector(self, x, y, z, s_max=0):

@@ -179,12 +179,6 @@ class DataLog:
                 os.fsync(f.fileno())
                 f.close()
 
-
-
-
-
-
-
     def getLastSession(self):
 
         res = []
