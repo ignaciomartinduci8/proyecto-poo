@@ -11,6 +11,9 @@ class DataLog:
 
     def fileSet(self):
 
+        if not os.path.exists(self.path):
+            os.mkdir(self.path)
+
         files = os.listdir(self.path)
 
         if len(files) == 0:
