@@ -126,22 +126,16 @@ class CLI(Cmd):
 
         """
 
-        if self.controlador.getIsConnected():
+        try:
 
-            try:
+            res = self.controlador.disconnect()
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+            for i in res:
+                print(f"{IDENTATION}{i}{RESET}")
 
-                res = self.controlador.disconnect()
-                print(f"{GREEN}Respuesta del proceso:{RESET}")
-                for i in res:
-                    print(f"{IDENTATION}{i}{RESET}")
+        except Exception as e:
 
-            except Exception as e:
-
-                print(f"{ROJO}Error - {e}{RESET}")
-
-        else:
-
-            print(f"{ROJO}Error - no hay conexión establecida.{RESET}")
+            print(f"{ROJO}Error - {e}{RESET}")
 
     def do_goHome(self, args):
         """
@@ -153,8 +147,30 @@ class CLI(Cmd):
         try:
 
             res = self.controlador.goHome()
-            print("Robot viajó a su posición de inicio.")
-            print(res)
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+
+            for i in range(4):
+                print(f"{IDENTATION}{res[i]}{RESET}")
+
+        except Exception as e:
+
+            print(f"{ROJO}Error - {e}{RESET}")
+
+    def do_generalReport(self, args):
+        """
+            Descripción: Obtener estado del robot
+            Sintaxis: robotStatus
+
+        """
+
+        try:
+            #modo, conexion, posicion, efector, iniciode cnexion
+
+            #res = self.controlador.generalReport()
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+
+            #for i in range(4):
+                #print(f"{IDENTATION}{res[i]}{RESET}")
 
         except Exception as e:
 
@@ -172,19 +188,16 @@ class CLI(Cmd):
             args = args.split(" ")
 
             if len(args) == 4:
-                self.controlador.moveEffector(args[0], args[1], args[2], args[3])
+                res = self.controlador.moveEffector(args[0], args[1], args[2], args[3])
             elif len(args) == 3:
-                self.controlador.moveEffector(args[0], args[1], args[2])
+                res = self.controlador.moveEffector(args[0], args[1], args[2])
 
             else:
                 print(f"{ROJO}Error - argumentos inválidos.{RESET}")
                 return
 
-
-            print("Movimiento realizado correctamente.")
-            posture = self.controlador.getPosture()
-            print(f"Posición actual: [{posture[0]}, {posture[1]}, {posture[2]}]\n"
-                  f"Orientación actual: [{posture[3]}, {posture[4]}, {posture[5]}]")
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+            print(f"{IDENTATION}{res}")
 
         except ValueError:
 
@@ -215,12 +228,13 @@ class CLI(Cmd):
 
             print(f"{ROJO}Error - modo inválido.{RESET}")
 
-    def do_enableEffector(self,args):
+    def do_enableEffector(self, args):
         """
             Descripción: Activar efector final
             Sintaxis: enableEffector
 
         """
+
 
         try:
 
@@ -244,28 +258,6 @@ class CLI(Cmd):
 
             self.controlador.disableEffector()
             print("Efector desactivado.")
-
-        except Exception as e:
-
-            print(f"{ROJO}Error - {e}{RESET}")
-
-    def do_setMappingQuality(self, args):
-
-        """
-            Descripción: Establecer calidad de mapeo
-            Sintaxis: setMappingQuality [calidad]
-
-        """
-
-        if len(args.split(" ")) > 1:
-
-                print(f"{ROJO}Error - argumentos inválidos.{RESET}")
-                return
-
-        try:
-
-            self.controlador.setMappingQuality(args)
-            print(f"Calidad de mapeo establecida en {args}.")
 
         except Exception as e:
 

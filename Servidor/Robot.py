@@ -27,24 +27,27 @@ class Robot:
 
         return self.mode
 
-    def setPosture(self, x, y, z, s_max=None):
+    def setPosture(self, args):
 
-        try:
-            x = float(x)
-            y = float(y)
-            z = float(z)
-            s_max = float(s_max) if s_max is not None else None
+        content = args.split("[")[1].split("]")[0]
 
-        except Exception as e:
+        partes = content.split()
 
-            raise e
+        x_valor, y_valor, z_valor, e_valor = None, None, None, None
 
-        self.x = x
-        self.y = y
-        self.z = z
-        self.al = al
-        self.be = be
-        self.ga = ga
+        for parte in partes:
+            if parte.startswith("X:"):
+                x_valor = float(parte.split(":")[1])
+            elif parte.startswith("Y:"):
+                y_valor = float(parte.split(":")[1])
+            elif parte.startswith("Z:"):
+                z_valor = float(parte.split(":")[1])
+            elif parte.startswith("E:"):
+                e_valor = float(parte.split(":")[1])
+
+        self.x = x_valor
+        self.y = y_valor
+        self.z = z_valor
 
     def getPosture(self):
 

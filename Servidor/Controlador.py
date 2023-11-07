@@ -46,17 +46,22 @@ class Controlador:
                 self.isConnected = False
                 return "Robot en puerto serie desconectado"
 
+            else:
+                raise Exception("No hay robot conectado")
+
         except Exception as e:
 
             raise e
 
-    def getIsConnected(self):
-
-        return self.isConnected
-
 # Métodos de robot
 
     def goHome(self):
+
+        if not self.isConnected:
+            raise Exception("No hay robot conectado")
+
+        if self.robot.getMode() != 'M':
+            raise Exception("Robot en modo automático")
 
         try:
             self.serial.writeSerial("G28")
@@ -78,6 +83,8 @@ class Controlador:
                     time.sleep(.3)
 
                 if "ERROR" not in res:
+
+                    self.robot.setPosture(res[3])
 
                     return res
 
@@ -106,18 +113,26 @@ class Controlador:
 
             raise e
 
-    def moveEffector(self, x, y, z, s_max=None):
+    def moveEffector(self, x, y, z, s_max=0):
+
+        if not self.isConnected:
+            raise Exception("Error - No se ha conectado un robot.")
 
         if self.robot.getMode() != 'M':
             raise Exception('Operación no válida, robot en modo automático')
 
-        if not self.isConnected:
-
-            raise Exception("Error - No se ha conectado un robot.")
-
         try:
 
-            self.robot.setPosture(x, y, z, s_max)
+            self.serial.writeSerial(f"G0X{x}Y{y}Z{z}F{s_max}")
+
+            res = self.serial.readSerial()
+
+            if "ERROR" not in res:
+                self.robot.setPosture(res)
+                return res
+
+            else:
+                raise Exception(res)
 
         except Exception as e:
 
@@ -125,21 +140,22 @@ class Controlador:
 
     def enableEffector(self):
 
-        if self.robot.getMode() != 'M':
-            raise Exception('Operación no válida, robot en modo automático.')
-
         if not self.isConnected:
             raise Exception("No se ha conectado un robot.")
+
+        if self.robot.getMode() != 'M':
+            raise Exception('Operación no válida, robot en modo automático.')
 
         if self.robot.getEffectorStatus():
             raise Exception('Ya se ha activado el effector.')
 
         try:
-            self.serial.writeSerial("G3")
+            self.serial.writeSerial("M3")
 
             res = self.serial.readSerial()
 
             if "INFO" in res:
+                self.robot.setEffectorStatus(True)
                 return res
             else:
                 raise Exception(res)
@@ -149,26 +165,32 @@ class Controlador:
 
     def disableEffector(self):
 
-        if self.robot.getMode() != 'M':
-            raise Exception('Operación no válida, robot en modo automático')
-
         if not self.isConnected:
 
             raise Exception("No se ha conectado un robot.")
+
+        if self.robot.getMode() != 'M':
+            raise Exception('Operación no válida, robot en modo automático')
 
         if not self.robot.enableEffector():
 
             raise Exception('Ya se ha desactivado el effector.')
 
         try:
+            self.serial.writeSerial("M5")
 
-            self.robot.disableEffector()
+            res = self.serial.readSerial()
+
+            if "INFO" in res:
+                self.robot.setEffectorStatus(False)
+                return res
+            else:
+                raise Exception(res)
 
         except Exception as e:
             raise e
 
     def getEffectorStatus(self):
-
 
         if not self.isConnected:
             raise Exception("No se ha conectado un robot.")
@@ -177,19 +199,7 @@ class Controlador:
 
     def getPosture(self):
 
-        return self.robot.getPosture()
-
-
-    def setMappingQuality(self, quality):
-
         if not self.isConnected:
             raise Exception("No se ha conectado un robot.")
 
-        try:
-
-            self.robot.setMappingQuality(quality)
-
-        except Exception as e:
-
-            raise e
-
+        return self.robot.getPosture()
