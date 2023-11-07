@@ -15,13 +15,18 @@ class Robot:
         self.z = None
         self.isEffectorEnabled = False
 
+    # def setMode(self, mode):
+
+    #     self.mode = mode
+
+    #     if self.mode == 'A':
+    #         self.goHome()
+    #         self.beginAutomaticMode()
+
     def setMode(self, mode):
-
+        if mode not in ['M', 'A']:
+            raise ValueError("Modo no válido. Debe ser 'M' o 'A'.")
         self.mode = mode
-
-        if self.mode == 'A':
-            self.goHome()
-            self.beginAutomaticMode()
 
     def getMode(self):
 
@@ -64,7 +69,7 @@ class Robot:
 
         return self.isEffectorEnabled
 
-    def beginAutomaticMode(self):
+    # def beginAutomaticMode(self):
 
 
-        pass
+    #     pass

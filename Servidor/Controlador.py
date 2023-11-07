@@ -112,6 +112,28 @@ class Controlador:
         except Exception as e:
 
             raise e
+    
+    def learnPath(self, path_filename):
+        with open(path_filename, 'w') as file:
+            for command in self.path:
+                file.write(command + '\n')
+
+    def loadAutomaticFile(self):
+        filename = input("Introduce el nombre del archivo automático: ")
+        try:
+            with open(filename, 'r') as file:
+                self.automatic_file = file.readlines()
+        except FileNotFoundError:
+            print("Archivo no encontrado.")
+            self.mode = 'manual'
+
+    def executeAutomaticMode(self):
+        if self.automatic_file:
+            for line in self.automatic_file:
+                pass
+        else:
+            print("No hay archivo automático cargado.")
+
 
     def moveEffector(self, x, y, z, s_max=0):
 
