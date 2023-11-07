@@ -51,7 +51,7 @@ void CLI::loop() {
                     if (command_segments.size() == 3) {
 
                         cliente = new Cliente(command_segments.at(1), stoi(command_segments.at(2)));
-                        this->isConnected = True
+                        this->isConnected = true;
 
 
                     } else {
@@ -79,8 +79,6 @@ void CLI::loop() {
         //cierre if de chequeo de conexion
         }
         else{
-
-            cout << "Sistema coenctado."<<endl;
 
 
         }

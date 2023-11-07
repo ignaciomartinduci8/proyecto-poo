@@ -13,12 +13,7 @@ class Robot:
         self.x = None
         self.y = None
         self.z = None
-        self.al = None
-        self.be = None
-        self.ga = None
         self.isEffectorEnabled = False
-        self.mappingQuality = 1
-        self.goHome()
 
     def setMode(self, mode):
 
@@ -26,22 +21,18 @@ class Robot:
 
         if self.mode == 'A':
             self.goHome()
-            self.mappingQuality = 2
             self.beginAutomaticMode()
 
     def getMode(self):
 
         return self.mode
 
-    def setPosture(self, x, y, z, al, be, ga, s_max=None):
+    def setPosture(self, x, y, z, s_max=None):
 
         try:
             x = float(x)
             y = float(y)
             z = float(z)
-            al = float(al)
-            be = float(be)
-            ga = float(ga)
             s_max = float(s_max) if s_max is not None else None
 
         except Exception as e:
@@ -57,54 +48,18 @@ class Robot:
 
     def getPosture(self):
 
-        return [self.x, self.y, self.z, self.al, self.be, self.ga]
+        return [self.x, self.y, self.z]
 
-    def goHome(self):
+    def setEffectorStatus(self, status):
 
-        try:
-            self.serial.writeSerial("G28")
-            self.serial.writeSerial("M114")
-            response = self.serial.readSerial()
+        if status not in [True, False]:
+            raise Exception("Estado de efector inválido, True o False.")
 
-            print(response)
-
-        except Exception as e:
-            raise e
-
-    def enableEffector(self):
-
-        try:
-            self.serial.writeSerial("M3")
-
-        except Exception as e:
-            raise e
-
-        self.isEffectorEnabled = True
-
-    def disableEffector(self):
-
-        try:
-            self.serial.writeSerial("M5")
-
-        except Exception as e:
-            raise e
-
-        self.isEffectorEnabled = False
+        self.isEffectorEnabled = status
 
     def getEffectorStatus(self):
 
         return self.isEffectorEnabled
-
-    def setMappingQuality(self, quality):
-
-        if quality not in [1, 2, 3]:
-            raise Exception("Calidad de mapeo inválida, 1, 2 o 3.")
-
-        self.mappingQuality = quality
-
-    def getMappingQuality(self):
-
-        return self.mappingQuality
 
     def beginAutomaticMode(self):
 

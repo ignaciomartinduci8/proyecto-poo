@@ -34,7 +34,7 @@ class Serial:
 
     def writeSerial(self, mensaje):
 
-        mensaje = mensaje.encode()
+        mensaje = (mensaje+"\r\n").encode()
 
         try:
 
@@ -46,5 +46,11 @@ class Serial:
 
     def readSerial(self):
 
-        response = self.ser.readline().decode().strip()
-        return response
+        try:
+
+            response = self.ser.readline().decode("utf-8", errors="ignore").replace("\r\n", "")
+            return response
+
+        except Exception as e:
+
+            raise e

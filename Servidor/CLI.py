@@ -103,15 +103,13 @@ class CLI(Cmd):
 
             puerto, baudrate = args.split(" ")
 
-            response = self.controlador.connect(puerto, baudrate)
+            res = self.controlador.connect(puerto, baudrate)
             print(f"{GREEN}Respuesta del proceso:{RESET}")
-            print(f"{IDENTATION}{response}")
-            print(f"{IDENTATION}Robot conectado en puerto {puerto} a {baudrate} baudios.")
 
-            posture = self.controlador.getPosture()
-            print(f"{IDENTATION}El robot viajó a su posición de inicio.")
-            print(f"{IDENTATION}Posición actual: [{posture[0]}, {posture[1]}, {posture[2]}]\n"
-                  f"{IDENTATION}Orientación actual: [{posture[3]}, {posture[4]}, {posture[5]}]")
+            for i in res:
+                print(f"{IDENTATION}{i}{RESET}")
+
+            print(f"{IDENTATION}Robot conectado en puerto {puerto} a {baudrate} baudios.")
 
         except ValueError:
 
@@ -132,8 +130,10 @@ class CLI(Cmd):
 
             try:
 
-                self.controlador.disconnect()
-                print("Robot desconectado.")
+                res = self.controlador.disconnect()
+                print(f"{GREEN}Respuesta del proceso:{RESET}")
+                for i in res:
+                    print(f"{IDENTATION}{i}{RESET}")
 
             except Exception as e:
 
@@ -143,10 +143,27 @@ class CLI(Cmd):
 
             print(f"{ROJO}Error - no hay conexión establecida.{RESET}")
 
+    def do_goHome(self, args):
+        """
+            Descripción: Mover robot a posición de inicio
+            Sintaxis: goHome
+
+        """
+
+        try:
+
+            res = self.controlador.goHome()
+            print("Robot viajó a su posición de inicio.")
+            print(res)
+
+        except Exception as e:
+
+            print(f"{ROJO}Error - {e}{RESET}")
+
     def do_moveEffector(self, args):
         """
             Descripción: Mover efector final
-            Sintaxis: moveEffector [x] [y] [z] [al] [be] [ga] [s_max*]
+            Sintaxis: moveEffector [x] [y] [z] [s_max*]
 
         """
 
@@ -154,10 +171,10 @@ class CLI(Cmd):
 
             args = args.split(" ")
 
-            if len(args) == 7:
-                self.controlador.moveEffector(args[0], args[1], args[2], args[3], args[4], args[5], args[6])
-            elif len(args) == 6:
-                self.controlador.moveEffector(args[0], args[1], args[2], args[3], args[4], args[5])
+            if len(args) == 4:
+                self.controlador.moveEffector(args[0], args[1], args[2], args[3])
+            elif len(args) == 3:
+                self.controlador.moveEffector(args[0], args[1], args[2])
 
             else:
                 print(f"{ROJO}Error - argumentos inválidos.{RESET}")
@@ -207,8 +224,10 @@ class CLI(Cmd):
 
         try:
 
-            self.controlador.enableEffector()
-            print("Efector activado.")
+            res = self.controlador.enableEffector()
+
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+            print(f"{IDENTATION}{res}")
 
         except Exception as e:
 
