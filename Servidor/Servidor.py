@@ -22,10 +22,6 @@ class Servidor:
     def prueba(self, a, b):
         return a+b
 
-    def listMethods(self):
-
-        return self.server.system_listMethods()
-
     def loopConnection(self):
         with self.connection_semaphore:
             self.server.serve_forever()
@@ -41,7 +37,15 @@ class Servidor:
 
             self.server = SimpleXMLRPCServer((self.IP, self.port))
 
-            self.serverRegisteringFunctions()
+            #self.serverRegisteringFunctions()
+            self.server.register_introspection_functions()
+
+            # Funciones de conexion
+            self.server.register_function(Controlador.connect,'conectar')
+            self.server.register_function(Controlador.disconnect,'desconectar')
+
+            # Funciones de movimiento del robot
+            self.server.register_function(Controlador.goHome,'homming')
 
             self.server_thread = Thread(target=self.loopConnection)
             self.server_thread.start()
@@ -64,14 +68,18 @@ class Servidor:
     def getServerData(self):
 
         return [self.hostname, self.IP, self.port]
-
-    def serverRegisteringFunctions(self):
-
-        self.server.register_introspection_functions()
-
-        self.server.register_function(self.prueba)
-        self.server.register_function(self.listMethods)
-
+    
     def __del__(self):
 
         self.cerrarServidor()
+ 
+    # def listMethods(self):
+
+    #     return self.server.system_listMethods()
+
+    # def serverRegisteringFunctions(self):
+
+    #     self.server.register_introspection_functions()
+
+    #     self.server.register_function(self.prueba)
+    #     self.server.register_function(self.listMethods)
