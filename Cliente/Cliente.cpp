@@ -10,7 +10,7 @@ void Cliente::connect() {
 
         XmlRpcClient c(this->IP.c_str(), this->PORT, nullptr);
         cout << "Conexion exitosa" << endl;
-
+    
         XmlRpcValue noArgs, result;
 
         if(c.execute("system.listMethods", noArgs, result)) {
