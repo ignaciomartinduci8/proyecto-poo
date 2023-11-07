@@ -24,6 +24,7 @@ class CLI(Cmd):
         self.dataLog = DataLog(user)
         self.controlador = Controlador(self.dataLog)
         self.serverUser = user
+        self.dataLog.logProgram(True)
 
     def do_RPCon(self, puerto):
         """
@@ -89,6 +90,7 @@ class CLI(Cmd):
         Descripción: Cierra el programa
         Sintaxis: exit
         """
+        self.dataLog.logProgram(False)
         print("Cerrando programa...")
         raise SystemExit
 
@@ -130,8 +132,7 @@ class CLI(Cmd):
 
             res = self.controlador.disconnect()
             print(f"{GREEN}Respuesta del proceso:{RESET}")
-            for i in res:
-                print(f"{IDENTATION}{i}{RESET}")
+            print(f"{IDENTATION}{res}{RESET}")
 
         except Exception as e:
 
@@ -151,26 +152,6 @@ class CLI(Cmd):
 
             for i in range(4):
                 print(f"{IDENTATION}{res[i]}{RESET}")
-
-        except Exception as e:
-
-            print(f"{ROJO}Error - {e}{RESET}")
-
-    def do_generalReport(self, args):
-        """
-            Descripción: Obtener estado del robot
-            Sintaxis: robotStatus
-
-        """
-
-        try:
-            #modo, conexion, posicion, efector, iniciode cnexion
-
-            #res = self.controlador.generalReport()
-            print(f"{GREEN}Respuesta del proceso:{RESET}")
-
-            #for i in range(4):
-                #print(f"{IDENTATION}{res[i]}{RESET}")
 
         except Exception as e:
 
@@ -262,6 +243,54 @@ class CLI(Cmd):
         except Exception as e:
 
             print(f"{ROJO}Error - {e}{RESET}")
+
+    def do_getRobotStatus(self, args):
+
+        """
+            Descripción: Obtener estado del robot
+            Sintaxis: getRobotStatus
+
+        """
+
+        try:
+
+            res = self.controlador.getRobotStatus()
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+
+            print(f"{IDENTATION}Modo: {res[0]}{RESET}")
+            print(f"{IDENTATION}Posición: X:{res[1][0]} mm Y:{res[1][1]} mm Z:{res[1][2]}{RESET} mm")
+            print(f"{IDENTATION}Efector: {res[2]}{RESET}")
+
+        except Exception as e:
+
+            print(f"{ROJO}Error - {e}{RESET}")
+
+    def do_generalReport(self, args):
+        """
+        Descripción: Obtener estado del robot
+        Sintaxis: report
+        """
+
+        try:
+
+            res = self.controlador.report()
+
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+
+            for i in res:
+                print(f"{IDENTATION}{i}{RESET}")
+
+        except Exception as e:
+            print(f"{ROJO}Error - {e}{RESET}")
+
+
+
+
+
+
+
+
+
 
     def do_help(self, args):
         """

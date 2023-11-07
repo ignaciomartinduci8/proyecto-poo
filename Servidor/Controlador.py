@@ -16,20 +16,29 @@ class Controlador:
 
     def connect(self, puerto, baudrate):
 
+        puerto = puerto.upper()
+
         try:
             self.serial = Serial(puerto, baudrate)
+            self.dataLog.logRobotConnection(puerto,baudrate,True)
             self.robot = Robot("Robot POO - Grupo Negro", self.serial)
             self.isConnected = True
 
             res = []
 
             for i in range(2):
-
                 res.append(self.serial.readSerial())
                 time.sleep(0.3)
 
-            return res
+            self.serial.writeSerial("M114")
 
+            for i in range(2):
+                res.append(self.serial.readSerial())
+                time.sleep(0.3)
+
+            self.robot.setPosture(res[3])
+            self.dataLog.logRobotStatus(self.robot.getMode(),self.robot.getPosture()[0],self.robot.getPosture()[1],self.robot.getPosture()[2],self.robot.getEffectorStatus())
+            return res
 
         except Exception as e:
 
@@ -42,6 +51,7 @@ class Controlador:
         try:
 
             if self.serial is not None:
+                self.dataLog.logRobotConnection(self.serial.getData()[0],self.serial.getData()[1],False)
                 del self.serial
                 self.isConnected = False
                 return "Robot en puerto serie desconectado"
@@ -85,7 +95,7 @@ class Controlador:
                 if "ERROR" not in res:
 
                     self.robot.setPosture(res[3])
-
+                    self.dataLog.logHome(self.robot.getPosture()[0],self.robot.getPosture()[1],self.robot.getPosture()[2])
                     return res
 
                 else:
@@ -134,7 +144,6 @@ class Controlador:
         else:
             print("No hay archivo automático cargado.")
 
-
     def moveEffector(self, x, y, z, s_max=0):
 
         if not self.isConnected:
@@ -151,6 +160,7 @@ class Controlador:
 
             if "ERROR" not in res:
                 self.robot.setPosture(res)
+                self.dataLog.logRobotMove(self.robot.getPosture()[0],self.robot.getPosture()[1],self.robot.getPosture()[2])
                 return res
 
             else:
@@ -178,6 +188,7 @@ class Controlador:
 
             if "INFO" in res:
                 self.robot.setEffectorStatus(True)
+                self.dataLog.logRobotEffector(True)
                 return res
             else:
                 raise Exception(res)
@@ -194,7 +205,7 @@ class Controlador:
         if self.robot.getMode() != 'M':
             raise Exception('Operación no válida, robot en modo automático')
 
-        if not self.robot.enableEffector():
+        if not self.robot.getEffectorStatus():
 
             raise Exception('Ya se ha desactivado el effector.')
 
@@ -205,6 +216,7 @@ class Controlador:
 
             if "INFO" in res:
                 self.robot.setEffectorStatus(False)
+                self.dataLog.logRobotEffector(False)
                 return res
             else:
                 raise Exception(res)
@@ -212,16 +224,44 @@ class Controlador:
         except Exception as e:
             raise e
 
-    def getEffectorStatus(self):
+    def getRobotStatus(self):
 
         if not self.isConnected:
+
             raise Exception("No se ha conectado un robot.")
 
-        self.robot.getEffectorStatus()
+        x, y, z = self.robot.getPosture()
 
-    def getPosture(self):
+        self.dataLog.logRobotStatus(self.robot.getMode(),x,y,z,self.robot.getEffectorStatus())
 
-        if not self.isConnected:
-            raise Exception("No se ha conectado un robot.")
+        return [self.robot.getMode(), self.robot.getPosture(), self.robot.getEffectorStatus()]
 
-        return self.robot.getPosture()
+    def report(self):
+
+        res = ["Reporte de estado de robot y de logs."]
+
+        if self.isConnected:
+            res.append("Robot conectado")
+            res.append(f"Modo de robot: {self.robot.getMode()}")
+            res.append(f"Posición actual: {self.robot.getPosture()} mm")
+            res.append(f"Estado del efector: {self.robot.getEffectorStatus()}")
+
+        else:
+            res.append("Robot desconectado")
+
+        logData = self.dataLog.getLastSession()
+
+        if logData is not None:
+
+            res.append(f"La última sesión comenzó a las: {logData[0]}")
+            logData.pop(0)
+            res.append("Log de la última sesión:")
+
+            for line in logData:
+                res.append(line)
+
+        else:
+
+            res.append("No hay logs de sesión.")
+
+        return res

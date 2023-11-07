@@ -13,6 +13,10 @@ class Serial:
 
         self.stopSerial()
 
+    def getData(self):
+
+            return [self.port, self.baudrate]
+
     def beginSerial(self):
 
         try:

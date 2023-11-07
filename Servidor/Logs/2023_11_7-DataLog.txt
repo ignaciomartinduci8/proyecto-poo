@@ -1,1 +1,58 @@
 1-2023_11_7
+S | SERVER_START | 192.168.1.34 | 8000 | 12:32:19 | Nacho
+S | SERVER_STOP | 192.168.1.34 | 8000 | 12:32:19 | Nacho
+R | ROBOT_CONNECT | com3 | 115200 | 12:32:32 | Nacho
+R | MOVE | 0.0 | 170.0 | 120.0 | 12:32:47 | Nacho
+R | EFFECTOR_ON | 12:32:52 | Nacho
+R | MOVE | 100.0 | 200.0 | 100.0 | 12:33:47 | Nacho
+R | MOVE | 100.0 | 200.0 | 100.0 | 12:33:52 | Nacho
+R | ROBOT_CONNECT | COM3 | 115200 | 12:37:51 | Nacho
+P | PROGRAM_ON | 12:44:56 | Nacho
+P | PROGRAM_ON | 12:47:16 | Nacho
+R | ROBOT_CONNECT | COM3 | 115200 | 12:47:25 | Nacho
+R | HOME | 0.0 | 170.0 | 120.0 | 12:47:32 | Nacho
+P | PROGRAM_ON | 12:54:34 | Pedro
+R | ROBOT_CONNECT | COM3 | 115200 | 12:54:48 | Pedro
+P | PROGRAM_ON | 13:2:48 | Juan
+R | ROBOT_CONNECT | COM3 | 115200 | 13:2:55 | Juan
+R | STATUS | M | None | None | None | False | 13:2:59 | Juan
+P | PROGRAM_ON | 13:7:34 | Pedro
+R | ROBOT_CONNECT | COM3 | 115200 | 13:7:49 | Pedro
+P | PROGRAM_ON | 13:8:51 | Juan
+R | ROBOT_CONNECT | COM3 | 115200 | 13:9:0 | Juan
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 13:9:0 | Juan
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 13:9:18 | Juan
+P | PROGRAM_ON | 13:26:20 | Nacho
+R | ROBOT_CONNECT | COM3 | 115200 | 13:26:30 | Nacho
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 13:26:33 | Nacho
+R | HOME | 0.0 | 170.0 | 120.0 | 13:26:36 | Nacho
+R | MOVE | 100.0 | 200.0 | 100.0 | 13:26:41 | Nacho
+R | ROBOT:DISCONNECT | COM3 | 115200 | 13:26:46 | Nacho
+S | SERVER_START | 192.168.1.34 | 8001 | 13:26:59 | Nacho
+S | SERVER_STOP | 192.168.1.34 | 8001 | 13:26:59 | Nacho
+S | SERVER_STOP | 192.168.1.34 | 8001 | 13:27:16 | Nacho
+P | PROGRAM_ON | 13:28:51 | Naho
+P | PROGRAM_ON | 13:29:27 | Pedro
+R | ROBOT_CONNECT | COM3 | 115200 | 13:29:40 | Pedro
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 13:29:43 | Pedro
+R | ROBOT:DISCONNECT | COM3 | 115200 | 13:29:46 | Pedro
+P | PROGRAM_ON | 14:10:38 | Nacho
+P | PROGRAM_ON | 14:12:10 | Nacho
+P | PROGRAM_ON | 14:13:12 | fgeqgrer
+P | PROGRAM_ON | 14:14:23 | rgege
+P | PROGRAM_ON | 14:15:8 | Nacho
+P | PROGRAM_ON | 14:15:54 | sds
+P | PROGRAM_ON | 14:16:43 | asda
+P | PROGRAM_ON | 14:18:16 | Nacho
+P | PROGRAM_ON | 14:24:10 | Nacho
+P | PROGRAM_ON | 14:26:14 | gadada
+P | PROGRAM_ON | 14:31:25 | Nacho
+P | PROGRAM_ON | 14:31:42 | NACHO
+R | ROBOT_CONNECT | COM3 | 115200 | 14:31:47 | NACHO
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 14:31:50 | NACHO
+R | ROBOT:DISCONNECT | COM3 | 115200 | 14:31:54 | NACHO
+P | PROGRAM_ON | 14:37:46 | Nacho
+R | ROBOT_CONNECT | COM3 | 115200 | 14:37:52 | Nacho
+R | STATUS | M | 0.0 | 170.0 | 120.0 | False | 14:37:55 | Nacho
+R | MOVE | 100.0 | 200.0 | 100.0 | 14:38:14 | Nacho
+R | EFFECTOR_ON | 14:38:20 | Nacho

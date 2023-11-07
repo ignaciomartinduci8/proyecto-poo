@@ -100,3 +100,111 @@ class DataLog:
             f.flush()
             os.fsync(f.fileno())
             f.close()
+
+    def logRobotEffector(self, onOff):
+
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            if onOff:
+
+                process = 'EFFECTOR_ON'
+
+            else:
+
+                process = 'EFFECTOR_OFF'
+
+            f.write(f"R | {process} | {self.getTime()} | {self.user}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
+
+    def logRobotConnection(self, port,baudrate, onOff):
+
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            if onOff:
+
+                process = 'ROBOT_CONNECT'
+
+            else:
+
+                process = 'ROBOT:DISCONNECT'
+
+            f.write(f"R | {process} | {port} | {baudrate} | {self.getTime()} | {self.user}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
+
+    def logRobotMove(self,x,y,z):
+
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            f.write(f"R | MOVE | {x} | {y} | {z} | {self.getTime()} | {self.user}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
+
+    def logHome(self,x,y,z):
+
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            f.write(f"R | HOME | {x} | {y} | {z} | {self.getTime()} | {self.user}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
+
+    def logProgram(self, onOff):
+
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            if onOff:
+
+                process = 'PROGRAM_ON'
+
+            else:
+
+                process = 'PROGRAM_OFF'
+
+            f.write(f"P | {process} | {self.getTime()} | {self.user}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
+
+    def logRobotStatus(self,modo,x,y,z,efector):
+
+            with open(f'{self.path}/{self.file}', 'a') as f:
+
+                f.write(f"R | STATUS | {modo} | {x} | {y} | {z} | {efector} | {self.getTime()} | {self.user}\n")
+                f.flush()
+                os.fsync(f.fileno())
+                f.close()
+
+
+
+
+
+
+
+    def getLastSession(self):
+
+        res = []
+
+        with open(f'{self.path}/{self.file}', 'r') as f:
+
+            lines = f.readlines()
+            lines.reverse()
+
+            for line in lines:
+
+                lineData = line.split('|')
+
+                if lineData[1] == ' PROGRAM_ON ':
+
+                    res.append(lineData[-2])
+
+                    res.reverse()
+                    return res
+
+                else:
+
+                    res.append(line.replace("\n", ""))
