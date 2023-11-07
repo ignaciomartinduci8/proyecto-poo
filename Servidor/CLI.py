@@ -343,22 +343,34 @@ class CLI(Cmd):
 
         except Exception as e:
             print(f"{ROJO}Error - {e}{RESET}")
-
-    def do_toggleLearn(self):
+    
+    def do_toggleLearn(self, args):
         """
         Descripción: Activar/desactivar modo aprendizaje
-        Sintaxis: toggleLearn
+        Sintaxis: toggleLearn [S/N]
         """
+        args = args.upper()
+    
+        if len(args) != 1:
+                print(f"{ROJO}Error - argumentos inválidos.{RESET}")
 
-        try:
+        if args == 'S':
+            try:
+                res = self.controlador.toggleLearn('S')
+                print(f"{GREEN}Respuesta del proceso:{RESET}")
+                print(f"{IDENTATION}{res}{RESET}")
+            except Exception as e:
+                print(f"{ROJO}Error - {e}{RESET}")
 
-            res = self.controlador.toggleLearn()
-
-            print(f"{GREEN}Respuesta del proceso:{RESET}")
-            print(f"{IDENTATION}{res}{RESET}")
-
-        except Exception as e:
-            print(f"{ROJO}Error - {e}{RESET}")
+        elif args == 'N':
+            try:
+                res = self.controlador.toggleLearn('N')
+                print(f"{ROJO}Respuesta del proceso:{RESET}")
+                print(f"{IDENTATION}{res}{RESET}")
+            except Exception as e:
+                print(f"{ROJO}Error - {e}{RESET}")
+        else:
+            print(f"{ROJO}Error - Acción no válida. Use 'S' para activar o 'N' para desactivar el modo aprendizaje.{RESET}")
 
     def do_help(self, args):
         """

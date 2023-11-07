@@ -166,14 +166,25 @@ class Controlador:
             os.fsync(f.fileno())
             f.close()
 
-    def toggleLearn(self):
-
-        self.isLearning = not self.isLearning
-
-        if self.isLearning:
-            return "Modo aprendizaje activado."
-        else:
-            return "Modo aprendizaje desactivado."
+    def toggleLearn(self,onOff):
+        try:
+            if onOff == 'S' and not self.isLearning:
+                self.isLearning = True
+                return "Modo aprendizaje activado."
+            elif onOff == 'S' and self.isLearning:
+                raise Exception ("Modo aprendizaje ya activado")                
+    
+            if onOff == 'N' and self.isLearning:
+                self.isLearning = False
+                return "Modo aprendizaje desactivado."
+            elif onOff == 'N' and not self.isLearning:
+                raise Exception ("Modo aprendizaje ya desactivado")
+            
+            else:
+                raise Exception("Opción no válida")
+            
+        except Exception as e:
+            raise e
 
     def moveEffector(self, x, y, z, s_max=0):
 
@@ -219,14 +230,20 @@ class Controlador:
             raise Exception('Ya se ha activado el effector.')
 
         try:
+            
             self.serial.writeSerial("M3")
-
             res = self.serial.readSerial()
+            inst="M3"
 
             if "INFO" in res:
                 self.robot.setEffectorStatus(True)
                 self.dataLog.logRobotEffector(True)
                 self.learnAutomaticFile("M3")
+
+                if self.isLearning:
+                    
+                    self.learnAutomaticFile(inst)
+
                 return res
             else:
                 raise Exception(res)
@@ -249,12 +266,15 @@ class Controlador:
 
         try:
             self.serial.writeSerial("M5")
-
+            inst="M5"
             res = self.serial.readSerial()
 
             if "INFO" in res:
                 self.robot.setEffectorStatus(False)
                 self.dataLog.logRobotEffector(False)
+                if self.isLearning:
+                    
+                    self.learnAutomaticFile(inst)
                 return res
             else:
                 raise Exception(res)
@@ -272,7 +292,7 @@ class Controlador:
 
         try:
             self.serial.writeSerial("G28")
-
+            inst="G28"
             res = []
 
             for i in range(2):
@@ -293,6 +313,9 @@ class Controlador:
 
                     self.robot.setPosture(res[3])
                     self.dataLog.logHome(self.robot.getPosture()[0],self.robot.getPosture()[1],self.robot.getPosture()[2])
+
+                    if self.isLearning:
+                        self.learnAutomaticFile(inst)
                     return res
 
                 else:
