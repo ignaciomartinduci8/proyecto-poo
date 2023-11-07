@@ -13,6 +13,8 @@ class Servidor:
         self.IP = None
         self.server_thread = None
         self.server = None
+        self.clientName = None
+        self.clientIP = None
         self.abrirServidor()
 
     def prueba(self, a, b):
@@ -21,6 +23,11 @@ class Servidor:
     def listMethods(self):
 
         return self.server.system_listMethods()
+
+    def loopConnection(self):
+
+        self.server.serve_forever()
+
 
     def abrirServidor(self):
 
@@ -34,9 +41,7 @@ class Servidor:
 
             self.serverRegisteringFunctions()
 
-#           server.serve_forever()
-
-            self.server_thread = Thread(target=self.server.serve_forever)
+            self.server_thread = Thread(target=self.loopConnection)
             self.server_thread.start()
 
         except Exception as e:
@@ -63,3 +68,7 @@ class Servidor:
 
         self.server.register_function(self.prueba)
         self.server.register_function(self.listMethods)
+
+    def __del__(self):
+
+        self.cerrarServidor()

@@ -53,3 +53,48 @@ class DataLog:
 
         return file
 
+    def getTime(self):
+
+            now = datetime.datetime.now()
+
+            hour = now.hour
+            minute = now.minute
+            second = now.second
+
+            return f'{hour}:{minute}:{second}'
+
+    def logClientConnection(self, clientName, ip, port, time, onOff):
+
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            if onOff:
+
+                process = 'CLIENT_CONNECT'
+
+            else:
+
+                process = 'CLIENT_DISCONNECT'
+
+            f.write(f"S | {process} | {clientName} | {ip} | {port} | {time}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
+
+
+
+    def logServerStatus(self, onOff):
+
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            if onOff:
+
+                process = 'SERVER_START'
+
+            else:
+
+                process = 'SERVER_STOP'
+
+            f.write(f"S | {process} | {self.getTime()}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()

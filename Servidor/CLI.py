@@ -44,6 +44,7 @@ class CLI(Cmd):
 
                 try:
                     self.servidor1 = Servidor(puerto)
+                    self.dataLog.logServerStatus(True)
                     print(f"Servidor RPC abierto en el puerto {puerto}.")
 
                 except Exception as e:

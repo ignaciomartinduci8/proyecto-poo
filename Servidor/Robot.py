@@ -20,7 +20,6 @@ class Robot:
         self.mappingQuality = 1
         self.goHome()
 
-
     def setMode(self, mode):
 
         self.mode = mode
