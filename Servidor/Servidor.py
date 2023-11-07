@@ -1,5 +1,5 @@
 from xmlrpc.server import SimpleXMLRPCServer
-from threading import Thread
+from threading import Thread, Semaphore
 import socket
 from Controlador import Controlador
 
@@ -16,6 +16,7 @@ class Servidor:
         self.clientName = None
         self.clientIP = None
         self.dataLog = dataLog
+        self.connection_semaphore = Semaphore(1)
         self.abrirServidor()
 
     def prueba(self, a, b):
@@ -26,10 +27,9 @@ class Servidor:
         return self.server.system_listMethods()
 
     def loopConnection(self):
-
-        self.server.serve_forever()
+        with self.connection_semaphore:
+            self.server.serve_forever()
         self.dataLog.logServerStatus(self.IP, self.port, True)
-
 
     def abrirServidor(self):
 
