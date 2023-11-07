@@ -210,7 +210,9 @@ class CLI(Cmd):
 
                 res = self.controlador.setRobotMode(args)
                 print(f"{GREEN}Respuesta del proceso:{RESET}")
-                print(f"{IDENTATION}{res}")
+
+                for i in range(5):
+                    print(f"{IDENTATION}{res[i]}{RESET}")
 
             elif args == "A":
 

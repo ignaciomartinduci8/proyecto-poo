@@ -103,8 +103,15 @@ class Controlador:
                 self.auto_thread.join(timeout=2)
                 self.automatic_file = None
                 self.auto_thread = None
+                self.dataLog.logRobotMode(False)
 
-                return "Modo automático detenido."
+                res = self.goHome()
+
+                res.append("Modo automático detenido.")
+
+                self.robot.setPosture(res[3])
+
+                return res
 
         except Exception as e:
             raise e
@@ -126,6 +133,9 @@ class Controlador:
     def runAutomaticFile(self):
 
         try:
+
+            self.dataLog.logRobotMode(True)
+
             while True:
 
                 with open(f"./Autos/{self.automatic_file}", "r") as f:
@@ -133,10 +143,16 @@ class Controlador:
                     for line in f.readlines():
 
                         self.serial.writeSerial(line)
-                        self.serial.readSerial()
-                        time.sleep(0.5)
+                        time.sleep(.3)
+
+                        for i in range(4):
+                            self.serial.flushInput()
+                            time.sleep(.5)
+
+                        self.dataLog.logAutomatic(line)
 
                     if self.auto_thread is None:
+
                         return "Modo automático detenido."
 
         except Exception as e:
@@ -210,7 +226,7 @@ class Controlador:
             if "INFO" in res:
                 self.robot.setEffectorStatus(True)
                 self.dataLog.logRobotEffector(True)
-                self.learnAutomaticFile("M3\r\n")
+                self.learnAutomaticFile("M3")
                 return res
             else:
                 raise Exception(res)

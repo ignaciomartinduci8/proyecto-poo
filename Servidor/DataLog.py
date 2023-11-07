@@ -202,3 +202,32 @@ class DataLog:
                 else:
 
                     res.append(line.replace("\n", ""))
+
+    def logAutomatic(self, gcode):
+
+        gcode = gcode.replace("\n", "")
+
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            f.write(f"A | {gcode} | {self.getTime()} | {self.user}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
+
+
+    def logRobotMode(self, onOff):
+
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            if onOff:
+
+                process = 'ROBOT_MODE_MANUAL'
+
+            else:
+
+                process = 'ROBOT_MODE_AUTOMATIC'
+
+            f.write(f"R | {process} | {self.getTime()} | {self.user}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
