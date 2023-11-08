@@ -62,7 +62,6 @@ class Servidor:
             self.server.register_function(self.controlador.moveEffector, 'moveEffector')
             self.server.register_function(self.controlador.enableEffector, 'enableEffector')
             self.server.register_function(self.controlador.disableEffector, 'disableEffector')
-            self.server.register_function(self.controlador.goHome, 'goHome')
             self.server.register_function(self.controlador.getRobotStatus, 'getRobotStatus')
             self.server.register_function(self.controlador.report, 'report')
             self.server.register_function(self.controlador.backup, 'backup')
