@@ -56,7 +56,7 @@ void Cliente::executeMethod(std::string method, vector <std::string> outParams) 
 
     char *cstr = new char[method.length() + 1];
 
-    this->client->execute(cstr, noArgs, result);
+    this->client->execute("connect", noArgs, result);
 
     cout << BLUE << "-->" << RESET << " Resultado: " << result << endl;
 
