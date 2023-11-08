@@ -16,7 +16,7 @@ class CLI {
 private:
 
     bool isConnected = false;
-
+    Cliente* cliente;
 
 public:
 

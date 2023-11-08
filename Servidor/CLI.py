@@ -45,7 +45,7 @@ class CLI(Cmd):
             if self.servidor1 is None:
 
                 try:
-                    self.servidor1 = Servidor(puerto, self.dataLog)
+                    self.servidor1 = Servidor(puerto, self.dataLog,self.controlador)
                     print(f"Servidor RPC abierto en el puerto {puerto}.")
 
                 except Exception as e:

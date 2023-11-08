@@ -8,24 +8,27 @@ void Cliente::connect() {
 
     try {
 
-        XmlRpcClient c(this->IP.c_str(), this->PORT, nullptr);
-        cout << "Conexion exitosa" << endl;
-    
+        this->client = new XmlRpcClient(this->IP.c_str(), this->PORT, nullptr);
+
         XmlRpcValue noArgs, result;
 
-        if(c.execute("system.listMethods", noArgs, result)) {
+        if(this->client->execute("system.listMethods", noArgs, result)) {
 
-            cout << "\nResultado:\n " << result << "\n\n";
+            for(int i = 0; i < result.size(); i++){
+
+                this->methods.push_back(result[i]);
+
+            }
 
         }else{
 
-            cout << "Error en la llamada a 'prueba'\n\n";
+            cerr << RED << "-->" << RESET << " Error al obtener los metodos" << endl;
 
         }
 
     }catch (const XmlRpc::XmlRpcException& e) {
 
-        cerr << "Error al conectar: " << e.getMessage() << endl;
+        cerr << RED << "-->" << RESET << " Error al conectar: " << e.getMessage() << endl;
 
     }
 
@@ -40,3 +43,22 @@ Cliente::Cliente(string IP, int PORT) {
     this->connect();
 
 }
+
+vector<string> Cliente::getMethods() {
+
+    return this->methods;
+
+}
+
+void Cliente::executeMethod(std::string method, vector <std::string> outParams) {
+
+    XmlRpcValue noArgs, result;
+
+    char *cstr = new char[method.length() + 1];
+
+    this->client->execute(cstr, noArgs, result);
+
+    cout << BLUE << "-->" << RESET << " Resultado: " << result << endl;
+
+}
+

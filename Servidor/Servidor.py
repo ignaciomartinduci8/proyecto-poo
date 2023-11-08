@@ -1,12 +1,11 @@
 from xmlrpc.server import SimpleXMLRPCServer
 from threading import Thread, Semaphore
 import socket
-from Controlador import Controlador
 
 
 class Servidor:
 
-    def __init__(self, port, dataLog):
+    def __init__(self, port, dataLog, controlador):
 
         self.hostname = None
         self.port = port
@@ -17,6 +16,7 @@ class Servidor:
         self.clientIP = None
         self.dataLog = dataLog
         self.connection_semaphore = Semaphore(1)
+        self.controlador = controlador
         self.abrirServidor()
 
     def prueba(self, a, b):
@@ -41,11 +41,12 @@ class Servidor:
             self.server.register_introspection_functions()
 
             # Funciones de conexion
-            self.server.register_function(Controlador.connect,'conectar')
-            self.server.register_function(Controlador.disconnect,'desconectar')
+            self.server.register_function(self.controlador.connect,'conectar')
+
+            self.server.register_function(self.controlador.disconnect,'desconectar')
 
             # Funciones de movimiento del robot
-            self.server.register_function(Controlador.goHome,'homming')
+            self.server.register_function(self.controlador.goHome,'homing')
 
             self.server_thread = Thread(target=self.loopConnection)
             self.server_thread.start()
