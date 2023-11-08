@@ -1,7 +1,10 @@
 from xmlrpc.server import SimpleXMLRPCServer
 from threading import Thread, Semaphore
 import socket
+from xmlrpc.server import SimpleXMLRPCRequestHandler
 
+class RequestHandler(SimpleXMLRPCRequestHandler):
+    rpc_paths = ('/RPC2',)
 
 class Servidor:
 
@@ -14,6 +17,9 @@ class Servidor:
         self.server = None
         self.clientName = None
         self.clientIP = None
+        self.clientPort = None
+        self.client_socket = None
+        self.client_connected = False
         self.dataLog = dataLog
         self.connection_semaphore = Semaphore(1)
         self.controlador = controlador
@@ -37,16 +43,29 @@ class Servidor:
 
             self.server = SimpleXMLRPCServer((self.IP, self.port))
 
-            #self.serverRegisteringFunctions()
             self.server.register_introspection_functions()
 
+            self.server.register_function(self.setUsername,'setUsername')
             # Funciones de conexion
-            self.server.register_function(self.controlador.connect,'conectar')
-
-            self.server.register_function(self.controlador.disconnect,'desconectar')
-
+            self.server.register_function(self.controlador.connect,'connect')
+            self.server.register_function(self.controlador.disconnect,'disconnect')
+            
             # Funciones de movimiento del robot
-            self.server.register_function(self.controlador.goHome,'homing')
+            self.server.register_function(self.controlador.goHome,'goHome')
+            self.server.register_function(self.controlador.setRobotMode, 'setRobotMode')
+            self.server.register_function(self.controlador.manualMode, 'manualMode')
+            self.server.register_function(self.controlador.listAutomaticFiles, 'listAutomaticFiles')
+            self.server.register_function(self.controlador.automaticMode, 'automaticMode')
+            self.server.register_function(self.controlador.runAutomaticFile, 'runAutomaticFile')
+            self.server.register_function(self.controlador.learnAutomaticFile, 'learnAutomaticFile')
+            self.server.register_function(self.controlador.toggleLearn, 'toggleLearn')
+            self.server.register_function(self.controlador.moveEffector, 'moveEffector')
+            self.server.register_function(self.controlador.enableEffector, 'enableEffector')
+            self.server.register_function(self.controlador.disableEffector, 'disableEffector')
+            self.server.register_function(self.controlador.goHome, 'goHome')
+            self.server.register_function(self.controlador.getRobotStatus, 'getRobotStatus')
+            self.server.register_function(self.controlador.report, 'report')
+            self.server.register_function(self.controlador.backup, 'backup')
 
             self.server_thread = Thread(target=self.loopConnection)
             self.server_thread.start()
@@ -66,6 +85,29 @@ class Servidor:
 
             raise e
 
+    def setUsername(self, username):
+        self.clientName=username
+
+    def getUsername(self):
+        return self.clientName
+
+    def close_client_connection(self):
+        try:
+            if self.client_socket is not None:
+                self.client_socket.close()
+                self.client_socket = None
+                self.client_connected = False
+        except Exception as e:
+            raise e
+    
+    def accept_client_connection(self, client_socket):
+        if not self.client_connected:
+            self.client_socket = client_socket
+            self.clientIP, self.clientPort = client_socket.getpeername()
+            self.client_connected = True
+        else:
+            client_socket.close()
+
     def getServerData(self):
 
         return [self.hostname, self.IP, self.port]
@@ -73,14 +115,3 @@ class Servidor:
     def __del__(self):
 
         self.cerrarServidor()
- 
-    # def listMethods(self):
-
-    #     return self.server.system_listMethods()
-
-    # def serverRegisteringFunctions(self):
-
-    #     self.server.register_introspection_functions()
-
-    #     self.server.register_function(self.prueba)
-    #     self.server.register_function(self.listMethods)

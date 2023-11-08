@@ -2,6 +2,7 @@ from Controlador import Controlador
 from Servidor import Servidor
 from DataLog import DataLog
 from cmd import Cmd
+import time
 
 
 GREEN = "\033[92m"
@@ -376,6 +377,29 @@ class CLI(Cmd):
                 print(f"{ROJO}Error - {e}{RESET}")
         else:
             print(f"{ROJO}Error - Acción no válida. Use 'S' para activar o 'N' para desactivar el modo aprendizaje.{RESET}")
+
+    def do_disconnectClient(self, args):
+        """
+        Descripción: Cierre forzado de cliente
+        Sintaxis: disconnectClient
+        """
+        try:
+            client_info = self.servidor1.getUserName()
+            if client_info:
+                client_name = self.servidor1.clientName
+                print(f"Nombre del cliente conectado:\n{client_name}")
+                choice = input("¿Desea desconectar al cliente? (S/N): ")
+                if choice.upper() == 'S':
+                    self.servidor1.close_client_connection()
+                    self.dataLog.logClientConnection(self.servidor1.clientName, self.servidor1.clientIP, self.servidor1.clientPort, time.strftime("%Y-%m-%d %H:%M:%S"), False)
+                    print(f"Conexión con {client_name} cerrada.")
+                    client_name = None
+                else:
+                    print("No se ha desconectado al cliente.")
+            else:
+                print("No hay cliente conectado.")
+        except Exception as e:
+            raise e
 
     def do_backup(self, args):
 
