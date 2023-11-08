@@ -2,8 +2,8 @@
 // Created by Usuario on 23/10/2023.
 //
 
-#ifndef PROYECTO_SERVIDOR_H
-#define PROYECTO_SERVIDOR_H
+#ifndef PROYECTO_CLIENTE_H
+#define PROYECTO_CLIENTE_H
 
 #include <iostream>
 #include <stdlib.h>
@@ -14,7 +14,7 @@ using namespace std;
 using namespace XmlRpc;
 
 
-class Servidor {
+class Cliente {
 
 private:
 
@@ -23,11 +23,11 @@ private:
 
 public:
 
-    Servidor(string IP, int port);
+    Cliente(string IP, int port);
 
     void connect();
 
 };
 
 
-#endif //PROYECTO_SERVIDOR_H
+#endif //PROYECTO_CLIENTE_H

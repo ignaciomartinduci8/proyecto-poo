@@ -2,18 +2,18 @@
 // Created by Usuario on 23/10/2023.
 //
 
-#include "Servidor.h"
+#include "Cliente.h"
 
-void Servidor::connect() {
+void Cliente::connect() {
 
     try {
 
         XmlRpcClient c(this->IP.c_str(), this->PORT, nullptr);
         cout << "Conexion exitosa" << endl;
 
-        XmlRpcValue result;
+        XmlRpcValue noArgs, result;
 
-        if(c.execute("system.prueba", 2, result)) {
+        if(c.execute("system.listMethods", noArgs, result)) {
 
             cout << "\nResultado:\n " << result << "\n\n";
 
@@ -32,7 +32,7 @@ void Servidor::connect() {
 
 }
 
-Servidor::Servidor(string IP, int PORT) {
+Cliente::Cliente(string IP, int PORT) {
 
     this->IP = IP;
     this->PORT = PORT;

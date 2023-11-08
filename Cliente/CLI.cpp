@@ -18,13 +18,11 @@ void CLI::loop() {
     while(1){
 
         command_segments.clear();
-        Servidor* servidor;
+        Cliente* cliente;
 
         if(!isConnected) {
 
-            cout
-                    << "--> Sistema desconectado, ingrese /connect [IP] [PUERTO] para conectar, o /exit para cerrar el programa"
-                    << endl;
+            cout << "--> Sistema desconectado, ingrese /connect [IP] [PUERTO] para conectar, o /exit para cerrar el programa"<< endl;
             getline(cin, command);
             istringstream stream(command);
 
@@ -52,7 +50,8 @@ void CLI::loop() {
 
                     if (command_segments.size() == 3) {
 
-                        servidor = new Servidor(command_segments.at(1), stoi(command_segments.at(2)));
+                        cliente = new Cliente(command_segments.at(1), stoi(command_segments.at(2)));
+                        this->isConnected = true;
 
 
                     } else {
@@ -80,7 +79,6 @@ void CLI::loop() {
         //cierre if de chequeo de conexion
         }
         else{
-
 
 
         }

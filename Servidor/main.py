@@ -5,29 +5,33 @@ import sys
 
 
 def main():
+    while True:
+        UI = str.upper(input("Bienvenido. Ingrese 'CLI' para utilizar CLI o 'GUI' para utilizar GUI. Para salir, ingrese 'EXIT': "))
+        user = 'ANONYMOUS'
+        user = input("Enter username: ")
 
-    UI = str.upper(input("Enter 'CLI' for CLI or 'GUI' for GUI: "))
+        if UI == "EXIT":
+            sys.exit(1)
 
-    if UI == "CLI":
+        elif UI == "CLI":
+            print("Corriendo CLI...")
+            cli = CLI(user)
+            cli.prompt = '--> '
+            cli.cmdloop('Iniciando entrada de comandos. Usar help para ver comandos. \nAlgunos comandos tienen argumentos opcionales, simbolizados con *')
+            cli = None
 
-        print("Corriendo CLI...")
-        cli = CLI()
-        cli.prompt = '--> '
-        cli.cmdloop('Iniciando entrada de comandos. Usar help para ver comandos.')
+        elif UI == "GUI":
+            print("Corriendo GUI...")
+            app = QApplication(sys.argv)
+            mainWindow = MainWindow()
+            mainWindow.show()
+            sys.exit(app.exec_())
 
-    elif UI == "GUI":
-
-        print("Corriendo GUI...")
-        app = QApplication(sys.argv)
-        mainWindow = MainWindow()
-        mainWindow.show()
-        sys.exit(app.exec_())
-
-    else:
-        print("Opcion no valida.")
-
+        else:
+            print("Opcion no valida.")
 
 
 if __name__ == "__main__":
 
     main()
+
