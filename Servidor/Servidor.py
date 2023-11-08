@@ -2,6 +2,10 @@ from xmlrpc.server import SimpleXMLRPCServer
 from threading import Thread, Semaphore
 import socket
 from Controlador import Controlador
+from xmlrpc.server import SimpleXMLRPCRequestHandler
+
+class RequestHandler(SimpleXMLRPCRequestHandler):
+    rpc_paths = ('/RPC2',)
 
 class Servidor:
 
@@ -15,7 +19,8 @@ class Servidor:
         self.clientName = None
         self.clientIP = None
         self.clientPort = None
-        self.client_info = [] 
+        self.client_socket = None
+        self.client_connected = False
         self.dataLog = dataLog
         self.connection_semaphore = Semaphore(1)
         self.abrirServidor()
@@ -81,12 +86,27 @@ class Servidor:
             raise e
 
     def setUsername(self, username):
-        return self.clientName
+        self.clientName=username
 
     def getUsername(self):
         return self.clientName
 
-    #def close_client_connection(self):
+    def close_client_connection(self):
+        try:
+            if self.client_socket is not None:
+                self.client_socket.close()
+                self.client_socket = None
+                self.client_connected = False
+        except Exception as e:
+            raise e
+    
+    def accept_client_connection(self, client_socket):
+        if not self.client_connected:
+            self.client_socket = client_socket
+            self.clientIP, self.clientPort = client_socket.getpeername()
+            self.client_connected = True
+        else:
+            client_socket.close()
 
     def getServerData(self):
 

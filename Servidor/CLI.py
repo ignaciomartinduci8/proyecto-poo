@@ -386,12 +386,12 @@ class CLI(Cmd):
         try:
             client_info = self.servidor1.getUserName()
             if client_info:
-                client_name = self.servidor1.client_info
+                client_name = self.servidor1.clientName
                 print(f"Nombre del cliente conectado:\n{client_name}")
                 choice = input("¿Desea desconectar al cliente? (S/N): ")
                 if choice.upper() == 'S':
                     self.close_client_connection()
-                    #self.dataLog.logClientConnection(client_name, client_ip, client_port, time.strftime("%Y-%m-%d %H:%M:%S"), False)
+                    self.dataLog.logClientConnection(self.servidor1.clientName, self.servidor1.clientIP, self.servidor1.clientPort, time.strftime("%Y-%m-%d %H:%M:%S"), False)
                     print(f"Conexión con {client_name} cerrada.")
                     client_name = None
                 else:
@@ -400,7 +400,6 @@ class CLI(Cmd):
                 print("No hay cliente conectado.")
         except Exception as e:
             raise e
-
 
     def do_backup(self, args):
 
