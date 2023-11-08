@@ -3,7 +3,6 @@ from threading import Thread, Semaphore
 import socket
 from Controlador import Controlador
 
-
 class Servidor:
 
     def __init__(self, port, dataLog):
@@ -15,6 +14,8 @@ class Servidor:
         self.server = None
         self.clientName = None
         self.clientIP = None
+        self.clientPort = None
+        self.client_info = [] 
         self.dataLog = dataLog
         self.connection_semaphore = Semaphore(1)
         self.abrirServidor()
@@ -37,15 +38,29 @@ class Servidor:
 
             self.server = SimpleXMLRPCServer((self.IP, self.port))
 
-            #self.serverRegisteringFunctions()
             self.server.register_introspection_functions()
 
+            self.server.register_function(self.setUsername,'setUsername')
             # Funciones de conexion
-            self.server.register_function(Controlador.connect,'conectar')
-            self.server.register_function(Controlador.disconnect,'desconectar')
-
+            self.server.register_function(self.controlador.connect,'connect')
+            self.server.register_function(self.controlador.disconnect,'disconnect')
+            
             # Funciones de movimiento del robot
-            self.server.register_function(Controlador.goHome,'homming')
+            self.server.register_function(self.controlador.goHome,'goHome')
+            self.server.register_function(self.controlador.setRobotMode, 'setRobotMode')
+            self.server.register_function(self.controlador.manualMode, 'manualMode')
+            self.server.register_function(self.controlador.listAutomaticFiles, 'listAutomaticFiles')
+            self.server.register_function(self.controlador.automaticMode, 'automaticMode')
+            self.server.register_function(self.controlador.runAutomaticFile, 'runAutomaticFile')
+            self.server.register_function(self.controlador.learnAutomaticFile, 'learnAutomaticFile')
+            self.server.register_function(self.controlador.toggleLearn, 'toggleLearn')
+            self.server.register_function(self.controlador.moveEffector, 'moveEffector')
+            self.server.register_function(self.controlador.enableEffector, 'enableEffector')
+            self.server.register_function(self.controlador.disableEffector, 'disableEffector')
+            self.server.register_function(self.controlador.goHome, 'goHome')
+            self.server.register_function(self.controlador.getRobotStatus, 'getRobotStatus')
+            self.server.register_function(self.controlador.report, 'report')
+            self.server.register_function(self.controlador.backup, 'backup')
 
             self.server_thread = Thread(target=self.loopConnection)
             self.server_thread.start()
@@ -65,6 +80,14 @@ class Servidor:
 
             raise e
 
+    def setUsername(self, username):
+        return self.clientName
+
+    def getUsername(self):
+        return self.clientName
+
+    #def close_client_connection(self):
+
     def getServerData(self):
 
         return [self.hostname, self.IP, self.port]
@@ -72,14 +95,3 @@ class Servidor:
     def __del__(self):
 
         self.cerrarServidor()
- 
-    # def listMethods(self):
-
-    #     return self.server.system_listMethods()
-
-    # def serverRegisteringFunctions(self):
-
-    #     self.server.register_introspection_functions()
-
-    #     self.server.register_function(self.prueba)
-    #     self.server.register_function(self.listMethods)
