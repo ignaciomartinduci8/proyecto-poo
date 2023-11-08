@@ -378,6 +378,27 @@ class CLI(Cmd):
         else:
             print(f"{ROJO}Error - Acción no válida. Use 'S' para activar o 'N' para desactivar el modo aprendizaje.{RESET}")
 
+    def do_acceptClient(self, args):
+        """
+        Descripción: Aceptar la conexión de un cliente
+        Sintaxis: acceptClient
+        """
+    try:
+        if not self.servidor1.client_connected:
+
+            server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
+            server_socket.bind((self.servidor1.IP, self.servidor1.port))
+            server_socket.listen(1)
+            client_socket, client_address = server_socket.accept()
+            
+            self.servidor1.accept_client_connection(client_socket)
+
+            print("Cliente conectado correctamente.")
+        else:
+            print("Ya hay un cliente conectado.")
+    except Exception as e:
+        raise e
+ 
     def do_disconnectClient(self, args):
         """
         Descripción: Cierre forzado de cliente
