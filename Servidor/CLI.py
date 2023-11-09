@@ -304,7 +304,7 @@ class CLI(Cmd):
 
         except Exception as e:
 
-            print(f"{ROJO}Error - {e}{RESET}")
+            print(f"{ROJO}Error - No se ha podido activar los motores{RESET}")
 
     def do_disableMotors(self, args):
         """
@@ -339,6 +339,7 @@ class CLI(Cmd):
             print(f"{IDENTATION}Modo: {res[0]}{RESET}")
             print(f"{IDENTATION}Posición: X:{res[1][0]} mm Y:{res[1][1]} mm Z:{res[1][2]}{RESET} mm")
             print(f"{IDENTATION}Efector: {res[2]}{RESET}")
+            print(f"{IDENTATION}Motores: {res[3]}{RESET}")
 
         except Exception as e:
 

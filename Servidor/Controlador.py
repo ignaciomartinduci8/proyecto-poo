@@ -63,7 +63,7 @@ class Controlador:
                 time.sleep(0.3)
 
             self.robot.setPosture(res[3])
-            self.dataLog.logRobotStatus(self.robot.getMode(),self.robot.getPosture()[0],self.robot.getPosture()[1],self.robot.getPosture()[2],self.robot.getEffectorStatus())
+            self.dataLog.logRobotStatus(self.robot.getMode(),self.robot.getPosture()[0],self.robot.getPosture()[1],self.robot.getPosture()[2],self.robot.getEffectorStatus(),RPCprocess)
             return res
 
         except Exception as e:
@@ -399,7 +399,7 @@ class Controlador:
 
         try:
 
-            self.serial.writeSerial('M17')
+            self.serial.writeSerial("M17")
             res = self.serial.readSerial()
 
             if "INFO" in res:
@@ -527,7 +527,7 @@ class Controlador:
 
         self.dataLog.logRobotStatus(self.robot.getMode(),x,y,z,self.robot.getEffectorStatus(),RPCprocess)
 
-        return [self.robot.getMode(), self.robot.getPosture(), self.robot.getEffectorStatus()]
+        return [self.robot.getMode(), self.robot.getPosture(), self.robot.getEffectorStatus(), self.getMotorsStatus()]
 
     def report(self):
 

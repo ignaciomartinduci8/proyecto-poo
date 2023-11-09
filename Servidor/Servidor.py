@@ -75,6 +75,8 @@ class Servidor:
             self.server.register_function(self.controlador.enableEffector, 'enableEffector')
             self.server.register_function(self.controlador.disableEffector, 'disableEffector')
             self.server.register_function(self.controlador.getRobotStatus, 'getRobotStatus')
+            self.server.register_function(self.controlador.enableMotors, 'enableMotors')
+            self.server.register_function(self.controlador.disableMotors, 'disableMotors')
             self.server.register_function(self.controlador.report, 'report')
 
             self.server_thread = Thread(target=self.loopConnection)
