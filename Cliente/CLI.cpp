@@ -34,21 +34,16 @@ void CLI::waitConnection() {
 }
 
 bool CLI::connectToServer() {
-
     try {
 
-        const char *host = new char[this->ip.length() + 1];
+        const char* host = this->ip.c_str();
 
+        this->client = new XmlRpcClient(host, this->port, nullptr);
 
-        XmlRpcClient c(host, this->port);
-        this->client = c;
         std::cout << "Conexión exitosa al servidor." << std::endl;
         return true;
-
     } catch (XmlRpcException& error) {
         std::cerr << RED << "Error al conectar al servidor: " << error.getMessage() << RESET << std::endl;
         return false;
     }
-
-
 }
