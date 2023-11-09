@@ -1,10 +1,27 @@
+import time
 from xmlrpc.server import SimpleXMLRPCServer
-from threading import Thread, Semaphore
-import socket
 from xmlrpc.server import SimpleXMLRPCRequestHandler
+from threading import Thread
+import socket
+from DataLog import DataLog
 
-class RequestHandler(SimpleXMLRPCRequestHandler):
-    rpc_paths = ('/RPC2',)
+
+class CustomXMLRPCServer(SimpleXMLRPCServer):
+
+    def __init__(self, *args, **kwargs):
+        SimpleXMLRPCServer.__init__(self, *args, **kwargs)
+        self.dataLog = None
+
+    def set_data_log(self, dataLog):
+        self.dataLog = dataLog
+
+    def finish_request(self, request, client_address):
+        print("Client connected from:", client_address)
+
+        self.dataLog.logRPCConnection(client_address[0], client_address[1])
+
+        SimpleXMLRPCServer.finish_request(self, request, client_address)
+
 
 class Servidor:
 
@@ -15,23 +32,17 @@ class Servidor:
         self.IP = None
         self.server_thread = None
         self.server = None
-        self.clientName = None
-        self.clientIP = None
-        self.clientPort = None
-        self.client_socket = None
-        self.client_connected = False
         self.dataLog = dataLog
-        self.connection_semaphore = Semaphore(1)
         self.controlador = controlador
         self.abrirServidor()
 
     def prueba(self, a, b):
-        return a+b
+        return a + b
 
     def loopConnection(self):
-        with self.connection_semaphore:
-            self.server.serve_forever()
+
         self.dataLog.logServerStatus(self.IP, self.port, True)
+        self.server.serve_forever()
 
     def abrirServidor(self):
 
@@ -41,17 +52,18 @@ class Servidor:
             self.IP = socket.gethostbyname(self.hostname)
             self.port = int(self.port)
 
-            self.server = SimpleXMLRPCServer((self.IP, self.port))
+            self.server = CustomXMLRPCServer((self.IP, self.port),logRequests=False, allow_none=True)
+            self.server.set_data_log(self.dataLog)
 
             self.server.register_introspection_functions()
 
-            self.server.register_function(self.setUsername,'setUsername')
+            self.server.register_function(self.setUsername, 'setUsername')
             # Funciones de conexion
-            self.server.register_function(self.controlador.connect,'connect')
-            self.server.register_function(self.controlador.disconnect,'disconnect')
-            
+            self.server.register_function(self.controlador.connect, 'connect')
+            self.server.register_function(self.controlador.disconnect, 'disconnect')
+
             # Funciones de movimiento del robot
-            self.server.register_function(self.controlador.goHome,'goHome')
+            self.server.register_function(self.controlador.goHome, 'goHome')
             self.server.register_function(self.controlador.setRobotMode, 'setRobotMode')
             self.server.register_function(self.controlador.manualMode, 'manualMode')
             self.server.register_function(self.controlador.listAutomaticFiles, 'listAutomaticFiles')
@@ -64,7 +76,6 @@ class Servidor:
             self.server.register_function(self.controlador.disableEffector, 'disableEffector')
             self.server.register_function(self.controlador.getRobotStatus, 'getRobotStatus')
             self.server.register_function(self.controlador.report, 'report')
-            self.server.register_function(self.controlador.backup, 'backup')
 
             self.server_thread = Thread(target=self.loopConnection)
             self.server_thread.start()
@@ -85,32 +96,15 @@ class Servidor:
             raise e
 
     def setUsername(self, username):
-        self.clientName=username
+        self.clientName = username
 
     def getUsername(self):
         return self.clientName
 
-    def close_client_connection(self):
-        try:
-            if self.client_socket is not None:
-                self.client_socket.close()
-                self.client_socket = None
-                self.client_connected = False
-        except Exception as e:
-            raise e
-    
-    def accept_client_connection(self, client_socket):
-        if not self.client_connected:
-            self.client_socket = client_socket
-            self.clientIP, self.clientPort = client_socket.getpeername()
-            self.client_connected = True
-        else:
-            client_socket.close()
-
     def getServerData(self):
 
         return [self.hostname, self.IP, self.port]
-    
+
     def __del__(self):
 
         self.cerrarServidor()

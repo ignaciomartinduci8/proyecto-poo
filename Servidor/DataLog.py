@@ -2,6 +2,7 @@ import os
 import datetime
 import csv
 
+
 class DataLog:
 
     def __init__(self, user):
@@ -67,23 +68,6 @@ class DataLog:
 
         return f'{hour}:{minute}:{second}'
 
-    def logClientConnection(self, clientName, ip, port, time, onOff):
-
-        with open(f'{self.path}/{self.file}', 'a') as f:
-
-            if onOff:
-
-                process = 'CLIENT_CONNECT'
-
-            else:
-
-                process = 'CLIENT_DISCONNECT'
-
-            f.write(f"S | {process} | {clientName} | {ip} | {port} | {time}\n")
-            f.flush()
-            os.fsync(f.fileno())
-            f.close()
-
     def logServerStatus(self, hostIP, port, onOff):
 
         with open(f'{self.path}/{self.file}', 'a') as f:
@@ -96,12 +80,12 @@ class DataLog:
 
                 process = 'SERVER_STOP'
 
-            f.write(f"S | {process} | {hostIP} | {port} | {self.getTime()} | {self.user}\n")
+            f.write(f"{self.getTime()} | S | {process} | {hostIP} | {port}| {self.user}\n")
             f.flush()
             os.fsync(f.fileno())
             f.close()
 
-    def logRobotEffector(self, onOff):
+    def logRobotEffector(self, onOff, RPC):
 
         with open(f'{self.path}/{self.file}', 'a') as f:
 
@@ -113,12 +97,21 @@ class DataLog:
 
                 process = 'EFFECTOR_OFF'
 
-            f.write(f"R | {process} | {self.getTime()} | {self.user}\n")
+            if RPC:
+
+                RPCon = 'RPC | '
+
+            else:
+
+                RPCon = ''
+
+
+            f.write(f"{self.getTime()} | R | {process} | {RPCon}{self.user}\n")
             f.flush()
             os.fsync(f.fileno())
             f.close()
 
-    def logRobotConnection(self, port,baudrate, onOff):
+    def logRobotConnection(self, port,baudrate, onOff, RPC):
 
         with open(f'{self.path}/{self.file}', 'a') as f:
 
@@ -128,27 +121,51 @@ class DataLog:
 
             else:
 
-                process = 'ROBOT:DISCONNECT'
+                process = 'ROBOT_DISCONNECT'
 
-            f.write(f"R | {process} | {port} | {baudrate} | {self.getTime()} | {self.user}\n")
+            if RPC:
+
+                RPCon = 'RPC | '
+
+            else:
+
+                RPCon = ''
+
+            f.write(f"{self.getTime()} | R | {process} | {port} | {baudrate} | {RPCon}{self.user}\n")
             f.flush()
             os.fsync(f.fileno())
             f.close()
 
-    def logRobotMove(self,x,y,z):
+    def logRobotMove(self,x,y,z,RPC):
+
+        if RPC:
+
+            RPCon = 'RPC | '
+
+        else:
+
+            RPCon = ''
 
         with open(f'{self.path}/{self.file}', 'a') as f:
 
-            f.write(f"R | MOVE | {x} | {y} | {z} | {self.getTime()} | {self.user}\n")
+            f.write(f"{self.getTime()} | R | MOVE | {x} | {y} | {z} | {RPCon}{self.user}\n")
             f.flush()
             os.fsync(f.fileno())
             f.close()
 
-    def logHome(self,x,y,z):
+    def logHome(self,x,y,z,RPC):
 
         with open(f'{self.path}/{self.file}', 'a') as f:
 
-            f.write(f"R | HOME | {x} | {y} | {z} | {self.getTime()} | {self.user}\n")
+            if RPC:
+
+                RPCon = 'RPC | '
+
+            else:
+
+                RPCon = ''
+
+            f.write(f"{self.getTime()} | R | HOME | {x} | {y} | {z} | {RPCon}{self.user}\n")
             f.flush()
             os.fsync(f.fileno())
             f.close()
@@ -165,16 +182,24 @@ class DataLog:
 
                 process = 'PROGRAM_OFF'
 
-            f.write(f"P | {process} | {self.getTime()} | {self.user}\n")
+            f.write(f"{self.getTime()} | P | {process} | {self.user}\n")
             f.flush()
             os.fsync(f.fileno())
             f.close()
 
-    def logRobotStatus(self,modo,x,y,z,efector):
+    def logRobotStatus(self,modo,x,y,z,efector,RPC):
 
             with open(f'{self.path}/{self.file}', 'a') as f:
 
-                f.write(f"R | STATUS | {modo} | {x} | {y} | {z} | {efector} | {self.getTime()} | {self.user}\n")
+                if RPC:
+
+                    RPCon = 'RPC | '
+
+                else:
+
+                    RPCon = ''
+
+                f.write(f"{self.getTime()} |R | STATUS | {modo} | {x} | {y} | {z} | {efector} | {RPCon}{self.user}\n")
                 f.flush()
                 os.fsync(f.fileno())
                 f.close()
@@ -192,7 +217,7 @@ class DataLog:
 
                 lineData = line.split('|')
 
-                if lineData[1] == ' PROGRAM_ON ':
+                if lineData[2] == ' PROGRAM_ON ':
 
                     res.append(lineData[-2])
 
@@ -209,13 +234,37 @@ class DataLog:
 
         with open(f'{self.path}/{self.file}', 'a') as f:
 
-            f.write(f"A | {gcode} | {self.getTime()} | {self.user}\n")
+            f.write(f"{self.getTime()} | A | {gcode}  | {self.user}\n")
             f.flush()
             os.fsync(f.fileno())
             f.close()
 
+    def logMotors(self, onOff, RPC):
 
-    def logRobotMode(self, onOff):
+        if onOff:
+
+            process = 'MOTORS_ON'
+
+        else:
+
+            process = 'MOTORS_OFF'
+
+        if RPC:
+
+            RPCon = 'RPC | '
+
+        else:
+
+            RPCon = ''
+
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            f.write(f"{self.getTime()} | R | {process} | {RPCon}{self.user}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
+
+    def logRobotMode(self, onOff, RPC):
 
         with open(f'{self.path}/{self.file}', 'a') as f:
 
@@ -227,10 +276,60 @@ class DataLog:
 
                 process = 'ROBOT_MODE_MANUAL'
 
-            f.write(f"R | {process} | {self.getTime()} | {self.user}\n")
+            if RPC:
+
+                RPCon = 'RPC | '
+
+            else:
+
+                RPCon = ''
+
+            f.write(f" {self.getTime()} | R | {process} | {RPCon}{self.user}\n")
             f.flush()
             os.fsync(f.fileno())
             f.close()
 
+    def logRPCConnection(self, IP, PORT):
+
+            with open(f'{self.path}/{self.file}', 'a') as f:
+
+                f.write(f"{self.getTime()} | RPC | CONNECT | {IP} | {PORT} | {self.user}\n")
+                f.flush()
+                os.fsync(f.fileno())
+                f.close()
+
     def getUser(self):
         return self.user
+
+    def logToggleLearn(self,onff, RPC):
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            if onff:
+
+                process = 'LEARN_ON'
+
+            else:
+
+                process = 'LEARN_OFF'
+
+            if RPC:
+
+                RPCon = 'RPC | '
+
+            else:
+
+                RPCon = ''
+
+            f.write(f"{self.getTime()} | R | {process} | {RPCon}{self.user}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
+
+    def logDisconnectAllClients(self):
+
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            f.write(f"{self.getTime()} | RPC | DISCONNECT_ALL | {self.user}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()

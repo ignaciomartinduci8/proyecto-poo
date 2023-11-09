@@ -289,6 +289,40 @@ class CLI(Cmd):
 
             print(f"{ROJO}Error - {e}{RESET}")
 
+    def do_enableMotors(self, args):
+        """
+            Descripción: Activar motores
+            Sintaxis: enableMotors
+
+        """
+
+        try:
+
+            res = self.controlador.enableMotors()
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+            print(f"{IDENTATION}{res}")
+
+        except Exception as e:
+
+            print(f"{ROJO}Error - {e}{RESET}")
+
+    def do_disableMotors(self, args):
+        """
+            Descripción: Desactivar motores
+            Sintaxis: disableMotors
+
+        """
+
+        try:
+
+            res = self.controlador.disableMotors()
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+            print(f"{IDENTATION}{res}")
+
+        except Exception as e:
+
+            print(f"{ROJO}Error - {e}{RESET}")
+
     def do_getRobotStatus(self, args):
 
         """
@@ -378,56 +412,28 @@ class CLI(Cmd):
         else:
             print(f"{ROJO}Error - Acción no válida. Use 'S' para activar o 'N' para desactivar el modo aprendizaje.{RESET}")
 
-    def do_acceptClient(self, args):
-        """
-        Descripción: Aceptar la conexión de un cliente
-        Sintaxis: acceptClient
-        """
-    try:
-        if not self.servidor1.client_connected:
-
-            server_socket = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
-            server_socket.bind((self.servidor1.IP, self.servidor1.port))
-            server_socket.listen(1)
-            client_socket, client_address = server_socket.accept()
-            
-            self.servidor1.accept_client_connection(client_socket)
-
-            print("Cliente conectado correctamente.")
-        else:
-            print("Ya hay un cliente conectado.")
-    except Exception as e:
-        raise e
- 
-    def do_disconnectClient(self, args):
-        """
-        Descripción: Cierre forzado de cliente
-        Sintaxis: disconnectClient
-        """
-        try:
-            client_info = self.servidor1.getUserName()
-            if client_info:
-                client_name = self.servidor1.clientName
-                print(f"Nombre del cliente conectado:\n{client_name}")
-                choice = input("¿Desea desconectar al cliente? (S/N): ")
-                if choice.upper() == 'S':
-                    self.servidor1.close_client_connection()
-                    self.dataLog.logClientConnection(self.servidor1.clientName, self.servidor1.clientIP, self.servidor1.clientPort, time.strftime("%Y-%m-%d %H:%M:%S"), False)
-                    print(f"Conexión con {client_name} cerrada.")
-                    client_name = None
-                else:
-                    print("No se ha desconectado al cliente.")
-            else:
-                print("No hay cliente conectado.")
-        except Exception as e:
-            raise e
-
     def do_backup(self, args):
 
         print(f"{GREEN}Respuesta del proceso:{RESET}")
         print(f"{IDENTATION}Realizando backup...{RESET}")
         self.controlador.backup()
         print(f"{IDENTATION}Backup realizado.{RESET}")
+
+    def do_disconnectAllClients(self):
+        """
+        Descripción: Desconectar todos los clientes
+        Sintaxis: disconnectAllClients
+        """
+
+        try:
+
+            res = self.controlador.disconnectAllClients()
+
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+            print(f"{IDENTATION}{res}{RESET}")
+
+        except Exception as e:
+            print(f"{ROJO}Error - {e}{RESET}")
 
     def do_help(self, args):
         """
@@ -444,7 +450,7 @@ class CLI(Cmd):
         else:
 
             print('\n' + self.doc_header)
-            print("=============================")
+            print("=========================================================================================================================")
             cmds = []
             for attr in dir(self):
                 if attr.startswith("do_"):
@@ -452,12 +458,29 @@ class CLI(Cmd):
                     cmds.append(cmd_name)
 
             cmds.sort()
+            cmd_buffer = []
+            count = 0
+
             for cmd_name in cmds:
-                print(f" --> {GREEN}{cmd_name}{RESET}")
+
+                cmd_buffer.append(f" --> {GREEN}{cmd_name}{RESET}")
+                count += 1
+                if count == 7 or cmd_name == cmds[-1]:
+                    print("".join(cmd_buffer))
+                    cmd_buffer = []
+                    count = 0
+
             print(f"\nEscribe 'help {GREEN}[comando]{RESET}' para obtener ayuda sobre un comando específico.")
+            print("=========================================================================================================================\n")
 
     def precmd(self, args):
+
+        self.do_help(None)
+
         return args
 
     def preloop(self):
         print('\n========== CLI de servidor ==========')
+        self.do_help(None)
+
+

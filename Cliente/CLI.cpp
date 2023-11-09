@@ -27,13 +27,11 @@ void CLI::loop() {
 
         if (!isConnected) {
 
-            cout
-                    << BLUE << "-->" << RESET << " Sistema desconectado, ingrese /connect [IP] [PUERTO] para conectar, o /exit para cerrar el programa"
-                    << endl;
-            getline(cin, command);
+            cout << BLUE << "-->" << RESET << " Sistema desconectado, ingrese /connect [IP] [PUERTO] para conectar, o /exit para cerrar el programa " << endl;
+            cin >> command;
             istringstream stream(command);
 
-            while (stream >> segment) {
+            whcile (stream >> segment) {
 
                 command_segments.push_back(segment);
 

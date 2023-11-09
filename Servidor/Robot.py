@@ -5,20 +5,29 @@ PI = round(math.pi, 3)
 
 class Robot:
 
-    def __init__(self, name, serial):
+    def __init__(self, name, serial, ancho, altura, profundidad, vMaxAngular, vMaxLineal):
 
         self.serial = serial
         self.name = name
         self.mode = 'M'  # 0 = manual, 1 = automatico
+        self.ancho = ancho
+        self.altura = altura
+        self.profundidad = profundidad
+        self.vMaxAngular = vMaxAngular
+        self.vMaxLineal = vMaxLineal
         self.x = None
         self.y = None
         self.z = None
         self.isEffectorEnabled = False
+        self.motorsEnabled = False
 
     def setMode(self, mode):
         if mode not in ['M', 'A']:
             raise ValueError("Modo no válido. Debe ser 'M' o 'A'.")
         self.mode = mode
+
+    def setMotors(self):
+        pass
 
     def getMode(self):
 
@@ -49,6 +58,10 @@ class Robot:
     def getPosture(self):
 
         return [self.x, self.y, self.z]
+
+    def getMotorsStatus(self):
+
+        return self.motorsEnabled
 
     def setEffectorStatus(self, status):
 
