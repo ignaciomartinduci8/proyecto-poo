@@ -10,17 +10,21 @@ class CustomXMLRPCServer(SimpleXMLRPCServer):
 
     def __init__(self, *args, **kwargs):
         SimpleXMLRPCServer.__init__(self, *args, **kwargs)
-        self.dataLog = None
+        self.clientIP = None
+        self.clientPort = None
 
-    def set_data_log(self, dataLog):
-        self.dataLog = dataLog
 
     def finish_request(self, request, client_address):
         print("Client connected from:", client_address)
 
-        self.dataLog.logRPCConnection(client_address[0], client_address[1])
+        self.clientIP = client_address[0]
+        self.clientPort = client_address[1]
 
         SimpleXMLRPCServer.finish_request(self, request, client_address)
+
+    def getDataClient(self):
+
+        return [self.clientIP, self.clientPort]
 
 
 class Servidor:
@@ -35,6 +39,9 @@ class Servidor:
         self.dataLog = dataLog
         self.controlador = controlador
         self.abrirServidor()
+        self.clientName = None
+        self.clientIP = None
+        self.clientPort = None
 
     def prueba(self, a, b):
         return a + b
@@ -53,14 +60,13 @@ class Servidor:
             self.port = int(self.port)
 
             self.server = CustomXMLRPCServer((self.IP, self.port),logRequests=False, allow_none=True)
-            self.server.set_data_log(self.dataLog)
 
             self.server.register_introspection_functions()
 
             self.server.register_function(self.setUsername, 'setUsername')
             # Funciones de conexion
-            self.server.register_function(self.controlador.connect, 'connect')
-            self.server.register_function(self.controlador.disconnect, 'disconnect')
+            self.server.register_function(self.controlador.connect, 'connectSerial')
+            self.server.register_function(self.controlador.disconnect, 'disconnectSerial')
 
             # Funciones de movimiento del robot
             self.server.register_function(self.controlador.goHome, 'goHome')
@@ -99,6 +105,9 @@ class Servidor:
 
     def setUsername(self, username):
         self.clientName = username
+        self.clientIP, self.clientPort = self.server.getDataClient()
+        self.dataLog.logRPCClientConnected(self.clientIP, self.clientPort, self.clientName)
+        return f"Bievenido al servicio RPC: {username}"
 
     def getUsername(self):
         return self.clientName

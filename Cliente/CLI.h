@@ -10,6 +10,8 @@
 using namespace XmlRpc;
 #include <iostream>
 #include <string>
+#include <iomanip>
+#include <vector>
 
 //definir colores
 #define RESET   "\033[0m"
@@ -25,7 +27,8 @@ private:
     std::string username;
     int port;
     std::string ip;
-    XmlRpcClient client;
+    XmlRpcClient* client = nullptr;
+    std::vector<std::string> methods;
 
 public:
 
@@ -36,6 +39,12 @@ public:
     void waitConnection();
 
     bool connectToServer();
+
+    void programLoop();
+
+    void printMethods();
+
+    void commandController(std::string command);
 
 };
 

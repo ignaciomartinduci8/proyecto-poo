@@ -333,3 +333,12 @@ class DataLog:
             f.flush()
             os.fsync(f.fileno())
             f.close()
+
+    def logRPCClientConnected(self, clientIP, clientPort, clientName):
+
+        with open(f'{self.path}/{self.file}', 'a') as f:
+
+            f.write(f"{self.getTime()} | RPC | CONNECTED_CLIENT | {clientIP} | {clientPort} | {clientName}(RPC) | {self.user}\n")
+            f.flush()
+            os.fsync(f.fileno())
+            f.close()
