@@ -2,6 +2,10 @@ from Controlador import Controlador
 from Servidor import Servidor
 from DataLog import DataLog
 from cmd import Cmd
+from threading import Thread
+from GUI import MainWindow
+import tkinter as tk
+from tkinter import messagebox
 import time
 
 
@@ -9,7 +13,7 @@ GREEN = "\033[92m"
 RESET = "\033[0m"
 ROJO = "\033[91m"
 LIGHT_BLUE = "\033[94m"
-IDENTATION = f"{LIGHT_BLUE}>{RESET}      "
+IDENTATION = f"{LIGHT_BLUE}>{RESET}"
 
 
 class CLI(Cmd):
@@ -18,14 +22,23 @@ class CLI(Cmd):
     undoc_header = "Ayuda de comandos no documentados"
     ruler = "="
 
-    def __init__(self, user):
+    def __init__(self, user, GUI):
         super().__init__()
-        self.completekey = 'Tab'
+        self.completekey = 'tab'
         self.servidor1 = None
         self.dataLog = DataLog(user)
         self.controlador = Controlador(self.dataLog)
         self.serverUser = user
         self.dataLog.logProgram(True)
+
+        self.GUI = None
+
+        if GUI:
+            self.threadGUI = Thread(target=self.runGUI)
+            self.threadGUI.start()
+
+    def runGUI(self):
+        self.GUI = MainWindow()
 
     def do_RPCon(self, puerto):
         """
@@ -106,7 +119,7 @@ class CLI(Cmd):
 
             puerto, baudrate = args.split(" ")
 
-            res = self.controlador.connect(puerto, baudrate)
+            res = self.controlador.connect(puerto, baudrate, "ADMIN")
             print(f"{GREEN}Respuesta del proceso:{RESET}")
 
             for i in res:
@@ -131,7 +144,7 @@ class CLI(Cmd):
 
         try:
 
-            res = self.controlador.disconnect()
+            res = self.controlador.disconnect("ADMIN")
             print(f"{GREEN}Respuesta del proceso:{RESET}")
             print(f"{IDENTATION}{res}{RESET}")
 
@@ -148,7 +161,7 @@ class CLI(Cmd):
 
         try:
 
-            res = self.controlador.goHome()
+            res = self.controlador.goHome("ADMIN")
             print(f"{GREEN}Respuesta del proceso:{RESET}")
 
             for i in range(4):
@@ -170,9 +183,9 @@ class CLI(Cmd):
             args = args.split(" ")
 
             if len(args) == 4:
-                res = self.controlador.moveEffector(args[0], args[1], args[2], args[3])
+                res = self.controlador.moveEffector(args[0], args[1], args[2], args[3],"ADMIN")
             elif len(args) == 3:
-                res = self.controlador.moveEffector(args[0], args[1], args[2])
+                res = self.controlador.moveEffector(args[0], args[1], args[2],"ADMIN")
 
             else:
                 print(f"{ROJO}Error - argumentos inválidos.{RESET}")
@@ -186,6 +199,15 @@ class CLI(Cmd):
             print(f"{ROJO}Error - argumentos inválidos.{RESET}")
 
         except Exception as e:
+
+            if "OUTSIDE" in str(e):
+
+                root = tk.Tk()
+                root.withdraw()
+                messagebox.showerror("Error", "Posición fuera de rango.")
+                root.lift()
+                root.focus_force()
+                root.destroy()
 
             print(f"{ROJO}Error - {e}{RESET}")
 
@@ -209,7 +231,7 @@ class CLI(Cmd):
                     print(f"{ROJO}Error - El robot ya está en modo manual.{RESET}")
                     return
 
-                res = self.controlador.setRobotMode(args)
+                res = self.controlador.setRobotMode(args,"ADMIN")
                 print(f"{GREEN}Respuesta del proceso:{RESET}")
 
                 for i in range(5):
@@ -234,7 +256,7 @@ class CLI(Cmd):
 
                 file = input(f"Ingrese el nombre del archivo a ejecutar: ")
 
-                self.controlador.setRobotMode('A', file)
+                self.controlador.setRobotMode('A', file,"ADMIN")
 
             else:
 
@@ -263,7 +285,7 @@ class CLI(Cmd):
 
         try:
 
-            res = self.controlador.enableEffector()
+            res = self.controlador.enableEffector("ADMIN")
 
             print(f"{GREEN}Respuesta del proceso:{RESET}")
             print(f"{IDENTATION}{res}")
@@ -281,7 +303,7 @@ class CLI(Cmd):
 
         try:
 
-            self.controlador.disableEffector()
+            self.controlador.disableEffector("ADMIN")
             print(f"{GREEN}Respuesta del proceso:{RESET}")
             print(f"{IDENTATION}Efector desactivado.{RESET}")
 
@@ -298,7 +320,7 @@ class CLI(Cmd):
 
         try:
 
-            res = self.controlador.enableMotors()
+            res = self.controlador.enableMotors("ADMIN")
             print(f"{GREEN}Respuesta del proceso:{RESET}")
             print(f"{IDENTATION}{res}")
 
@@ -315,7 +337,7 @@ class CLI(Cmd):
 
         try:
 
-            res = self.controlador.disableMotors()
+            res = self.controlador.disableMotors("ADMIN")
             print(f"{GREEN}Respuesta del proceso:{RESET}")
             print(f"{IDENTATION}{res}")
 
@@ -384,34 +406,31 @@ class CLI(Cmd):
     def do_toggleLearn(self, args):
         """
         Descripción: Activar/desactivar modo aprendizaje
-        Sintaxis: toggleLearn [S/N]
+        Sintaxis: toggleLearn [S/N] [*filename]
         """
-        args = args.upper()
-    
-        if len(args) != 1:
-                print(f"{ROJO}Error - argumentos inválidos.{RESET}")
+        args = args.split(" ")
 
-        if args == 'S':
-            try:
+        if len(args) == 1:
+            onOff = args[0]
+            filename = None
 
-                filename = input(f"Ingrese el nombre del archivo a guardar: ")
+        elif len(args) == 2:
+            onOff = args[0]
+            filename = args[1]
 
-                res = self.controlador.toggleLearn('S', filename)
-                print(f"{GREEN}Respuesta del proceso:{RESET}")
-                print(f"{IDENTATION}{res}{RESET}")
-
-            except Exception as e:
-                print(f"{ROJO}Error - {e}{RESET}")
-
-        elif args == 'N':
-            try:
-                res = self.controlador.toggleLearn('N')
-                print(f"{GREEN}Respuesta del proceso:{RESET}")
-                print(f"{IDENTATION}{res}{RESET}")
-            except Exception as e:
-                print(f"{ROJO}Error - {e}{RESET}")
         else:
-            print(f"{ROJO}Error - Acción no válida. Use 'S' para activar o 'N' para desactivar el modo aprendizaje.{RESET}")
+            print(f"{ROJO}Error - argumentos inválidos.{RESET}")
+
+        try:
+
+            res = self.controlador.toggleLearn(onOff, filename, "ADMIN")
+
+            print(f"{GREEN}Respuesta del proceso:{RESET}")
+            print(f"{IDENTATION}{res}{RESET}")
+
+        except Exception as e:
+
+            print(f"{ROJO}Error - {e}{RESET}")
 
     def do_backup(self, args):
 
@@ -428,7 +447,7 @@ class CLI(Cmd):
 
         try:
 
-            res = self.controlador.disconnectAllClients()
+            res = self.controlador.disconnectAllClients("ADMIN")
 
             print(f"{GREEN}Respuesta del proceso:{RESET}")
             print(f"{IDENTATION}{res}{RESET}")

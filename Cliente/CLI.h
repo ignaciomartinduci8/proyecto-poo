@@ -16,6 +16,8 @@ using namespace XmlRpc;
 #include <sstream>
 #include <iomanip>
 #include <vector>
+#include <random>
+#include <fstream>
 
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
@@ -28,6 +30,7 @@ private:
 
     bool isConnected = false;
     std::string username;
+    int ID;
     int port;
     std::string ip;
     XmlRpcClient* client = nullptr;
@@ -48,6 +51,8 @@ public:
     void printMethods();
 
     void commandController(std::string command);
+
+    bool argsCheck(const char* XmlCommand, XmlRpcValue args);
 
 };
 

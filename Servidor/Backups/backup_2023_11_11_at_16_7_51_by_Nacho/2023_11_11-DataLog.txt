@@ -1,0 +1,200 @@
+3-2023_11_11
+10:47:18 | P | PROGRAM_ON | Nacho
+10:47:21 | S | SERVER_START | 192.168.1.34 | 8000| Nacho
+10:47:36 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58625 | Ignacio(RPC) | Nacho
+10:51:6 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 59491 | Ignacio(RPC) | Nacho
+10:53:16 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 60033 | asda(RPC) | Nacho
+10:59:5 | R | ROBOT_CONNECT | COM3 | 115200 | Nacho
+10:59:7 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Nacho
+11:2:47 | P | PROGRAM_ON | Nacho
+11:3:2 | R | ROBOT_CONNECT | COM3 | 115200 | Nacho
+11:3:5 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Nacho
+11:4:17 | P | PROGRAM_ON | asd
+11:4:23 | R | ROBOT_CONNECT | COM3 | 115200 | asd
+11:4:26 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | asd
+11:5:14 | P | PROGRAM_ON | ansd
+11:5:20 | R | ROBOT_CONNECT | COM3 | 115200 | ansd
+11:5:23 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | ansd
+11:6:10 | P | PROGRAM_ON | dsf
+11:6:16 | R | ROBOT_CONNECT | COM3 | 115200 | dsf
+11:6:19 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | dsf
+11:7:30 | P | PROGRAM_ON | dsf
+11:7:35 | R | ROBOT_CONNECT | COM3 | 115200 | dsf
+11:7:38 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | dsf
+11:8:27 | P | PROGRAM_ON | nacho
+11:8:31 | R | ROBOT_CONNECT | COM3 | 115200 | nacho
+11:8:34 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | nacho
+11:9:25 | P | PROGRAM_ON | cdsaf
+11:9:29 | R | ROBOT_CONNECT | COM3 | 115200 | cdsaf
+11:9:32 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | cdsaf
+11:9:59 | P | PROGRAM_ON | safas
+11:10:3 | R | ROBOT_CONNECT | COM3 | 115200 | safas
+11:10:6 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | safas
+11:10:45 | P | PROGRAM_ON | ads
+11:10:50 | R | ROBOT_CONNECT | COM3 | 115200 | ads
+11:10:53 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | ads
+11:11:7 | P | PROGRAM_ON | casd
+11:11:13 | R | ROBOT_CONNECT | COM3 | 115200 | casd
+11:11:16 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | casd
+11:13:16 | P | PROGRAM_ON | asd
+11:13:20 | R | ROBOT_CONNECT | COM3 | 115200 | asd
+11:13:23 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | asd
+11:15:42 | P | PROGRAM_ON | Nacho
+11:15:47 | R | ROBOT_CONNECT | COM3 | 115200 | Nacho
+11:15:50 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Nacho
+11:17:18 | P | PROGRAM_ON | Nah
+11:17:25 | R | ROBOT_CONNECT | COM3 | 115200 | Nah
+11:17:28 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Nah
+11:22:22 | P | PROGRAM_ON | ads
+11:22:25 | S | SERVER_START | 192.168.1.34 | 8000| ads
+11:22:32 | R | ROBOT_CONNECT | COM3 | 115200 | ads
+11:22:35 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | ads
+11:24:31 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 63075 | sad(RPC) | ads
+11:25:7 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 63089 | asd(RPC) | ads
+11:26:40 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 63103 | IGNACIO(RPC) | ads
+11:27:5 | R | ROBOT_CONNECT | COM3 | 115200 | ads
+11:27:8 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | ads
+11:27:16 | R | EFFECTOR_ON | ads
+11:27:20 | R | LEARN_ON | ads
+11:27:27 | R | ROBOT_DISCONNECT | COM3 | 115200 | ads
+11:36:14 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 63262 | sad(RPC) | ads
+11:54:2 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 63497 | ad(RPC) | ads
+11:54:51 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 63505 | sad(RPC) | ads
+11:57:43 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 63576 | asd(RPC) | ads
+11:58:27 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 63583 | sad(RPC) | ads
+11:59:26 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 63595 | enableMotors(RPC) | ads
+12:15:29 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 63769 | sad(RPC) | ads
+12:16:48 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 63801 | SAD(RPC) | ads
+12:19:17 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 63848 | sda(RPC) | ads
+12:25:19 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 64049 | IGNACIO(RPC) | ads
+12:25:58 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 64057 | sda(RPC) | ads
+12:26:57 | R | ROBOT_CONNECT | COM3 | 115200 | ads
+12:27:0 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | ads
+12:32:34 | R | LEARN_OFF | ads
+12:32:37 | R | LEARN_ON | ads
+12:32:41 | R | LEARN_OFF | ads
+12:33:58 | R | ROBOT_DISCONNECT | COM3 | 115200 | ads
+13:20:1 | P | PROGRAM_ON | Nacho
+13:20:5 | S | SERVER_START | 192.168.1.34 | 8000| Nacho
+13:32:9 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 55793 | Pedro(RPC) | Nacho
+13:32:13 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 55795 | Ignacio(RPC) | Nacho
+13:32:20 | R | ROBOT_CONNECT | COM3 | 115200 | RPC | Nacho
+13:32:23 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | RPC | Nacho
+13:32:45 | R | EFFECTOR_ON | Nacho
+13:34:17 | R | MOVE | 100.0 | 200.0 | 100.0 | RPC | Nacho
+13:34:28 | R | MOVE | 100.0 | 200.0 | 100.0 | RPC | Nacho
+15:0:8 | P | PROGRAM_ON | Nacho
+15:0:12 | S | SERVER_START | 192.168.1.34 | 8000| Nacho
+15:0:41 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 57917 | Pedro(RPC) | Nacho
+15:0:49 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 57919 | Nacho(RPC) | Nacho
+15:2:10 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 57932 | Nacho(RPC) | Nacho
+15:2:19 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 57938 | Nacho(RPC) | Nacho
+15:3:48 | P | PROGRAM_ON | Nacho
+15:3:55 | S | SERVER_START | 192.168.1.34 | 8000| Nacho
+15:7:32 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58005 | nacho(RPC) | Nacho
+15:8:46 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58030 | adsa(RPC) | Nacho
+15:9:50 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58047 | 1da(RPC) | Nacho
+15:11:22 | P | PROGRAM_ON | NACHO
+15:11:30 | S | SERVER_START | 192.168.1.34 | 8000| NACHO
+15:11:40 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58071 | Nacho(RPC) | NACHO
+15:12:41 | P | PROGRAM_ON | Nacho
+15:12:46 | S | SERVER_START | 192.168.1.34 | 8000| Nacho
+15:12:58 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58079 | Nacho(RPC) | Nacho
+15:13:1 | RPC | DISCONNECTED_CLIENT | 192.168.1.34 | 58080 | None(RPC) | Nacho
+15:14:41 | P | PROGRAM_ON | Nacho
+15:14:44 | S | SERVER_START | 192.168.1.34 | 8000| Nacho
+15:14:55 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58093 | Nacho(RPC) | Nacho
+15:15:6 | RPC | DISCONNECTED_CLIENT | 192.168.1.34 | 58094 | None(RPC) | Nacho
+15:15:44 | P | PROGRAM_ON | nachoi
+15:15:49 | S | SERVER_START | 192.168.1.34 | 8000| nachoi
+15:15:59 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58098 | asd(RPC) | nachoi
+15:16:4 | RPC | DISCONNECTED_CLIENT | 192.168.1.34 | 58101 | None(RPC) | nachoi
+15:16:27 | P | PROGRAM_ON | asd
+15:16:31 | S | SERVER_START | 192.168.1.34 | 8000| asd
+15:16:44 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58111 | Nacho(RPC) | asd
+15:16:47 | RPC | DISCONNECTED_CLIENT | 192.168.1.34 | 58112 | None(RPC) | asd
+15:17:34 | P | PROGRAM_ON | asdasdç
+15:17:36 | S | SERVER_START | 192.168.1.34 | 8000| asdasdç
+15:17:44 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58119 | asdad(RPC) | asdasdç
+15:17:52 | RPC | DISCONNECTED_CLIENT | 192.168.1.34 | 58121 | None(RPC) | asdasdç
+15:19:11 | P | PROGRAM_ON | Nacho
+15:19:13 | S | SERVER_START | 192.168.1.34 | 8000| Nacho
+15:19:18 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58138 | nsad(RPC) | Nacho
+15:19:20 | RPC | DISCONNECTED_CLIENT | 192.168.1.34 | 58139 | None(RPC) | Nacho
+15:21:45 | P | PROGRAM_ON | Nacho
+15:21:47 | S | SERVER_START | 192.168.1.34 | 8000| Nacho
+15:23:32 | P | PROGRAM_ON | asda
+15:23:36 | S | SERVER_START | 192.168.1.34 | 8000| asda
+15:23:44 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58195| ignacio | asda
+15:23:55 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58201| pedro | asda
+15:24:1 | RPC | DISCONNECTED_CLIENT | 192.168.1.34 | 58202|  | asda
+15:24:5 | RPC | DISCONNECTED_CLIENT | 192.168.1.34 | 58203|  | asda
+15:25:27 | P | PROGRAM_ON | asd
+15:25:35 | S | SERVER_START | 192.168.1.34 | 8000| asd
+15:25:42 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 58240 | sadad | asd
+15:25:51 | RPC | DISCONNECTED_CLIENT | 192.168.1.34 | 58246 | asd
+15:42:45 | P | PROGRAM_ON | sad
+15:42:50 | R | ROBOT_CONNECT | COM3 | 115200 | sad
+15:42:53 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | sad
+15:42:59 | R | MOVE | 110.0 | 210.0 | 110.0 | sad
+15:43:8 |R | STATUS | M | 110.0 | 210.0 | 110.0 | False | sad
+15:43:15 |R | STATUS | M | 110.0 | 210.0 | 110.0 | False | sad
+15:43:49 | P | PROGRAM_ON | sad
+15:43:52 | R | ROBOT_CONNECT | COM3 | 115200 | sad
+15:43:55 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | sad
+15:44:0 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | sad
+15:47:4 | R | ROBOT_DISCONNECT | COM3 | 115200 | sad
+15:47:24 | S | SERVER_START | 192.168.1.34 | 8000| sad
+15:47:41 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 59592 | ignacio(C ) | sad
+15:48:4 | R | ROBOT_CONNECT | COM3 | 115200 | sad
+15:48:7 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | sad
+15:48:26 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | sad
+15:49:23 | RPC | CONNECTED_CLIENT | 192.168.1.34 | 59604 | pedro(C ) | sad
+15:51:46 | P | PROGRAM_ON | Nacho
+15:53:4 | R | ROBOT_CONNECT | COM3 | 115200 | Nacho
+15:53:7 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Nacho
+15:53:23 | R | HOME | 0.0 | 170.0 | 120.0 | Nacho
+15:54:0 | R | MOVE | 100.0 | 200.0 | 100.0 | Nacho
+15:54:5 | R | MOVE | 100.0 | 200.0 | 100.0 | Nacho
+15:55:47 | P | PROGRAM_ON | Nacho
+15:55:51 | R | ROBOT_CONNECT | COM3 | 115200 | Nacho
+15:55:54 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Nacho
+15:57:12 | P | PROGRAM_ON | asda
+15:57:15 | R | ROBOT_CONNECT | COM3 | 115200 | asda
+15:57:18 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | asda
+15:58:37 | P | PROGRAM_ON | Nacho
+15:59:13 | R | ROBOT_CONNECT | COM3 | 115200 | Nacho
+15:59:16 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Nacho
+15:59:54 | P | PROGRAM_ON | tdaasdasd
+15:59:58 | R | ROBOT_CONNECT | COM3 | 115200 | tdaasdasd
+16:0:1 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | tdaasdasd
+16:0:46 | P | PROGRAM_ON | Nacho
+16:0:49 | R | ROBOT_CONNECT | COM3 | 115200 | Nacho
+16:0:52 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Nacho
+16:1:1 | R | LEARN_ON | Nacho
+16:1:32 | R | HOME | 0.0 | 170.0 | 120.0 | Nacho
+16:1:41 | R | MOVE | 110.0 | 210.0 | 110.0 | Nacho
+16:1:49 | R | EFFECTOR_ON | Nacho
+16:1:52 | R | EFFECTOR_OFF | Nacho
+16:1:58 | R | HOME | 0.0 | 170.0 | 120.0 | Nacho
+16:2:1 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Nacho
+16:3:2 | P | PROGRAM_ON | Nacho
+16:3:6 | R | ROBOT_CONNECT | COM3 | 115200 | Nacho
+16:3:9 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Nacho
+16:4:6 | P | PROGRAM_ON | Nacho
+16:4:17 | R | ROBOT_CONNECT | COM3 | 115200 | Nacho
+16:4:20 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Nacho
+16:4:27 | R | LEARN_ON | Nacho
+16:4:34 | R | HOME | 0.0 | 170.0 | 120.0 | Nacho
+16:4:39 | R | LEARN_OFF | Nacho
+16:6:27 | P | PROGRAM_ON | Nacho
+16:6:31 | S | SERVER_START | 192.168.1.34 | 8000| Nacho
+16:6:49 | R | ROBOT_CONNECT | COM3 | 115200 | Nacho
+16:6:52 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Nacho
+16:7:5 | R | LEARN_ON | Nacho
+16:7:9 | R | HOME | 0.0 | 170.0 | 120.0 | Nacho
+16:7:14 | R | MOVE | 110.0 | 210.0 | 110.0 | Nacho
+16:7:33 | R | EFFECTOR_ON | Nacho
+16:7:38 | R | EFFECTOR_OFF | Nacho
+16:7:42 | R | HOME | 0.0 | 170.0 | 120.0 | Nacho
+16:7:46 | R | LEARN_OFF | Nacho

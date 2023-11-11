@@ -28,7 +28,10 @@ class Controlador:
 
         RPCprocess = False
 
-        if self.workingID is not None and self.workingID != ID:
+        if ID == "ADMIN":
+            pass;
+
+        elif self.workingID is not None and self.workingID != ID:
 
             raise Exception("Otro cliente está conectando el robot.")
 
@@ -76,7 +79,10 @@ class Controlador:
 
         RPCprocess = False
 
-        if self.workingID is not None and self.workingID != ID:
+        if ID == "ADMIN":
+            pass
+
+        elif self.workingID is not None and self.workingID != ID:
             raise Exception("Otro cliente está conectado al robot.")
 
         elif self.workingID is not None and self.workingID == ID:
@@ -104,7 +110,10 @@ class Controlador:
 
         RPCprocess = False
 
-        if self.workingID is not None and self.workingID != ID:
+        if ID == "ADMIN":
+            pass
+
+        elif self.workingID is not None and self.workingID != ID:
             raise Exception("Otro cliente está conectado al robot.")
 
         elif self.workingID is not None and self.workingID == ID:
@@ -213,7 +222,10 @@ class Controlador:
 
         RPCprocess = False
 
-        if self.workingID is not None and self.workingID != ID:
+        if ID == "ADMIN":
+            pass
+
+        elif self.workingID is not None and self.workingID != ID:
             raise Exception("Otro cliente está conectado al robot.")
 
         elif self.workingID is not None and self.workingID == ID:
@@ -223,9 +235,15 @@ class Controlador:
             raise Exception("No se ha conectado un robot.")
 
         try:
-            if onOff == 'S' and not self.isLearning:
-                self.isLearning = True
+            if onOff not in ['S','N']:
+                raise Exception("Opción no válida")
 
+            if onOff == 'S' and filename is None:
+                raise Exception("Debe proporcionar un nombre de archivo para guardar el modo automático.")
+
+            if onOff == 'S' and not self.isLearning:
+
+                self.isLearning = True
                 self.automatic_file = filename
                 self.dataLog.logToggleLearn(True,RPCprocess)
 
@@ -241,16 +259,16 @@ class Controlador:
                 raise Exception ("Modo aprendizaje ya activado")                
     
             elif onOff == 'N' and self.isLearning:
+
                 self.isLearning = False
                 self.dataLog.logToggleLearn(False,RPCprocess)
+
                 return "Modo aprendizaje desactivado."
 
             elif onOff == 'N' and not self.isLearning:
+
                 raise Exception ("Modo aprendizaje ya desactivado")
-            
-            else:
-                raise Exception("Opción no válida")
-            
+
         except Exception as e:
             raise e
 
@@ -258,7 +276,10 @@ class Controlador:
 
         RPCprocess = False
 
-        if self.workingID is not None and self.workingID != ID:
+        if ID == "ADMIN":
+            pass
+
+        elif self.workingID is not None and self.workingID != ID:
             raise Exception("Otro cliente está conectado al robot.")
 
         elif self.workingID is not None and self.workingID == ID:
@@ -299,7 +320,10 @@ class Controlador:
 
         RPCprocess = False
 
-        if self.workingID is not None and self.workingID != ID:
+        if ID == "ADMIN":
+            pass
+
+        elif self.workingID is not None and self.workingID != ID:
             raise Exception("Otro cliente está conectado al robot.")
 
         elif self.workingID is not None and self.workingID == ID:
@@ -340,7 +364,10 @@ class Controlador:
 
         RPCprocess = False
 
-        if self.workingID is not None and self.workingID != ID:
+        if ID == "ADMIN":
+            pass
+
+        elif self.workingID is not None and self.workingID != ID:
             raise Exception("Otro cliente está conectado al robot.")
 
         elif self.workingID is not None and self.workingID == ID:
@@ -379,7 +406,10 @@ class Controlador:
 
         RPCprocess = False
 
-        if self.workingID is not None and self.workingID != ID:
+        if ID == "ADMIN":
+            pass
+
+        elif self.workingID is not None and self.workingID != ID:
             raise Exception("Otro cliente está conectado al robot.")
 
         elif self.workingID is not None and self.workingID == ID:
@@ -420,7 +450,10 @@ class Controlador:
 
         RPCprocess = False
 
-        if self.workingID is not None and self.workingID != ID:
+        if ID == "ADMIN":
+            pass
+
+        elif self.workingID is not None and self.workingID != ID:
             raise Exception("Otro cliente está conectado al robot.")
 
         elif self.workingID is not None and self.workingID == ID:
@@ -461,7 +494,10 @@ class Controlador:
 
         RPCprocess = False
 
-        if self.workingID is not None and self.workingID != ID:
+        if ID == "ADMIN":
+            pass
+
+        elif self.workingID is not None and self.workingID != ID:
             raise Exception("Otro cliente está conectado al robot.")
 
         elif self.workingID is not None and self.workingID == ID:
@@ -527,7 +563,7 @@ class Controlador:
 
         self.dataLog.logRobotStatus(self.robot.getMode(),x,y,z,self.robot.getEffectorStatus(),RPCprocess)
 
-        return [self.robot.getMode(), self.robot.getPosture(), self.robot.getEffectorStatus(), self.getMotorsStatus()]
+        return [self.robot.getMode(), self.robot.getPosture(), self.robot.getEffectorStatus(), self.robot.getMotorsStatus()]
 
     def report(self):
 
@@ -581,8 +617,33 @@ class Controlador:
 
             raise e
 
-    def disconnectAllClients(self):
+    def disconnectAllClients(self, ID=None):
 
-        self.workingID = None
-        self.dataLog.logDisconnectAllClients()
+        if ID == "ADMIN":
+            pass
+
+        elif self.workingID is not None and self.workingID != ID:
+            pass
+        elif self.workingID is not None and self.workingID == ID:
+            self.workingID = None
+
         return "Todos los clientes desconectados."
+
+
+    def uploadAutomaticFile(self, filename, content):
+
+        try:
+
+            if not os.path.exists("./Autos"):
+                os.makedirs("./Autos")
+
+            with open(f"./Autos/{filename}", "w") as f:
+                f.write("================== GCODE AUTOMATICO ==================\n")
+                f.write(content)
+                f.flush()
+                os.fsync(f.fileno())
+                f.close()
+
+        except Exception as e:
+
+            raise e

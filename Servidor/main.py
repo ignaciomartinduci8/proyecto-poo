@@ -1,10 +1,9 @@
 from CLI import CLI
-from GUI import MainWindow
-from PyQt5.QtWidgets import QApplication
 import sys
 
 
 def main():
+
     while True:
         UI = str.upper(input("Bienvenido. Ingrese 'CLI' para utilizar CLI o 'GUI' para utilizar GUI. Para salir, ingrese 'EXIT': "))
         user = 'ANONYMOUS'
@@ -15,17 +14,17 @@ def main():
 
         elif UI == "CLI":
             print("Corriendo CLI...")
-            cli = CLI(user)
+            cli = CLI(user, False)
             cli.prompt = '--> '
             cli.cmdloop('Iniciando entrada de comandos. Usar help para ver comandos. \nAlgunos comandos tienen argumentos opcionales, simbolizados con *')
             cli = None
 
         elif UI == "GUI":
-            print("Corriendo GUI...")
-            app = QApplication(sys.argv)
-            mainWindow = MainWindow()
-            mainWindow.show()
-            sys.exit(app.exec_())
+            print("Corriendo CLI con GUI...")
+            cli = CLI(user, True)
+            cli.prompt = '--> '
+            cli.cmdloop('Iniciando entrada de comandos. Usar help para ver comandos. \nAlgunos comandos tienen argumentos opcionales, simbolizados con *')
+            cli = None
 
         else:
             print("Opcion no valida.")

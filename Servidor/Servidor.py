@@ -13,7 +13,6 @@ class CustomXMLRPCServer(SimpleXMLRPCServer):
         self.clientIP = None
         self.clientPort = None
 
-
     def finish_request(self, request, client_address):
         print("Client connected from:", client_address)
 
@@ -39,9 +38,6 @@ class Servidor:
         self.dataLog = dataLog
         self.controlador = controlador
         self.abrirServidor()
-        self.clientName = None
-        self.clientIP = None
-        self.clientPort = None
 
     def prueba(self, a, b):
         return a + b
@@ -59,8 +55,9 @@ class Servidor:
                 "- goHome \n" \
                 "- setRobotMode [M/A] \n" \
                 "- setUsername [username] \n" \
+                "- uploadAutomaticFile [filename]\n"\
                 "- listAutomaticFiles \n" \
-                "- toggleLearn [S/N]\n" \
+                "- toggleLearn [S/N] [*filename]\n" \
                 "- moveEffector [X:valor] [Y:valor] [Z:valor] [E:valor] \n" \
                 "- enableEffector \n" \
                 "- disableEffector \n" \
@@ -69,7 +66,6 @@ class Servidor:
                 "- disableMotors \n" \
                 "- report \n" \
                 "- help \n"
-
 
     def abrirServidor(self):
 
@@ -100,10 +96,22 @@ class Servidor:
             self.server.register_function(self.controlador.enableMotors, 'enableMotors')
             self.server.register_function(self.controlador.disableMotors, 'disableMotors')
             self.server.register_function(self.controlador.report, 'report')
+            self.server.register_function(self.userLeaves, 'userLeaves')
             self.server.register_function(self.help, 'help')
+            self.server.register_function(self.uploadAutomaticFile, 'uploadAutomaticFile')
 
             self.server_thread = Thread(target=self.loopConnection)
             self.server_thread.start()
+
+        except Exception as e:
+
+            raise e
+
+    def uploadAutomaticFile(self, filename, content):
+
+        try:
+            self.controlador.uploadAutomaticFile(filename, content)
+            return "Archivo cargado con exito."
 
         except Exception as e:
 
@@ -121,13 +129,21 @@ class Servidor:
             raise e
 
     def setUsername(self, username):
-        self.clientName = username
-        self.clientIP, self.clientPort = self.server.getDataClient()
-        self.dataLog.logRPCClientConnected(self.clientIP, self.clientPort, self.clientName)
+
+        self.server.getDataClient()
+
+        self.dataLog.logRPCClientConnection(self.server.getDataClient()[0], self.server.getDataClient()[1], True,username)
         return f"Bievenido al servicio RPC: {username}"
 
-    def getUsername(self):
-        return self.clientName
+    def userLeaves(self, ID):
+
+        self.controlador.disconnectAllClients(ID)
+
+        self.dataLog.logRPCClientConnection(self.server.getDataClient()[0],self.server.getDataClient()[1], False)
+
+        data = self.server.getDataClient()
+
+        return f"Hasta luego!"
 
     def getServerData(self):
 

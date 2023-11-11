@@ -10,6 +10,10 @@ CLI::CLI() {
     std::cout << "Iniciando cliente de servicio RPC" << std::endl;
     std::cout << BLUE << "===============================================================\n" << RESET << std::endl;
 
+    std::srand(std::time(0));
+    this->ID = (std::rand() % 90000000 + 10000000);
+    std::cout << BLUE << "-->" << RESET << " ID de cliente: " << this->ID << std::endl;
+
     this->waitUsername();
     this->waitConnection();
 
@@ -72,60 +76,32 @@ bool CLI::connectToServer() {
     }
 
 }
-
-void CLI::printMethods(){
-
+void CLI::printMethods() {
     std::vector<std::string> tempMethods;
     int columns = 5;
     int w = 18;
 
     std::cout << BLUE << "============================ Metodos disponibles ============================\n" << RESET;
 
-    for(int i = 0; i < this->methods.size(); i++){
-
+    for (int i = 0; i < this->methods.size(); i++) {
         tempMethods.push_back(this->methods[i]);
 
-        if(tempMethods.size() == columns){
-
-            for(int j = 0; j < tempMethods.size(); j++){
-
-                std::cout << BLUE << "|" << RESET << " " << std::setw(w) << tempMethods[j] << std::setw(w) << " ";
-
+        if (tempMethods.size() == columns || i == this->methods.size() - 1) {
+            for (int j = 0; j < tempMethods.size(); j++) {
+                std::cout << BLUE << "|" << RESET << " " << std::setw(w) << tempMethods[j] << " ";
             }
 
-            std::cout << std::endl;
-            tempMethods.clear();
-
-        }
-        else if(i == this->methods.size() - 1){
-
-            for(int j = 0; j < tempMethods.size(); j++){
-
-                std::cout << BLUE << "|" << RESET << " " << std::setw(w) << tempMethods[j] << std::setw(w) << " ";
-
-                if(tempMethods.size() == columns){
-                    std::cout << std::endl;
-                    std::cout << BLUE << "|" << RESET << " " << std::setw(w) << "disconnect" << " ";
-                }else{
-                    std::cout << BLUE << "|" << RESET << " " << std::setw(w) << "disconnect" << " ";
-                }
-
+            if (tempMethods.size() < columns) {
+                std::cout << std::setw((columns - tempMethods.size()) * w) << " ";
             }
-            std::cout << std::endl;
+
+            std::cout << "\n";
             tempMethods.clear();
-
         }
-        else{
-
-            continue;
-
-        }
-
-
     }
+
+    std::cout << BLUE << "-->" << RESET << " Para desconectarse del servidor ingrese 'disconnect'" << std::endl;
     std::cout << BLUE << "============================================================================\n" << RESET;
-
-
 }
 
 void CLI::programLoop() {
@@ -162,33 +138,102 @@ void CLI::commandController(std::string command) {
         args[i - 1] = segments[i].c_str();
     }
 
+    if(command == "disconnect" || command == "userLeaves" || command == "connectSerial" || command == "disableEffector" || command == "disableMotors" || command == "disconnectSerial" || command == "enableEffector" || command == "enableMotors" || command == "goHome" || command == "setRobotMode" || command == "moveEffector" || command == "togglelearn") {
+
+        args[segments.size() - 1] = this->ID;
+
+    }
+
+    if(command == "disconnect"){
+
+        std::cout << GREEN << "-->" << RESET << " Desconectando del servidor..." << std::endl;
+        this->client->execute("userLeaves", args, result);
+        std::cout << GREEN << "-->" << RESET << "  - Mensaje del servidor - \n" << result << std::endl;
+        this->isConnected = false;
+
+        return;
+    }
+
+    if(segments[0] == "uploadAutomaticFile"){
+
+            std::ifstream file(args[0]);
+            std::string str;
+            std::string fileContent;
+            while (std::getline(file, str))
+            {
+                fileContent += str + "\n";
+            }
+            args[segments.size()] = fileContent.c_str();
+
+            std::cout << "SE ENVIA EL ARCHIVO: " << args[0] << std::endl;
+            std::cout << "CONTENIDO:" << args[1] << std::endl;
+
+        }
+
+    this->argsCheck(XmlCommand, args);
+
     std::cout << GREEN << "-->" << RESET << " Ejecutando servicio: " << segments[0] << std::endl;
 
     for (int i = 1; i < segments.size(); i++) {
         std::cout << GREEN << "-->" << RESET << " Argumento " << i << ": " << segments[i] << std::endl;
     }
 
-    if(XmlCommand == "disconnect"){
-        this->isConnected = false;
-        return;
-    }
+    try{
 
+        if (this->client->execute(XmlCommand, args, result)) {
 
-    if (this->client->execute(XmlCommand, args, result)) {
+            std::cout << GREEN << "-->" << RESET << " Resultado: " << std::endl;
 
-        std::cout << GREEN << "-->" << RESET << " Resultado: " << std::endl;
+            if (result.getType() == XmlRpcValue::TypeArray) {
+                for (int i = 0; i < result.size(); i++) {
 
-        for (int i = 0; i < result.size(); i++) {
-            std::cout << GREEN << "-->" << RESET << " " << result[i] << std::endl;
+                    std::cout << GREEN << "-->" << RESET << " " << result[i] << std::endl;
+                }
+            } else {
+
+                std::cout << GREEN << "-->" << RESET << " " << result << std::endl;
+            }
+
+        }
+        else {
+
+            std::cout << RED << "-->" << RESET << " Error 1 en la llamada a '" << segments[0] << "'" << std::endl;
+
         }
 
+    }
+    catch(XmlRpcException& e){
+
+        std::cout << RED << "-->" << RESET << " Error 2 en la llamada a '" << segments[0] << "'" << std::endl;
+        std::cout << RED << "-->" << RESET << " " << e.getMessage() << std::endl;
 
     }
-    else {
+    catch(const char* msg){
 
-        std::cout << RED << "-->" << RESET << " Error en la llamada a '" << segments[0] << "'" << std::endl;
+        std::cout << RED << "-->" << RESET << " Error 3 en la llamada a '" << segments[0] << "'" << std::endl;
+        std::cout << RED << "-->" << RESET << " " << msg << std::endl;
+
+    }
+    catch(...){
+
+        std::cout << RED << "-->" << RESET << " Error 4 en la llamada a '" << segments[0] << "'" << std::endl;
 
     }
 
+}
+
+bool CLI::argsCheck(const char *XmlCommand, XmlRpcValue args) {
+
+    XmlRpcValue command, result;
+
+    command[0] = XmlCommand;
+
+    std::cout << RED << "CONTROL DE ARGUMENTOS" << RESET << std::endl;
+
+    this->client->execute("system.methodSignature", command, result);
+
+    std::cout << RED << "--> " << RESET << result <<  std::endl;
+
+    std::cout << RED << "FIN CONTROL DE ARGUMENTOS" << RESET << std::endl;
 
 }

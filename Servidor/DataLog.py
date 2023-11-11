@@ -325,20 +325,28 @@ class DataLog:
             os.fsync(f.fileno())
             f.close()
 
-    def logDisconnectAllClients(self):
+    def logRPCClientConnection(self, clientIP, clientPort, onOff,username = None):
+
+        if username is None:
+
+            printUser = ''
+
+        else:
+
+            printUser = f' {username}(C ) |'
+
+        if onOff:
+
+            process = 'CONNECTED_CLIENT'
+
+        else:
+
+            process = 'DISCONNECTED_CLIENT'
 
         with open(f'{self.path}/{self.file}', 'a') as f:
 
-            f.write(f"{self.getTime()} | RPC | DISCONNECT_ALL | {self.user}\n")
+            f.write(f"{self.getTime()} | RPC | {process} | {clientIP} | {clientPort} |{printUser} {self.user}\n")
             f.flush()
             os.fsync(f.fileno())
             f.close()
 
-    def logRPCClientConnected(self, clientIP, clientPort, clientName):
-
-        with open(f'{self.path}/{self.file}', 'a') as f:
-
-            f.write(f"{self.getTime()} | RPC | CONNECTED_CLIENT | {clientIP} | {clientPort} | {clientName}(RPC) | {self.user}\n")
-            f.flush()
-            os.fsync(f.fileno())
-            f.close()
