@@ -51,6 +51,26 @@ class Servidor:
         self.dataLog.logServerStatus(self.IP, self.port, True)
         self.server.serve_forever()
 
+    def help(self):
+
+        return "Comandos disponibles: \n" \
+                "- connectSerial [puerto] [baudrate] \n" \
+                "- disconnectSerial \n" \
+                "- goHome \n" \
+                "- setRobotMode [M/A] \n" \
+                "- setUsername [username] \n" \
+                "- listAutomaticFiles \n" \
+                "- toggleLearn [S/N]\n" \
+                "- moveEffector [X:valor] [Y:valor] [Z:valor] [E:valor] \n" \
+                "- enableEffector \n" \
+                "- disableEffector \n" \
+                "- getRobotStatus \n" \
+                "- enableMotors \n" \
+                "- disableMotors \n" \
+                "- report \n" \
+                "- help \n"
+
+
     def abrirServidor(self):
 
         try:
@@ -71,11 +91,7 @@ class Servidor:
             # Funciones de movimiento del robot
             self.server.register_function(self.controlador.goHome, 'goHome')
             self.server.register_function(self.controlador.setRobotMode, 'setRobotMode')
-            self.server.register_function(self.controlador.manualMode, 'manualMode')
             self.server.register_function(self.controlador.listAutomaticFiles, 'listAutomaticFiles')
-            self.server.register_function(self.controlador.automaticMode, 'automaticMode')
-            self.server.register_function(self.controlador.runAutomaticFile, 'runAutomaticFile')
-            self.server.register_function(self.controlador.learnAutomaticFile, 'learnAutomaticFile')
             self.server.register_function(self.controlador.toggleLearn, 'toggleLearn')
             self.server.register_function(self.controlador.moveEffector, 'moveEffector')
             self.server.register_function(self.controlador.enableEffector, 'enableEffector')
@@ -84,6 +100,7 @@ class Servidor:
             self.server.register_function(self.controlador.enableMotors, 'enableMotors')
             self.server.register_function(self.controlador.disableMotors, 'disableMotors')
             self.server.register_function(self.controlador.report, 'report')
+            self.server.register_function(self.help, 'help')
 
             self.server_thread = Thread(target=self.loopConnection)
             self.server_thread.start()

@@ -219,7 +219,7 @@ class DataLog:
 
                 if lineData[2] == ' PROGRAM_ON ':
 
-                    res.append(lineData[-2])
+                    res.append(lineData[0])
 
                     res.reverse()
                     return res

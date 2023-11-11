@@ -56,7 +56,7 @@ bool CLI::connectToServer() {
             oneArg[0] = this->username;
 
             this->client->execute("setUsername", oneArg, result);
-            std::cout << GREEN << "-->" << RESET << " Mensaje del servidor: " << result << std::endl;
+            std::cout << GREEN << "-->" << RESET << "  - Mensaje del servidor - \n" << result << std::endl;
 
             return true;
         }
@@ -128,57 +128,67 @@ void CLI::printMethods(){
 
 }
 
-void CLI::programLoop(){
-
+void CLI::programLoop() {
     std::string command;
 
-
-    while(this->isConnected){
+    while (this->isConnected) {
 
         this->printMethods();
 
-        std::cout << BLUE << "-->" << RESET << " Ingrese el nombre del metodo que desea ejecutar: ";
-        std::cin >> command;
+        std::cout << BLUE << "-->" << RESET << " Ingrese un comando: ";
+
+        std::getline(std::cin >> std::ws, command);
 
         this->commandController(command);
 
     }
-
-
 }
 
 void CLI::commandController(std::string command) {
 
+    XmlRpcValue args, result;
+    std::vector<std::string> segments;
 
-    XmlRpcValue noArgs, result;
+    std::istringstream iss(command);
+    std::string segment;
 
-    this->client->execute("system.methodHelp", "enableEffector", result);
-
-    std::cout << result << std::endl;
-
-    for(int i = 0; i< this->methods.size(); i++){
-        if(command == this->methods[i] or command == "disconnect"){
-
-            break;
-
-        }
-        if(i == this->methods.size() - 1){
-
-            std::cout << RED << "-->" << RESET << " El metodo ingresado no existe." << std::endl;
-            return;
-
-        }
+    while (iss >> segment) {
+        segments.push_back(segment);
     }
 
-    const char* XmlCommand = command.c_str();
+    const char* XmlCommand = segments[0].c_str();
 
-    if (command == "disconnect"){
+    for (int i = 1; i < segments.size(); i++) {
+        args[i - 1] = segments[i].c_str();
+    }
 
+    std::cout << GREEN << "-->" << RESET << " Ejecutando servicio: " << segments[0] << std::endl;
+
+    for (int i = 1; i < segments.size(); i++) {
+        std::cout << GREEN << "-->" << RESET << " Argumento " << i << ": " << segments[i] << std::endl;
+    }
+
+    if(XmlCommand == "disconnect"){
         this->isConnected = false;
-        std::cout << GREEN << "-->" << RESET << " Desconectado del servidor" << std::endl;
-
+        return;
     }
 
+
+    if (this->client->execute(XmlCommand, args, result)) {
+
+        std::cout << GREEN << "-->" << RESET << " Resultado: " << std::endl;
+
+        for (int i = 0; i < result.size(); i++) {
+            std::cout << GREEN << "-->" << RESET << " " << result[i] << std::endl;
+        }
+
+
+    }
+    else {
+
+        std::cout << RED << "-->" << RESET << " Error en la llamada a '" << segments[0] << "'" << std::endl;
+
+    }
 
 
 }

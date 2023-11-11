@@ -10,10 +10,13 @@
 using namespace XmlRpc;
 #include <iostream>
 #include <string>
+#include <cstring>
+#include <limits>
+#include <algorithm>
+#include <sstream>
 #include <iomanip>
 #include <vector>
 
-//definir colores
 #define RESET   "\033[0m"
 #define RED     "\033[31m"
 #define GREEN   "\033[32m"
