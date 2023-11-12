@@ -26,6 +26,8 @@ class Controlador:
 
     def connect(self, puerto, baudrate, ID=None):
 
+        print(ID)
+
         RPCprocess = False
 
         if ID == "ADMIN":
@@ -108,6 +110,8 @@ class Controlador:
 # Métodos de robot
     def setRobotMode(self, mode, filename=None, ID=None):
 
+
+        print(self.workingID)
         RPCprocess = False
 
         if ID == "ADMIN":
@@ -173,7 +177,7 @@ class Controlador:
 
         try:
 
-            self.auto_thread = Thread(target=self.runAutomaticFile(RPCProcess))
+            self.auto_thread = Thread(target=self.runAutomaticFile, args=(RPCProcess,))
             self.auto_thread.start()
 
         except Exception as e:
@@ -629,21 +633,30 @@ class Controlador:
 
         return "Todos los clientes desconectados."
 
-
     def uploadAutomaticFile(self, filename, content):
-
         try:
-
             if not os.path.exists("./Autos"):
                 os.makedirs("./Autos")
+
+            repeated = 0
+            base_name, extension = os.path.splitext(filename)
+
+            while True:
+                new_filename = f"{base_name}({repeated}){extension}"
+
+                if new_filename not in os.listdir("./Autos"):
+                    break
+
+                repeated += 1
+
+            filename = new_filename
+            print(filename)
 
             with open(f"./Autos/{filename}", "w") as f:
                 f.write("================== GCODE AUTOMATICO ==================\n")
                 f.write(content)
-                f.flush()
-                os.fsync(f.fileno())
-                f.close()
+
+            return filename
 
         except Exception as e:
-
             raise e

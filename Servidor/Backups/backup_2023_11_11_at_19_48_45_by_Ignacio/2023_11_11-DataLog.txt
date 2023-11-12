@@ -1,0 +1,36 @@
+0-2023_11_11
+19:27:59 | P | PROGRAM_ON | Nacho
+19:29:6 | P | PROGRAM_ON | Nacho
+19:30:14 | P | PROGRAM_ON | Ignacio
+19:31:9 | P | PROGRAM_ON | Ignacio
+19:32:53 | P | PROGRAM_ON | Ignacio
+19:34:8 | P | PROGRAM_ON | Ignacio
+19:34:46 | S | SERVER_START | 192.168.1.34 | 8000| Ignacio
+19:34:55 | S | SERVER_STOP | 192.168.1.34 | 8000| Ignacio
+19:34:57 | S | SERVER_START | 192.168.1.34 | 8001| Ignacio
+19:35:25 | R | ROBOT_CONNECT | COM3 | 115200 | Ignacio
+19:35:27 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Ignacio
+19:37:22 | P | PROGRAM_ON | Ignacio
+19:38:5 | P | PROGRAM_ON | Ignacio
+19:39:11 | S | SERVER_START | 192.168.1.34 | 8000| Ignacio
+19:39:36 | S | SERVER_STOP | 192.168.1.34 | 8000| Ignacio
+19:39:52 | R | ROBOT_CONNECT | COM3 | 115200 | Ignacio
+19:39:54 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Ignacio
+19:41:26 | S | SERVER_STOP | 192.168.1.34 | 8000| Ignacio
+19:41:42 | P | PROGRAM_ON | Ignacio
+19:42:40 | S | SERVER_START | 192.168.1.34 | 8000| Ignacio
+19:42:49 | S | SERVER_STOP | 192.168.1.34 | 8000| Ignacio
+19:43:22 | R | ROBOT_CONNECT | COM3 | 115200 | Ignacio
+19:43:25 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Ignacio
+19:45:29 | R | EFFECTOR_ON | Ignacio
+19:45:36 | R | ROBOT_DISCONNECT | COM3 | 115200 | Ignacio
+19:45:55 | R | ROBOT_CONNECT | COM3 | 115200 | Ignacio
+19:45:58 |R | STATUS | M | 0.0 | 170.0 | 120.0 | False | Ignacio
+19:46:9 | R | HOME | 0.0 | 170.0 | 120.0 | Ignacio
+19:46:19 | R | MOVE | 110.0 | 210.0 | 110.0 | Ignacio
+19:46:29 | R | MOVE | 110.0 | 210.0 | 110.0 | Ignacio
+19:48:12 | R | LEARN_ON | Ignacio
+19:48:17 | R | HOME | 0.0 | 170.0 | 120.0 | Ignacio
+19:48:20 | R | EFFECTOR_ON | Ignacio
+19:48:26 | R | MOVE | 110.0 | 210.0 | 110.0 | Ignacio
+19:48:31 | R | LEARN_OFF | Ignacio

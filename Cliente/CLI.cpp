@@ -138,7 +138,7 @@ void CLI::commandController(std::string command) {
         args[i - 1] = segments[i].c_str();
     }
 
-    if(command == "disconnect" || command == "userLeaves" || command == "connectSerial" || command == "disableEffector" || command == "disableMotors" || command == "disconnectSerial" || command == "enableEffector" || command == "enableMotors" || command == "goHome" || command == "setRobotMode" || command == "moveEffector" || command == "togglelearn") {
+    if(segments[0] == "disconnect" || segments[0] == "userLeaves" || segments[0] == "connectSerial" || segments[0] == "disableEffector" || segments[0] == "disableMotors" || segments[0] == "disconnectSerial" || segments[0] == "enableEffector" || segments[0] == "enableMotors" || segments[0] == "goHome" || segments[0] == "setRobotMode" || segments[0] == "moveEffector" || segments[0] == "togglelearn") {
 
         args[segments.size() - 1] = this->ID;
 
@@ -161,7 +161,7 @@ void CLI::commandController(std::string command) {
             std::string fileContent;
             while (std::getline(file, str))
             {
-                fileContent += str + "\n";
+                fileContent += str + "\r\n";
             }
             args[segments.size()] = fileContent.c_str();
 
