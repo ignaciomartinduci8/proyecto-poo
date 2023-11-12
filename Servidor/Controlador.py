@@ -29,7 +29,7 @@ class Controlador:
         RPCprocess = False
 
         if ID == "ADMIN":
-            pass;
+            pass
 
         elif self.workingID is not None and self.workingID != ID:
 

@@ -3,7 +3,6 @@ from Servidor import Servidor
 from DataLog import DataLog
 from cmd import Cmd
 from threading import Thread
-from GUI import MainWindow
 import tkinter as tk
 from tkinter import messagebox
 import time
@@ -22,7 +21,7 @@ class CLI(Cmd):
     undoc_header = "Ayuda de comandos no documentados"
     ruler = "="
 
-    def __init__(self, user, GUI):
+    def __init__(self, user):
         super().__init__()
         self.completekey = 'tab'
         self.servidor1 = None
@@ -30,15 +29,6 @@ class CLI(Cmd):
         self.controlador = Controlador(self.dataLog)
         self.serverUser = user
         self.dataLog.logProgram(True)
-
-        self.GUI = None
-
-        if GUI:
-            self.threadGUI = Thread(target=self.runGUI)
-            self.threadGUI.start()
-
-    def runGUI(self):
-        self.GUI = MainWindow()
 
     def do_RPCon(self, puerto):
         """
@@ -502,5 +492,3 @@ class CLI(Cmd):
     def preloop(self):
         print('\n========== CLI de servidor ==========')
         self.do_help(None)
-
-
