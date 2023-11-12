@@ -1,0 +1,16 @@
+format 224
+
+classcanvas 128008 class_ref 128008 // main
+  classdiagramsettings member_max_width 0 end
+  xyz 156 83 2000
+end
+classcanvas 128136 class_ref 128136 // CLI
+  classdiagramsettings member_max_width 0 end
+  xyz 267 55 2000
+end
+relationcanvas 128264 relation_ref 128008 // <directional aggregation>
+  from ref 128008 z 2001 to ref 128136
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+end

@@ -1,0 +1,13 @@
+window_sizes 2560 1406 600 1953 1169 168
+
+diagrams
+  active  classdiagram_ref 128008 // Diagrama de clase
+    1434 818 100 A4 19 0
+end
+show_stereotypes
+selected artifact_ref 128008 // main
+open
+  class_ref 128136 // CLI
+  deploymentview_ref 128008 // Vista de despliegue
+end
+end
