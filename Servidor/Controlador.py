@@ -19,14 +19,12 @@ class Controlador:
         self.auto_thread = None
         self.isLearning = False
         self.backupDir = './Backups'
-        self.usersPath = './Users/registered_users.json'
         self.workingID = None
         
 # Métodos de conexión y desconexión
 
     def connect(self, puerto, baudrate, ID=None):
 
-        print(ID)
 
         RPCprocess = False
 
@@ -434,6 +432,7 @@ class Controlador:
         try:
 
             self.serial.writeSerial("M17")
+            self.robot.setrMotors(True)
             res = self.serial.readSerial()
 
             if "INFO" in res:
@@ -478,6 +477,7 @@ class Controlador:
         try:
 
             self.serial.writeSerial("M18")
+            self.robot.setMotors(False)
             res = self.serial.readSerial()
 
             if "INFO" in res:

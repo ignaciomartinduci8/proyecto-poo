@@ -39,9 +39,6 @@ class Servidor:
         self.controlador = controlador
         self.abrirServidor()
 
-    def prueba(self, a, b):
-        return a + b
-
     def loopConnection(self):
 
         self.dataLog.logServerStatus(self.IP, self.port, True)

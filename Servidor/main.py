@@ -14,17 +14,13 @@ def main():
 
         elif UI == "CLI":
             print("Corriendo CLI...")
-            cli = CLI(user, False)
+            cli = CLI(user)
             cli.prompt = '--> '
             cli.cmdloop('Iniciando entrada de comandos. Usar help para ver comandos. \nAlgunos comandos tienen argumentos opcionales, simbolizados con *')
             cli = None
 
         elif UI == "GUI":
-            print("Corriendo CLI con GUI...")
-            cli = CLI(user, True)
-            cli.prompt = '--> '
-            cli.cmdloop('Iniciando entrada de comandos. Usar help para ver comandos. \nAlgunos comandos tienen argumentos opcionales, simbolizados con *')
-            cli = None
+            print("GUI NO TERMINADA")
 
         else:
             print("Opcion no valida.")

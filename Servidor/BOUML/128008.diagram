@@ -1,0 +1,119 @@
+format 224
+
+classcanvas 128008 class_ref 128008 // CLI
+  classdiagramsettings member_max_width 0 end
+  xyz 597.09 123.35 2000
+end
+classcanvas 128136 class_ref 128136 // Controlador
+  classdiagramsettings member_max_width 0 end
+  xyz 147.23 746.71 2000
+end
+classcanvas 128264 class_ref 128264 // DataLog
+  classdiagramsettings member_max_width 0 end
+  xyz 819.73 678.69 2000
+end
+classcanvas 128648 class_ref 128648 // Robot
+  classdiagramsettings member_max_width 0 end
+  xyz 310.86 1425.76 2000
+end
+classcanvas 128776 class_ref 128776 // Serial
+  classdiagramsettings member_max_width 0 end
+  xyz 634.1 1551.76 2000
+end
+classcanvas 128904 class_ref 128904 // Servidor
+  classdiagramsettings member_max_width 0 end
+  xyz 975.73 1210.52 2000
+end
+classcanvas 129416 class_ref 129032 // main
+  classdiagramsettings member_max_width 0 end
+  xyz 510.74 359.35 2000
+end
+classcanvas 130440 class_ref 129160 // Cmd
+  classdiagramsettings member_max_width 0 end
+  xyz 888.32 41.17 2006
+end
+classcanvas 131720 class_ref 129288 // Thread
+  classdiagramsettings member_max_width 0 end
+  xyz 41.54 1045.71 2000
+end
+classcanvas 133128 class_ref 129416 // serial
+  classdiagramsettings member_max_width 0 end
+  xyz 937.03 1640.76 2000
+end
+relationcanvas 129672 relation_ref 128136 // <directional aggregation>
+  from ref 129416 z 2001 to ref 128008
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 130696 relation_ref 128392 // <generalisation>
+  decenter_begin 503
+  from ref 128008 z 2007 to ref 130440
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 131080 relation_ref 128520 // <directional aggregation>
+  decenter_begin 973
+  from ref 128008 z 2001 to ref 128264
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 131208 relation_ref 128648 // <directional aggregation>
+  decenter_begin 25
+  decenter_end 736
+  from ref 128008 z 2001 to ref 128136
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 131336 relation_ref 128776 // <directional aggregation>
+  from ref 128008 z 2001 to point 1636.62 378.123
+  line 132616 z 2001 to point 1636.62 1372.98
+  line 133768 z 2001 to ref 128904
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 131464 relation_ref 128904 // <dependency>
+  decenter_begin 273
+  from ref 128136 z 2001 to ref 128264
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 131848 relation_ref 129032 // <directional aggregation>
+  from ref 128136 z 2001 to ref 131720
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 131976 relation_ref 129160 // <directional aggregation>
+  decenter_begin 481
+  from ref 128136 z 2001 to ref 128648
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 132104 relation_ref 129288 // <directional aggregation>
+  decenter_begin 976
+  from ref 128136 z 2001 to ref 128776
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 132232 relation_ref 129416 // <dependency>
+  from ref 128648 z 2001 to ref 128776
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 132488 relation_ref 129672 // <dependency>
+  from ref 128904 z 2001 to ref 128264
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 133512 relation_ref 129800 // <directional aggregation>
+  from ref 128776 z 2001 to ref 133128
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+relationcanvas 133640 relation_ref 129928 // <dependency>
+  decenter_end 977
+  from ref 128904 z 2001 to ref 128136
+  no_role_a no_role_b
+  no_multiplicity_a no_multiplicity_b
+end
+preferred_whz 2299 1185 0.62
+end

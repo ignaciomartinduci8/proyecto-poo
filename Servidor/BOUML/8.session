@@ -1,0 +1,20 @@
+window_sizes 2560 1406 263 2291 1181 168
+cleanlooks_style
+diagrams
+  active  classdiagram_ref 128008 // Diagrama de clase
+    2299 1185 60 Custom 37 0
+end
+show_stereotypes
+selected operation_ref 138248 // uploadAutomaticFile
+open
+  class_ref 128008 // CLI
+  class_ref 128136 // Controlador
+  class_ref 128264 // DataLog
+  class_ref 128648 // Robot
+  class_ref 128776 // Serial
+  class_ref 128904 // Servidor
+  class_ref 129032 // main
+  class_ref 129160 // Cmd
+  deploymentview_ref 128008 // Vista de despliegue
+end
+end

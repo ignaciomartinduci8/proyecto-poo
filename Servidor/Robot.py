@@ -26,7 +26,8 @@ class Robot:
             raise ValueError("Modo no válido. Debe ser 'M' o 'A'.")
         self.mode = mode
 
-    def setMotors(self):
+    def setMotors(self, onOff):
+        self.motorsEnabled = onOff
         pass
 
     def getMode(self):
